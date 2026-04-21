@@ -1,2 +1,25 @@
-# Bothub
-BotHub is a web-based dashboard for managing and configuring Discord bots. The project combines a PHP web interface with a Discord bot core and offers modules such as economy, minigames, tickets, music, auto-moderation, notifications, free game alerts, leveling, and many other automation features for Discord servers.
+# BotHub
+
+BotHub is a web-based dashboard for managing and configuring Discord bots.  
+It combines a PHP-powered web interface with a Node.js Discord bot core.
+
+The system provides a modular architecture with features such as:
+- 💰 Economy system  
+- 🎮 Minigames  
+- 🎫 Ticket system  
+- 🎵 Music bot  
+- 🛡️ Auto-moderation  
+- 🔔 Notifications  
+- 🎁 Free game alerts  
+- 📈 Leveling system  
+- ⚙️ Automation tools for Discord servers  
+
+---
+
+## 🚀 Installation
+
+### Requirements
+- PHP >= 8.2 (8.5 recommended)  
+- MySQL / MariaDB  
+- Nginx  
+- Node.js 22 LTS  
