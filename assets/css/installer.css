@@ -1,0 +1,293 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg-0: #0b1220;
+    --bg-1: #0f172a;
+    --card: rgba(17, 24, 39, 0.88);
+    --card-border: rgba(148, 163, 184, 0.14);
+    --text: #e5e7eb;
+    --muted: rgba(226, 232, 240, 0.72);
+
+    --primary: #6366f1;
+    --primary-2: #22d3ee;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --success: #22c55e;
+
+    --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(99, 102, 241, 0.22), transparent 55%),
+        radial-gradient(900px 500px at 85% 25%, rgba(34, 211, 238, 0.16), transparent 60%),
+        linear-gradient(180deg, var(--bg-0), var(--bg-1));
+}
+
+.page {
+    position: relative;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 18px;
+    overflow: hidden;
+}
+
+.page::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    background:
+        radial-gradient(800px 320px at 50% 30%, rgba(99, 102, 241, 0.14), transparent 60%),
+        radial-gradient(520px 260px at 30% 70%, rgba(34, 211, 238, 0.10), transparent 60%);
+    filter: blur(8px);
+    pointer-events: none;
+}
+
+/* FIX: Entfernt das "offene Triangle" Overlay (page-illustration.svg) */
+.page::after {
+    content: none;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 980px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 26px 28px 14px 28px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.10);
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(226, 232, 240, 0.86);
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.18);
+}
+
+h1 {
+    margin: 14px 0 0 0;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+}
+
+.sub {
+    margin: 10px 0 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.card-body { padding: 22px 28px 28px 28px; }
+
+.section-title {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(147, 197, 253, 0.9);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+@media (min-width: 860px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(226, 232, 240, 0.86);
+}
+
+.code {
+    width: 100%;
+    padding: 12px 12px;
+    border-radius: 14px;
+    background: rgba(2, 6, 23, 0.55);
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    color: rgba(226, 232, 240, 0.85);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 13px;
+    overflow-x: auto;
+    white-space: pre;
+}
+
+/* Schöner + runder + dunkler */
+.input {
+    width: 100%;
+    padding: 12px 14px;
+    min-height: 44px;
+    border-radius: 14px;
+    background: rgba(2, 6, 23, 0.35);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    color: rgba(226, 232, 240, 0.92);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+
+.input::placeholder {
+    color: rgba(226, 232, 240, 0.40);
+}
+
+.input:focus {
+    border-color: rgba(99, 102, 241, 0.60);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.14);
+    background: rgba(2, 6, 23, 0.45);
+}
+
+.help {
+    font-size: 12px;
+    color: rgba(226, 232, 240, 0.62);
+    line-height: 1.6;
+}
+
+.alert {
+    margin-top: 14px;
+    padding: 14px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    background: rgba(15, 23, 42, 0.55);
+    color: rgba(226, 232, 240, 0.88);
+}
+
+.alert strong { font-weight: 800; }
+
+.alert-danger {
+    border-color: rgba(239, 68, 68, 0.22);
+    background: rgba(239, 68, 68, 0.08);
+}
+
+.alert-success {
+    border-color: rgba(34, 197, 94, 0.22);
+    background: rgba(34, 197, 94, 0.08);
+}
+
+.alert-warning {
+    border-color: rgba(245, 158, 11, 0.22);
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.ul {
+    margin: 10px 0 0 18px;
+    padding: 0;
+}
+
+.ul li { margin: 6px 0; }
+
+.actions {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 14px;
+    color: white;
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    box-shadow: 0 10px 22px rgba(99, 102, 241, 0.22);
+    transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.02);
+    box-shadow: 0 14px 30px rgba(99, 102, 241, 0.26);
+}
+
+.btn:active { transform: translateY(0); }
+
+.btn-secondary {
+    background: rgba(15, 23, 42, 0.55);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    color: rgba(226, 232, 240, 0.92);
+    box-shadow: none;
+}
+
+.btn-secondary:hover {
+    box-shadow: none;
+    transform: translateY(-1px);
+    border-color: rgba(99, 102, 241, 0.40);
+}
+
+.mini {
+    font-size: 12px;
+    color: rgba(226, 232, 240, 0.65);
+    line-height: 1.6;
+}
+
+.sep {
+    margin: 18px 0 0 0;
+    height: 1px;
+    background: rgba(148, 163, 184, 0.10);
+}
+
+.watermark {
+    text-align: center;
+    font-size: 11px;
+    color: rgba(148, 163, 184, 0.30);
+    padding: 16px 0 12px;
+    letter-spacing: 0.04em;
+}

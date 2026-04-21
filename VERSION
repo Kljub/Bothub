@@ -1,0 +1,9 @@
+BotHub v1.0.0
+Built:   2026-04-21 17:33:42
+By:      Daniel
+
+Options:
+  exclude_lock:    yes
+  exclude_storage: yes
+  exclude_git:     yes
+  exclude_install: no

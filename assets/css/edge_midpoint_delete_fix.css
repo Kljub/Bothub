@@ -1,0 +1,36 @@
+/* # PFAD: /assets/css/edge_midpoint_delete_fix.css */
+#cc-builder-canvas,
+.cc-canvas {
+    position: relative;
+}
+
+#cc-builder-edges,
+.cc-edges {
+    overflow: visible;
+    pointer-events: none;
+}
+
+.cc-edge-delete {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    background: #2a2f3a;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 9999;
+    pointer-events: auto;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    padding: 0;
+}
+
+.cc-edge-delete:hover {
+    background: #cf3f3f;
+}

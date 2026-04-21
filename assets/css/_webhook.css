@@ -1,0 +1,226 @@
+/* ═══════════════════════════════════════════════════ Webhook Page */
+
+.bh-wh-page {
+    width: 100%;
+    padding: 0 0 60px 0;
+}
+
+/* ── Head ── */
+.bh-wh-head {
+    margin-bottom: 28px;
+}
+.bh-wh-kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    color: #6b7280;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+.bh-wh-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #f1f5f9;
+    margin: 0;
+}
+
+/* ── Alert ── */
+.bh-wh-alert {
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+}
+.bh-wh-alert--ok  { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.3); color: #86efac; }
+.bh-wh-alert--err { background: rgba(239,68,68,.12);  border-color: rgba(239,68,68,.3);  color: #fca5a5; }
+
+/* ── Section card ── */
+.bh-wh-card {
+    background: #1e2330;
+    border: 1px solid #2e3547;
+    border-radius: 14px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+.bh-wh-card__header {
+    padding: 18px 28px 14px;
+    border-bottom: 1px solid #2e3547;
+}
+.bh-wh-card__kicker {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+.bh-wh-card__title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin: 0;
+}
+.bh-wh-card__body {
+    padding: 24px 28px;
+}
+
+/* ── Label / Input ── */
+.bh-wh-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 6px;
+}
+.bh-wh-input {
+    width: 100%;
+    background: #141820;
+    border: 1px solid #2e3547;
+    border-radius: 8px;
+    color: #f1f5f9;
+    font-size: 13px;
+    padding: 9px 14px;
+    outline: none;
+    transition: border-color .15s;
+    box-sizing: border-box;
+}
+.bh-wh-input:focus {
+    border-color: #6366f1;
+}
+.bh-wh-input::placeholder {
+    color: #4b5563;
+}
+
+/* ── API Key row ── */
+.bh-wh-apikey-wrap {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.bh-wh-apikey-field {
+    flex: 1 1 280px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: .05em;
+}
+.bh-wh-apikey-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+/* ── Buttons ── */
+.bh-wh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: opacity .15s;
+    white-space: nowrap;
+}
+.bh-wh-btn:hover { opacity: .85; }
+.bh-wh-btn--primary   { background: #6366f1; color: #fff; }
+.bh-wh-btn--secondary { background: #2e3547; color: #e2e8f0; }
+.bh-wh-btn--danger    { background: rgba(239,68,68,.15); color: #fca5a5; border: 1px solid rgba(239,68,68,.3); padding: 5px 12px; font-size: 12px; }
+
+/* ── Webhook form grid ── */
+.bh-wh-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 32px;
+    align-items: start;
+}
+@media (max-width: 640px) {
+    .bh-wh-form-grid { grid-template-columns: 1fr; }
+}
+.bh-wh-field { margin-bottom: 14px; }
+.bh-wh-field:last-child { margin-bottom: 0; }
+
+.bh-wh-desc {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 18px;
+    line-height: 1.6;
+}
+.bh-wh-desc a { color: #818cf8; text-decoration: underline; }
+
+/* ── Example request box ── */
+.bh-wh-example {
+    background: #141820;
+    border: 1px solid #2e3547;
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+.bh-wh-example__title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+}
+.bh-wh-example__code {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #94a3b8;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin: 0;
+    line-height: 1.7;
+}
+.bh-wh-example__code .hl-url   { color: #67e8f9; }
+.bh-wh-example__code .hl-flag  { color: #f9a8d4; }
+.bh-wh-example__code .hl-value { color: #86efac; }
+
+/* ── Form actions ── */
+.bh-wh-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #2e3547;
+}
+
+/* ── Active webhooks table ── */
+.bh-wh-empty {
+    color: #4b5563;
+    font-size: 13px;
+    text-align: center;
+    padding: 24px 0;
+}
+.bh-wh-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.bh-wh-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: #4b5563;
+    padding: 0 12px 10px 0;
+    border-bottom: 1px solid #2e3547;
+}
+.bh-wh-table td {
+    padding: 12px 12px 12px 0;
+    font-size: 13px;
+    color: #e2e8f0;
+    border-bottom: 1px solid #1a2030;
+    vertical-align: middle;
+}
+.bh-wh-table tr:last-child td { border-bottom: none; }
+.bh-wh-event-id {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #67e8f9;
+}
+.bh-wh-table-actions { text-align: right; }

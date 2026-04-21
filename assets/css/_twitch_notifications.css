@@ -1,0 +1,8 @@
+.dark .tn-row { --tn-sep: #374151; }
+.tn-row { --tn-sep: #f3f4f6; }
+.tn-row:last-child { border-bottom: none !important; }
+#tn-flash { border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 500; margin-bottom: 16px; }
+#tn-flash.tn-flash--ok  { background: #d1fae5; color: #065f46; }
+#tn-flash.tn-flash--err { background: #fee2e2; color: #991b1b; }
+.dark #tn-flash.tn-flash--ok  { background: #064e3b; color: #a7f3d0; }
+.dark #tn-flash.tn-flash--err { background: #450a0a; color: #fca5a5; }

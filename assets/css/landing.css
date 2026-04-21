@@ -1,0 +1,190 @@
+/* # PFAD: /assets/css/landing.css */
+
+:root{
+  --bh-border: rgba(148,163,184,.18);
+  --bh-bg-1: rgba(15,23,42,.78);
+  --bh-bg-2: rgba(2,6,23,.64);
+  --bh-muted: rgba(148,163,184,.86);
+  --bh-focus: rgba(168,85,247,.62);
+  --bh-shadow: 0 18px 70px rgba(2,6,23,.65);
+}
+
+/* Full-bleed helper */
+.bh-hero-bleed{
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+/* --- Particles should cover the whole stage (also bottom) --- */
+.bh-stage{
+  position: relative;
+}
+
+.bh-stars{
+  position: absolute;
+  inset: 0;
+  z-index: -5;
+  pointer-events: none;
+}
+
+.bh-stars-canvas{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* --- Glow: push purple down so it sits at the bottom border --- */
+.bh-stage-glow{
+  /* already absolute in HTML; keep as layer behind content */
+}
+
+.bh-glow-bottom{
+  /* move the glow image DOWN so the bright part is at the bottom edge */
+  bottom: -260px;
+  opacity: 0.95;
+  filter: saturate(1.05) contrast(1.02);
+}
+
+/* Modal hidden by default */
+.bh-modal{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none !important;
+}
+.bh-modal.is-open{
+  display: block !important;
+}
+
+.bh-modal-backdrop{
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1200px 600px at 50% 15%, rgba(168,85,247,.18), transparent 55%),
+    rgba(2,6,23,.78);
+  backdrop-filter: blur(10px);
+}
+
+.bh-modal-dialog{
+  position: relative;
+  width: min(560px, calc(100% - 28px));
+  margin: 90px auto 40px auto;
+  padding: 22px;
+  border-radius: 22px;
+  border: 1px solid var(--bh-border);
+  background:
+    radial-gradient(700px 260px at 50% 0%, rgba(168,85,247,.14), transparent 60%),
+    linear-gradient(180deg, var(--bh-bg-1), var(--bh-bg-2));
+  box-shadow: var(--bh-shadow);
+  backdrop-filter: blur(14px);
+}
+
+@media (max-width: 640px){
+  .bh-modal-dialog{
+    margin: 72px auto 22px auto;
+    padding: 16px;
+    border-radius: 18px;
+  }
+}
+
+.bh-modal-close{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,.22);
+  background: rgba(2,6,23,.35);
+  color: rgba(241,245,249,.95);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+.bh-modal-close:hover{
+  background: rgba(148,163,184,.12);
+}
+
+.bh-modal-title{
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  color: rgba(241,245,249,.96);
+  margin: 6px 0 16px 0;
+}
+
+/* Form */
+.bh-form{
+  margin-top: 6px;
+}
+
+.bh-field{ margin-bottom: 12px; }
+
+.bh-label{
+  display: block;
+  font-size: 13px;
+  font-weight: 650;
+  color: rgba(226,232,240,.86);
+  margin-bottom: 6px;
+}
+
+.bh-input{
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(148,163,184,.22);
+  background: rgba(2,6,23,.40);
+  color: rgba(241,245,249,.95);
+  padding: 11px 12px;
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease, background-color .15s ease;
+}
+
+.bh-input:focus{
+  border-color: rgba(168,85,247,.62);
+  box-shadow: 0 0 0 4px rgba(168,85,247,.18);
+  background: rgba(2,6,23,.55);
+}
+
+/* landing cards */
+.bh-card,
+.bh-panel{
+  border: 1px solid rgba(148,163,184,.20);
+  background: linear-gradient(180deg, rgba(15,23,42,.58), rgba(2,6,23,.34));
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(2,6,23,.45);
+  backdrop-filter: blur(10px);
+}
+
+.bh-card{ padding: 18px; }
+.bh-panel{ padding: 22px; }
+
+.bh-card-title,
+.bh-panel-title{
+  font-weight: 750;
+  color: rgba(241,245,249,.96);
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+
+.bh-card-text,
+.bh-panel-text{
+  color: var(--bh-muted);
+  line-height: 1.55;
+}
+
+.bh-list{
+  margin: 10px 0 0 18px;
+  padding: 0;
+  color: var(--bh-muted);
+}
+
+.bh-list li{ margin: 6px 0; }
+
+.bh-list code{
+  color: rgba(226,232,240,.92);
+  background: rgba(2,6,23,.55);
+  border: 1px solid rgba(148,163,184,.18);
+  padding: 2px 6px;
+  border-radius: 8px;
+}

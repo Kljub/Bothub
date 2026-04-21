@@ -1,0 +1,39 @@
+/* PFAD: /assets/css/role-picker.css */
+
+.role-container{
+border:1px solid #374151;
+background:#1f2937;
+border-radius:10px;
+padding:8px;
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+min-height:42px;
+align-items:center;
+}
+
+.role-tag{
+background:#374151;
+padding:4px 8px;
+border-radius:6px;
+font-size:13px;
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+.role-remove{
+cursor:pointer;
+opacity:.7;
+}
+
+.role-add{
+width:28px;
+height:28px;
+background:#374151;
+border-radius:6px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}

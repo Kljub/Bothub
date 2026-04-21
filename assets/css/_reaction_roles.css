@@ -1,0 +1,261 @@
+/* ── Reaction Roles Module ─────────────────────────────────────── */
+
+.rr-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #6366f1;
+    margin-bottom: 2px;
+}
+
+.rr-section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 20px;
+}
+
+/* ── Card ── */
+.rr-card {
+    background: #1e2536;
+    border: 1px solid #2e3850;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.rr-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+}
+
+.rr-card-desc {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 18px;
+}
+
+/* ── Field row ── */
+.rr-field {
+    margin-bottom: 18px;
+}
+
+.rr-field:last-child {
+    margin-bottom: 0;
+}
+
+.rr-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 3px;
+}
+
+.rr-label-desc {
+    display: block;
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.rr-input {
+    width: 100%;
+    background: #151b2b;
+    border: 1px solid #2e3850;
+    border-radius: 8px;
+    color: #c8d0e0;
+    font-size: 13px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color .15s;
+}
+
+.rr-input:focus {
+    border-color: #6366f1;
+}
+
+.rr-input::placeholder {
+    color: #3d4f6e;
+}
+
+/* ── Role tags box ── */
+.rr-roles-box {
+    background: #151b2b;
+    border: 1px solid #2e3850;
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    min-height: 42px;
+}
+
+.rr-role-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(99,102,241,.18);
+    color: #a5b4fc;
+    border-radius: 6px;
+    font-size: 11px;
+    padding: 3px 8px;
+    font-weight: 600;
+}
+
+.rr-role-tag-rm {
+    background: none;
+    border: none;
+    color: #6b7fad;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+    line-height: 1;
+}
+
+.rr-role-tag-rm:hover { color: #f87171; }
+
+.rr-add-btn {
+    background: none;
+    border: 1px dashed #3d4f6e;
+    border-radius: 6px;
+    color: #4f5f80;
+    font-size: 20px;
+    line-height: 1;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color .15s, color .15s;
+}
+
+.rr-add-btn:hover {
+    border-color: #6366f1;
+    color: #a5b4fc;
+}
+
+/* ── Toggle row ── */
+.rr-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.rr-toggle-row:last-of-type { margin-bottom: 0; }
+
+.rr-toggle-label-wrap { flex: 1; }
+
+.rr-toggle-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #f1f5f9;
+}
+
+.rr-toggle-desc {
+    font-size: 11px;
+    color: #64748b;
+}
+
+/* reuse .toggle from existing CSS */
+
+/* ── Add button ── */
+.rr-save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.rr-save-btn:hover { background: #dc2626; }
+
+/* ── Entries list ── */
+.rr-entry {
+    background: #1e2536;
+    border: 1px solid #2e3850;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+.rr-entry-emoji {
+    font-size: 26px;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.rr-entry-body { flex: 1; min-width: 0; }
+
+.rr-entry-meta {
+    font-size: 11px;
+    color: #4f5f80;
+    margin-bottom: 6px;
+    font-family: monospace;
+}
+
+.rr-entry-roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 6px;
+}
+
+.rr-entry-role-chip {
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 5px;
+    padding: 2px 8px;
+}
+
+.rr-entry-role-chip--add    { background: rgba(34,197,94,.15);  color: #4ade80; }
+.rr-entry-role-chip--remove { background: rgba(239,68,68,.15);  color: #f87171; }
+.rr-entry-role-chip--bl     { background: rgba(100,116,139,.15); color: #94a3b8; }
+
+.rr-entry-flags {
+    display: flex;
+    gap: 10px;
+    font-size: 10px;
+    color: #4f5f80;
+}
+
+.rr-entry-flag--on  { color: #6366f1; }
+
+.rr-entry-delete {
+    background: none;
+    border: 1px solid #3d4f6e;
+    color: #64748b;
+    border-radius: 7px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color .15s, color .15s;
+}
+
+.rr-entry-delete:hover { border-color: #ef4444; color: #ef4444; }
+
+.rr-empty {
+    text-align: center;
+    color: #3d4f6e;
+    font-size: 13px;
+    padding: 30px 0;
+}
