@@ -56,7 +56,7 @@ The system provides a modular architecture with features such as:
 
 ### 🐞 Known Bugs
 - Ticket system creates channels in the wrong collection  
-- Welcomer sometimes fails to send a welcome message  
+- Welcomer sometimes fails to send a welcome message  ✅
 - Soundboard command: bot gets stuck in voice channel and does not leave  
 
 ---
