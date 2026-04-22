@@ -46,10 +46,10 @@ function bh_mod_handle_ajax(PDO $pdo, int $botId): void
         bhcmd_set_module_enabled($pdo, $botId, $key, $enabled);
 
         if (function_exists('bh_notify_slash_sync')) {
-            try {
-                bh_notify_slash_sync($botId);
-            } catch (Throwable) {
-            }
+            try { bh_notify_slash_sync($botId); } catch (Throwable) {}
+        }
+        if (function_exists('bh_notify_bot_reload')) {
+            try { bh_notify_bot_reload($botId); } catch (Throwable) {}
         }
 
         echo json_encode(['ok' => true]);

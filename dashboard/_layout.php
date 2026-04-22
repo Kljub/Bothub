@@ -43,6 +43,7 @@ try {
     <link href="/assets/css/mosaic.css" rel="stylesheet">
     <link href="/assets/css/command-switches.css" rel="stylesheet">
     <link href="/assets/css/command-accordion.css" rel="stylesheet">
+    <link href="/assets/css/_components.css" rel="stylesheet">
 <?php foreach ($extraCssFiles as $extraCssFile): ?>
     <?php if (is_string($extraCssFile) && $extraCssFile !== ''): ?>
     <link href="<?= h($extraCssFile) ?>" rel="stylesheet">

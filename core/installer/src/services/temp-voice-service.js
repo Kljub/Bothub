@@ -233,7 +233,20 @@ function attachTempVoiceEvents(client, botId) {
         }
     });
 
-    console.log(`[TempVoice] Attached for bot ${botId}`);
 }
 
-module.exports = { attachTempVoiceEvents };
+// Clears cached settings for a specific bot (or all bots if botId is omitted).
+// Call this whenever the dashboard saves new settings so the next event picks
+// up fresh config without waiting for the 60-second TTL.
+function clearSettingsCache(botId) {
+    if (botId == null) {
+        settingsCache.clear();
+        return;
+    }
+    const prefix = `${botId}:`;
+    for (const key of settingsCache.keys()) {
+        if (key.startsWith(prefix)) settingsCache.delete(key);
+    }
+}
+
+module.exports = { attachTempVoiceEvents, clearSettingsCache };

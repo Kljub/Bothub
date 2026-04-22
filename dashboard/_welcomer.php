@@ -429,47 +429,53 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
 <div class="bh-wlcm-page">
 
     <div class="bh-wlcm-head">
-        <div class="bh-wlcm-kicker">MESSAGES</div>
+        <div class="bh-wlcm-kicker">Bot Feature</div>
         <h1 class="bh-wlcm-title">Welcomer</h1>
+        <p class="bh-wlcm-subtitle">Willkommens- und Abschiedsnachrichten für deinen Server.</p>
     </div>
 
     <?php if ($flashOk !== null): ?>
-        <div class="bh-wlcm-alert bh-wlcm-alert--ok"><?= htmlspecialchars($flashOk, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></div>
+        <div class="bh-alert bh-alert--ok"><?= htmlspecialchars($flashOk, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></div>
     <?php endif; ?>
     <?php if ($flashErr !== null): ?>
-        <div class="bh-wlcm-alert bh-wlcm-alert--err"><?= htmlspecialchars($flashErr, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></div>
+        <div class="bh-alert bh-alert--err"><?= htmlspecialchars($flashErr, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></div>
     <?php endif; ?>
 
     <!-- ── Welcome Card (separate card) ── -->
-    <div class="bh-wlcm-card">
-        <!-- Dropdown row -->
-        <div class="bh-wlcm-feature bh-wlcm-feature--card-header">
-            <div class="bh-wlcm-feature__kicker bh-wlcm-feature__kicker--welcome">WELCOME</div>
-            <div class="bh-wlcm-feature__title">Welcome Card</div>
-            <div class="bh-wlcm-feature__desc">Automatically send a welcome card on join.</div>
+    <div class="bh-card">
+        <div class="bh-card-hdr">
+            <div>
+                <div class="bh-wlcm-card__sec-kicker">WELCOME</div>
+                <div class="bh-card-title" style="margin:0">Welcome Card</div>
+            </div>
+        </div>
+        <!-- Dropdown field -->
+        <div class="bh-wlcm-cfg-field">
+            <label class="bh-wlcm-cfg-label">Willkommensbild senden</label>
+            <div class="bh-wlcm-cfg-sublabel">Automatisch ein Willkommensbild versenden wenn ein User dem Server beitritt.</div>
             <select
-                class="bh-wlcm-select bh-wlcm-select--wide"
+                class="bh-select"
                 data-field="welcome_card_tpl"
                 data-bot-id="<?= $botId ?>"
                 onchange="bhWlcmToggle(this, 'select-str'); bhWlcmCardUpdate(this.value)"
             >
-                <option value=""        <?= $cardTpl === ''        ? 'selected' : '' ?>>Disabled</option>
-                <option value="channel" <?= $cardTpl === 'channel' ? 'selected' : '' ?>>Send to a channel</option>
-                <option value="dm"      <?= $cardTpl === 'dm'      ? 'selected' : '' ?>>Message the user</option>
-                <option value="both"    <?= $cardTpl === 'both'    ? 'selected' : '' ?>>Send to a channel and message the user</option>
+                <option value=""        <?= $cardTpl === ''        ? 'selected' : '' ?>>Deaktiviert</option>
+                <option value="channel" <?= $cardTpl === 'channel' ? 'selected' : '' ?>>In einen Channel senden</option>
+                <option value="dm"      <?= $cardTpl === 'dm'      ? 'selected' : '' ?>>Als Direktnachricht senden</option>
+                <option value="both"    <?= $cardTpl === 'both'    ? 'selected' : '' ?>>Channel und Direktnachricht</option>
             </select>
         </div>
 
         <!-- Config panel (shown when not disabled) -->
         <div id="bh-wlcm-card-config" class="bh-wlcm-cfg" style="display:<?= $showConfig ? 'block' : 'none' ?>">
-            <div id="bh-wlcm-card-flash" class="bh-wlcm-alert" style="display:none"></div>
+            <div id="bh-wlcm-card-flash" class="bh-alert" style="display:none"></div>
             <form id="bh-wlcm-card-form">
 
                 <!-- Channel section (only for 'channel' / 'both') -->
                 <div id="bh-wlcm-cfg-ch-sec" style="display:<?= $showChannel ? 'block' : 'none' ?>">
                     <div class="bh-wlcm-cfg-field">
-                        <div class="bh-wlcm-cfg-label">Channel</div>
-                        <div class="bh-wlcm-cfg-sublabel">Select the channel where the welcome card should be sent.</div>
+                        <div class="bh-wlcm-cfg-label">Kanal</div>
+                        <div class="bh-wlcm-cfg-sublabel">Der Kanal, in den das Willkommensbild gesendet wird.</div>
                         <input type="hidden" name="wc_channel" id="wlcm_wc_channel_val"
                                value="<?= htmlspecialchars($wcChannel, ENT_QUOTES, 'UTF-8') ?>">
                         <div class="bh-wlcm-picker-row" id="wlcm_wc_channel_box">
@@ -480,9 +486,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
 
                 <!-- Design fields (always visible when config open) -->
                 <div class="bh-wlcm-cfg-field">
-                    <div class="bh-wlcm-cfg-label">Background</div>
-                    <div class="bh-wlcm-cfg-sublabel">Choose a background for your card.</div>
-                    <select name="wc_bg" class="bh-wlcm-select bh-wlcm-select--wide">
+                    <div class="bh-wlcm-cfg-label">Hintergrund</div>
+                    <div class="bh-wlcm-cfg-sublabel">Hintergrundstil für das Willkommensbild wählen.</div>
+                    <select name="wc_bg" class="bh-select">
                         <?php foreach ($bgOptions as $val => $label): ?>
                             <option value="<?= htmlspecialchars($val, ENT_QUOTES, 'UTF-8') ?>" <?= $wcBg === $val ? 'selected' : '' ?>>
                                 <?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?>
@@ -492,9 +498,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                 </div>
 
                 <div class="bh-wlcm-cfg-field">
-                    <div class="bh-wlcm-cfg-label">Background - Default Card Color</div>
-                    <div class="bh-wlcm-cfg-sublabel">Choose one of the default backgrounds for your card.</div>
-                    <select name="wc_bg_color" class="bh-wlcm-select bh-wlcm-select--wide">
+                    <div class="bh-wlcm-cfg-label">Hintergrundfarbe</div>
+                    <div class="bh-wlcm-cfg-sublabel">Eine der vordefinierten Hintergrundfarben wählen.</div>
+                    <select name="wc_bg_color" class="bh-select">
                         <?php foreach ($bgColorOptions as $val => $label): ?>
                             <option value="<?= htmlspecialchars($val, ENT_QUOTES, 'UTF-8') ?>" <?= $wcBgColor === $val ? 'selected' : '' ?>>
                                 <?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?>
@@ -504,14 +510,14 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                 </div>
 
                 <div class="bh-wlcm-cfg-field">
-                    <div class="bh-wlcm-cfg-label">Title Color</div>
-                    <div class="bh-wlcm-cfg-sublabel">Choose how the title of the banner should look.</div>
+                    <div class="bh-wlcm-cfg-label">Titelfarbe</div>
+                    <div class="bh-wlcm-cfg-sublabel">Farbe des Titeltexts auf dem Willkommensbild.</div>
                     <div class="bh-wlcm-color-row">
                         <input type="color" name="wc_title_color_picker"
                                value="<?= htmlspecialchars($wcTitleColor, ENT_QUOTES, 'UTF-8') ?>"
                                oninput="bhSyncColor(this,'wc_title_color')">
                         <input type="text"  name="wc_title_color"
-                               class="bh-wlcm-cfg-input bh-wlcm-cfg-input--hex"
+                               class="bh-embed-input" style="width:110px;font-family:monospace"
                                value="<?= htmlspecialchars($wcTitleColor, ENT_QUOTES, 'UTF-8') ?>"
                                placeholder="#ffffff"
                                oninput="bhSyncColorText(this,'wc_title_color_picker')">
@@ -519,14 +525,14 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                 </div>
 
                 <div class="bh-wlcm-cfg-field">
-                    <div class="bh-wlcm-cfg-label">Description Color</div>
-                    <div class="bh-wlcm-cfg-sublabel">Choose how the description of the banner should look.</div>
+                    <div class="bh-wlcm-cfg-label">Beschreibungsfarbe</div>
+                    <div class="bh-wlcm-cfg-sublabel">Farbe des Beschreibungstexts auf dem Willkommensbild.</div>
                     <div class="bh-wlcm-color-row">
                         <input type="color" name="wc_desc_color_picker"
                                value="<?= htmlspecialchars($wcDescColor, ENT_QUOTES, 'UTF-8') ?>"
                                oninput="bhSyncColor(this,'wc_desc_color')">
                         <input type="text"  name="wc_desc_color"
-                               class="bh-wlcm-cfg-input bh-wlcm-cfg-input--hex"
+                               class="bh-embed-input" style="width:110px;font-family:monospace"
                                value="<?= htmlspecialchars($wcDescColor, ENT_QUOTES, 'UTF-8') ?>"
                                placeholder="#ffffff"
                                oninput="bhSyncColorText(this,'wc_desc_color_picker')">
@@ -534,14 +540,14 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                 </div>
 
                 <div class="bh-wlcm-cfg-field">
-                    <div class="bh-wlcm-cfg-label">Avatar Border Color</div>
-                    <div class="bh-wlcm-cfg-sublabel">How should the border of the avatar image look.</div>
+                    <div class="bh-wlcm-cfg-label">Avatar-Rahmenfarbe</div>
+                    <div class="bh-wlcm-cfg-sublabel">Farbe des Rahmens um das Profilbild.</div>
                     <div class="bh-wlcm-color-row">
                         <input type="color" name="wc_avatar_color_picker"
                                value="<?= htmlspecialchars($wcAvatarColor, ENT_QUOTES, 'UTF-8') ?>"
                                oninput="bhSyncColor(this,'wc_avatar_color')">
                         <input type="text"  name="wc_avatar_color"
-                               class="bh-wlcm-cfg-input bh-wlcm-cfg-input--hex"
+                               class="bh-embed-input" style="width:110px;font-family:monospace"
                                value="<?= htmlspecialchars($wcAvatarColor, ENT_QUOTES, 'UTF-8') ?>"
                                placeholder="#ffffff"
                                oninput="bhSyncColorText(this,'wc_avatar_color_picker')">
@@ -549,19 +555,19 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                 </div>
 
                 <div class="bh-wlcm-cfg-field">
-                    <div class="bh-wlcm-cfg-label">Banner Title</div>
-                    <div class="bh-wlcm-cfg-sublabel">The first line of text on the banner. All variables can be used.</div>
-                    <div class="bh-wlcm-cfg-hint">e.g. <code>{user_name}</code></div>
-                    <input type="text" name="wc_title" class="bh-wlcm-cfg-input"
+                    <div class="bh-wlcm-cfg-label">Banner-Titel</div>
+                    <div class="bh-wlcm-cfg-sublabel">Erste Textzeile auf dem Banner. Alle Variablen können verwendet werden.</div>
+                    <div class="bh-wlcm-cfg-hint">z.B. <code>{user_name}</code></div>
+                    <input type="text" name="wc_title" class="bh-input"
                            placeholder="{user_name}"
                            value="<?= htmlspecialchars($wcTitle, ENT_QUOTES, 'UTF-8') ?>">
                 </div>
 
                 <div class="bh-wlcm-cfg-field">
-                    <div class="bh-wlcm-cfg-label">Banner Description</div>
-                    <div class="bh-wlcm-cfg-sublabel">The second line of text on the banner. All variables can be used.</div>
-                    <div class="bh-wlcm-cfg-hint">e.g. <code>Welcome to {server}</code></div>
-                    <input type="text" name="wc_desc" class="bh-wlcm-cfg-input"
+                    <div class="bh-wlcm-cfg-label">Banner-Beschreibung</div>
+                    <div class="bh-wlcm-cfg-sublabel">Zweite Textzeile auf dem Banner. Alle Variablen können verwendet werden.</div>
+                    <div class="bh-wlcm-cfg-hint">z.B. <code>Welcome to {server}</code></div>
+                    <input type="text" name="wc_desc" class="bh-input"
                            placeholder="Welcome to {server}"
                            value="<?= htmlspecialchars($wcDesc, ENT_QUOTES, 'UTF-8') ?>">
                 </div>
@@ -569,23 +575,23 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                 <!-- Channel Reactions (only for 'channel' / 'both') -->
                 <div id="bh-wlcm-cfg-react-sec" style="display:<?= $showChannel ? 'block' : 'none' ?>">
                     <div class="bh-wlcm-cfg-field">
-                        <div class="bh-wlcm-cfg-label">Channel Reactions</div>
-                        <div class="bh-wlcm-cfg-sublabel">Select up to 5 emoji that will be added to the welcome card message channel.</div>
-                        <input type="text" name="wc_reactions" class="bh-wlcm-cfg-input"
+                        <div class="bh-wlcm-cfg-label">Kanal-Reaktionen</div>
+                        <div class="bh-wlcm-cfg-sublabel">Bis zu 5 Emoji, die automatisch unter die Willkommensnachricht reagiert werden.</div>
+                        <input type="text" name="wc_reactions" class="bh-input"
                                placeholder="👋, 🎉, ❤️"
                                value="<?= htmlspecialchars($wcReactions, ENT_QUOTES, 'UTF-8') ?>">
                     </div>
                 </div>
 
                 <div class="bh-wlcm-cfg-save-row">
-                    <button type="button" class="bh-wlcm-btn" onclick="bhWlcmSaveCard()">Save Changes</button>
+                    <button type="button" class="bh-wlcm-btn" onclick="bhWlcmSaveCard()">Speichern</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- ── Other feature toggles ── -->
-    <div class="bh-wlcm-card">
+    <div class="bh-card">
         <?php foreach ($features as $feat):
             $checked   = wlcm_bool($settings, $feat['field']);
             $cfgPanelId = 'bh-wlcm-cfg-' . $feat['field'];
@@ -597,8 +603,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                 <div class="bh-wlcm-feature__title"><?= htmlspecialchars($feat['title'], ENT_QUOTES, 'UTF-8') ?></div>
                 <div class="bh-wlcm-feature__desc"><?= htmlspecialchars($feat['desc'], ENT_QUOTES, 'UTF-8') ?></div>
             </div>
-            <label class="bh-wlcm-toggle">
+            <label class="bh-toggle">
                 <input
+                    class="bh-toggle-input"
                     type="checkbox"
                     data-field="<?= htmlspecialchars($feat['field'], ENT_QUOTES, 'UTF-8') ?>"
                     data-bot-id="<?= $botId ?>"
@@ -606,7 +613,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                     <?= $checked ? 'checked' : '' ?>
                     onchange="bhWlcmToggle(this, 'checkbox'); bhWlcmFeatCfgToggle(this)"
                 >
-                <span class="bh-wlcm-toggle__track"></span>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
 
@@ -618,8 +625,8 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
 
                 <?php if ($cfgType === 'channel+content'): ?>
                     <div class="bh-wlcm-cfg-field">
-                        <div class="bh-wlcm-cfg-label">Channel</div>
-                        <div class="bh-wlcm-cfg-sublabel">The channel where the message will be sent.</div>
+                        <div class="bh-wlcm-cfg-label">Kanal</div>
+                        <div class="bh-wlcm-cfg-sublabel">Der Kanal, in den die Nachricht gesendet wird.</div>
                         <input type="hidden" name="<?= $feat['field'] ?>_channel"
                                id="wlcm_<?= $feat['field'] ?>_ch_val"
                                value="<?= htmlspecialchars(wlcm_str($settings, $feat['field'] . '_channel'), ENT_QUOTES, 'UTF-8') ?>">
@@ -629,46 +636,46 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                         </div>
                     </div>
                     <div class="bh-wlcm-cfg-field">
-                        <div class="bh-wlcm-cfg-label">Message Content</div>
+                        <div class="bh-wlcm-cfg-label">Nachrichteninhalt</div>
                         <?php if (!empty($feat['vars'])): ?>
-                            <div class="bh-wlcm-cfg-hint">Variables: <code><?= htmlspecialchars($feat['vars'], ENT_QUOTES, 'UTF-8') ?></code></div>
+                            <div class="bh-wlcm-cfg-hint">Variablen: <code><?= htmlspecialchars($feat['vars'], ENT_QUOTES, 'UTF-8') ?></code></div>
                         <?php endif; ?>
                         <input type="text" name="<?= $feat['field'] ?>_content"
-                               class="bh-wlcm-cfg-input"
+                               class="bh-input"
                                placeholder="<?= htmlspecialchars($feat['ch_default'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                                value="<?= htmlspecialchars(wlcm_str($settings, $feat['field'] . '_content', $feat['ch_default'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
                     </div>
 
                 <?php elseif ($cfgType === 'content'): ?>
                     <div class="bh-wlcm-cfg-field">
-                        <div class="bh-wlcm-cfg-label">Message Content</div>
+                        <div class="bh-wlcm-cfg-label">Nachrichteninhalt</div>
                         <?php if (!empty($feat['vars'])): ?>
-                            <div class="bh-wlcm-cfg-hint">Variables: <code><?= htmlspecialchars($feat['vars'], ENT_QUOTES, 'UTF-8') ?></code></div>
+                            <div class="bh-wlcm-cfg-hint">Variablen: <code><?= htmlspecialchars($feat['vars'], ENT_QUOTES, 'UTF-8') ?></code></div>
                         <?php endif; ?>
                         <input type="text" name="dm_join_content"
-                               class="bh-wlcm-cfg-input"
+                               class="bh-input"
                                placeholder="<?= htmlspecialchars($feat['ch_default'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                                value="<?= htmlspecialchars(wlcm_str($settings, 'dm_join_content', $feat['ch_default'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
                     </div>
 
                 <?php elseif ($cfgType === 'roles'): ?>
                     <div class="bh-wlcm-cfg-field">
-                        <div class="bh-wlcm-cfg-label">Role IDs</div>
-                        <div class="bh-wlcm-cfg-sublabel">Comma-separated list of role IDs to assign on join.</div>
+                        <div class="bh-wlcm-cfg-label">Rollen-IDs</div>
+                        <div class="bh-wlcm-cfg-sublabel">Kommagetrennte Liste von Rollen-IDs, die beim Beitritt vergeben werden.</div>
                         <?php
                             $rawRoles  = wlcm_str($settings, 'role_join_roles', '[]');
                             $rolesArr  = json_decode($rawRoles, true);
                             $rolesStr  = is_array($rolesArr) ? implode(', ', $rolesArr) : '';
                         ?>
                         <input type="text" name="role_join_roles"
-                               class="bh-wlcm-cfg-input"
+                               class="bh-input"
                                placeholder="123456789, 987654321"
                                value="<?= htmlspecialchars($rolesStr, ENT_QUOTES, 'UTF-8') ?>">
                     </div>
                 <?php endif; ?>
 
                 <div class="bh-wlcm-cfg-save-row">
-                    <button type="submit" class="bh-wlcm-btn">Save Changes</button>
+                    <button type="submit" class="bh-wlcm-btn">Speichern</button>
                 </div>
             </form>
         </div>
@@ -677,15 +684,15 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
     </div>
 
     <!-- ── Module: Commands ── -->
-    <div class="bh-wlcm-card">
-        <div class="bh-wlcm-card__header">
+    <div class="bh-card">
+        <div class="bh-card-hdr">
             <div class="bh-wlcm-card__sec-kicker">MODULE</div>
-            <div class="bh-wlcm-card__title">Commands</div>
+            <div class="bh-card-title">Commands</div>
         </div>
 
         <div class="bh-wlcm-module-bar">
-            <span class="bh-wlcm-module-bar__text">This command will have access to all the variables and settings of this module.</span>
-            <button class="bh-wlcm-btn" type="button" onclick="document.getElementById('bh-wlcm-add-cmd').style.display='flex'">Add</button>
+            <span class="bh-wlcm-module-bar__text">Dieser Command hat Zugriff auf alle Variablen und Einstellungen dieses Moduls.</span>
+            <button class="bh-wlcm-btn" type="button" onclick="document.getElementById('bh-wlcm-add-cmd').style.display='flex'">Hinzufügen</button>
         </div>
 
         <?php if (count($commands) > 0): ?>
@@ -701,7 +708,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                         <form method="post" action="<?= htmlspecialchars($pageUrl, ENT_QUOTES, 'UTF-8') ?>">
                             <input type="hidden" name="action" value="delete_command">
                             <input type="hidden" name="entry_id" value="<?= (int)$cmd['id'] ?>">
-                            <button type="submit" class="bh-wlcm-btn bh-wlcm-btn--danger">Delete</button>
+                            <button type="submit" class="bh-wlcm-btn bh-wlcm-btn--danger">Löschen</button>
                         </form>
                     </div>
                 <?php endforeach; ?>
@@ -713,17 +720,17 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
         <form method="post" action="<?= htmlspecialchars($pageUrl, ENT_QUOTES, 'UTF-8') ?>"
               id="bh-wlcm-add-cmd" class="bh-wlcm-add-form" style="display:none">
             <input type="hidden" name="action" value="add_command">
-            <input class="bh-wlcm-input" type="text" name="command_key"  placeholder="Command Key (z.B. welcome)" required>
-            <input class="bh-wlcm-input" type="text" name="command_desc" placeholder="Beschreibung (optional)">
+            <input class="bh-input" type="text" name="command_key"  placeholder="Command Key (z.B. welcome)" required>
+            <input class="bh-input" type="text" name="command_desc" placeholder="Beschreibung (optional)">
             <button type="submit" class="bh-wlcm-btn">Speichern</button>
         </form>
     </div>
 
     <!-- ── Module: Events ── -->
-    <div class="bh-wlcm-card">
-        <div class="bh-wlcm-card__header">
+    <div class="bh-card">
+        <div class="bh-card-hdr">
             <div class="bh-wlcm-card__sec-kicker">MODULE</div>
-            <div class="bh-wlcm-card__title">Events</div>
+            <div class="bh-card-title">Events</div>
         </div>
 
         <div class="bh-wlcm-events-grid">
@@ -736,23 +743,24 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                     <div class="bh-wlcm-feature__title"><?= htmlspecialchars($evh['title'], ENT_QUOTES, 'UTF-8') ?></div>
                     <div class="bh-wlcm-feature__desc"><?= htmlspecialchars($evh['desc'], ENT_QUOTES, 'UTF-8') ?></div>
                 </div>
-                <label class="bh-wlcm-toggle">
+                <label class="bh-toggle">
                     <input
+                        class="bh-toggle-input"
                         type="checkbox"
                         data-field="<?= htmlspecialchars($evh['field'], ENT_QUOTES, 'UTF-8') ?>"
                         data-bot-id="<?= $botId ?>"
                         <?= $checked ? 'checked' : '' ?>
                         onchange="bhWlcmToggle(this, 'checkbox')"
                     >
-                    <span class="bh-wlcm-toggle__track"></span>
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
             </div>
             <?php endforeach; ?>
         </div>
 
         <div class="bh-wlcm-module-bar">
-            <span class="bh-wlcm-module-bar__text">This event will have access to all the variables and settings of this module.</span>
-            <button class="bh-wlcm-btn" type="button" onclick="document.getElementById('bh-wlcm-add-evt').style.display='flex'">Add</button>
+            <span class="bh-wlcm-module-bar__text">Dieses Event hat Zugriff auf alle Variablen und Einstellungen dieses Moduls.</span>
+            <button class="bh-wlcm-btn" type="button" onclick="document.getElementById('bh-wlcm-add-evt').style.display='flex'">Hinzufügen</button>
         </div>
 
         <?php if (count($moduleEvents) > 0): ?>
@@ -768,7 +776,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                         <form method="post" action="<?= htmlspecialchars($pageUrl, ENT_QUOTES, 'UTF-8') ?>">
                             <input type="hidden" name="action" value="delete_event">
                             <input type="hidden" name="entry_id" value="<?= (int)$evt['id'] ?>">
-                            <button type="submit" class="bh-wlcm-btn bh-wlcm-btn--danger">Delete</button>
+                            <button type="submit" class="bh-wlcm-btn bh-wlcm-btn--danger">Löschen</button>
                         </form>
                     </div>
                 <?php endforeach; ?>
@@ -780,8 +788,8 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
         <form method="post" action="<?= htmlspecialchars($pageUrl, ENT_QUOTES, 'UTF-8') ?>"
               id="bh-wlcm-add-evt" class="bh-wlcm-add-form" style="display:none">
             <input type="hidden" name="action" value="add_event">
-            <input class="bh-wlcm-input" type="text" name="event_key"  placeholder="Event Key (z.B. on_join)" required>
-            <input class="bh-wlcm-input" type="text" name="event_desc" placeholder="Beschreibung (optional)">
+            <input class="bh-input" type="text" name="event_key"  placeholder="Event Key (z.B. on_join)" required>
+            <input class="bh-input" type="text" name="event_desc" placeholder="Beschreibung (optional)">
             <button type="submit" class="bh-wlcm-btn">Speichern</button>
         </form>
     </div>
@@ -871,7 +879,7 @@ function bhWlcmSaveCard() {
         .then(function (r) { return r.json(); })
         .then(function (d) {
             if (!flashEl) return;
-            flashEl.className = 'bh-wlcm-alert ' + (d.ok ? 'bh-wlcm-alert--ok' : 'bh-wlcm-alert--err');
+            flashEl.className = 'bh-alert ' + (d.ok ? 'bh-alert--ok' : 'bh-alert--err');
             flashEl.textContent = d.ok ? 'Welcome Card gespeichert.' : ('Fehler: ' + (d.error || 'Unbekannt'));
             flashEl.style.display = 'block';
             clearTimeout(flashEl._t);
@@ -879,7 +887,7 @@ function bhWlcmSaveCard() {
         })
         .catch(function () {
             if (flashEl) {
-                flashEl.className = 'bh-wlcm-alert bh-wlcm-alert--err';
+                flashEl.className = 'bh-alert bh-alert--err';
                 flashEl.textContent = 'Netzwerkfehler.';
                 flashEl.style.display = 'block';
             }

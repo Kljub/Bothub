@@ -329,6 +329,7 @@ if (isset($exact[$path])) {
             <link rel="stylesheet" href="/assets/css/vendors/aos.css">
             <link rel="stylesheet" href="/assets/css/vendors/swiper-bundle.min.css">
             <link rel="stylesheet" href="/assets/css/style.css">
+            <link rel="stylesheet" href="/assets/css/_components.css">
             <link rel="stylesheet" href="/assets/css/landing.css?v=<?= $esc($vLandingCss) ?>">
         </head>
 
@@ -513,7 +514,7 @@ if (isset($exact[$path])) {
                             <label class="bh-label" for="login_password">Passwort</label>
                             <input class="bh-input" id="login_password" name="password" type="password" required autocomplete="current-password">
                         </div>
-                        <button class="btn w-full text-slate-900 bg-linear-to-r from-white/80 via-white to-white/80 hover:bg-white transition duration-150 ease-in-out" type="submit">
+                        <button class="bh-btn bh-btn--primary w-full" type="submit">
                             Login →
                         </button>
                     </form>
@@ -551,7 +552,7 @@ if (isset($exact[$path])) {
                             <label class="bh-label" for="reg_password2">Passwort wiederholen</label>
                             <input class="bh-input" id="reg_password2" name="password2" type="password" required minlength="8" autocomplete="new-password">
                         </div>
-                        <button class="btn w-full text-slate-900 bg-linear-to-r from-white/80 via-white to-white/80 hover:bg-white transition duration-150 ease-in-out" type="submit">
+                        <button class="bh-btn bh-btn--primary w-full" type="submit">
                             Account erstellen →
                         </button>
                     </form>

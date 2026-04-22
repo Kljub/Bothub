@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-# PFAD: /functions/builder/action_send_message.php
+# PFAD: /functions/builder/actions/action_send_message.php
 
 return [
     'type' => 'action.send_message',
@@ -11,46 +11,52 @@ return [
     'color' => 'blue',
     'ports' => [
         'inputs' => [
-            [
-                'key' => 'input',
-                'label' => 'Input',
-                'kind' => 'flow',
-                'max_connections' => 1,
-            ],
+            'input',
         ],
         'outputs' => [
-            [
-                'key' => 'next',
-                'label' => 'Next',
-                'kind' => 'flow',
-                'max_connections' => 1,
-            ],
+            ' ',
         ],
     ],
-    'defaults' => [
-        'content' => '',
-        'tts' => false,
-        'ephemeral' => false,
-    ],
+    'defaults' => [],
     'properties' => [
         [
             'key' => 'content',
             'type' => 'textarea',
-            'label' => 'Nachricht',
-            'required' => true,
-            'max_length' => 2000,
+            'label' => 'Message Content',
+            'placeholder' => 'Hello, {user}!',
+            'required' => false,
         ],
         [
             'key' => 'tts',
-            'type' => 'switch',
-            'label' => 'TTS',
-            'required' => false,
+            'type' => 'select',
+            'label' => 'Text-to-Speech',
+            'help' => 'Send this message as a Text-to-Speech message.',
+            'options' => [
+                [
+                    'value' => '',
+                    'label' => 'No',
+                ],
+                [
+                    'value' => '1',
+                    'label' => 'Yes',
+                ],
+            ],
         ],
         [
             'key' => 'ephemeral',
-            'type' => 'switch',
+            'type' => 'select',
             'label' => 'Ephemeral',
-            'required' => false,
+            'help' => 'Only show this message to the user who triggered it.',
+            'options' => [
+                [
+                    'value' => '',
+                    'label' => 'No',
+                ],
+                [
+                    'value' => '1',
+                    'label' => 'Yes',
+                ],
+            ],
         ],
     ],
 ];

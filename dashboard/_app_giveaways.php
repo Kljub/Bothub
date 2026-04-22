@@ -179,11 +179,11 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:giveaways');
     <div id="bh-mod-body">
 
     <!-- ── Gewinner-Nachrichten ──────────────────────────────────────────── -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="gw-settings-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="gw-settings-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Einstellungen</div>
-                <div class="lv-card__title">Gewinner-Nachrichten</div>
+                <div class="bh-card-title">Gewinner-Nachrichten</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -200,32 +200,32 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:giveaways');
             </div>
 
             <!-- Winner message -->
-            <div class="lv-field">
-                <label class="lv-label" for="gw-winner-msg">Nachricht bei Gewinner(n)</label>
-                <textarea id="gw-winner-msg" class="lv-input" rows="3" placeholder="<?= gw_h($defaultWinnerMsg) ?>" style="resize:vertical"><?= gw_h($winnerMsg) ?></textarea>
-                <div class="lv-hint">Wird gesendet wenn mindestens ein Teilnehmer vorhanden ist. Leer lassen für Standard.</div>
+            <div class="bh-field">
+                <label class="bh-label" for="gw-winner-msg">Nachricht bei Gewinner(n)</label>
+                <textarea id="gw-winner-msg" class="bh-input" rows="3" placeholder="<?= gw_h($defaultWinnerMsg) ?>" style="resize:vertical"><?= gw_h($winnerMsg) ?></textarea>
+                <div class="bh-hint">Wird gesendet wenn mindestens ein Teilnehmer vorhanden ist. Leer lassen für Standard.</div>
             </div>
 
             <!-- No winner message -->
-            <div class="lv-field">
-                <label class="lv-label" for="gw-no-winner-msg">Nachricht ohne Teilnehmer</label>
-                <textarea id="gw-no-winner-msg" class="lv-input" rows="2" placeholder="<?= gw_h($defaultNoWinnerMsg) ?>" style="resize:vertical"><?= gw_h($noWinnerMsg) ?></textarea>
-                <div class="lv-hint">Wird gesendet wenn niemand am Giveaway teilgenommen hat.</div>
+            <div class="bh-field">
+                <label class="bh-label" for="gw-no-winner-msg">Nachricht ohne Teilnehmer</label>
+                <textarea id="gw-no-winner-msg" class="bh-input" rows="2" placeholder="<?= gw_h($defaultNoWinnerMsg) ?>" style="resize:vertical"><?= gw_h($noWinnerMsg) ?></textarea>
+                <div class="bh-hint">Wird gesendet wenn niemand am Giveaway teilgenommen hat.</div>
             </div>
 
             <div class="lv-btn-row">
-                <button class="lv-btn" id="gw-save-settings-btn" onclick="gwSaveSettings()">Speichern</button>
+                <button class="bh-btn bh-btn--primary" id="gw-save-settings-btn" onclick="gwSaveSettings()">Speichern</button>
                 <span id="gw-save-msg" class="lv-save-msg" style="display:none"></span>
             </div>
         </div>
     </div>
 
     <!-- ── Giveaway List ────────────────────────────────────────────────── -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="gw-list-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="gw-list-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Übersicht</div>
-                <div class="lv-card__title">Alle Giveaways</div>
+                <div class="bh-card-title">Alle Giveaways</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -281,7 +281,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:giveaways');
                                 <code style="font-size:11px;color:#a5b4fc;background:var(--bh-input-bg,#161b27);padding:2px 6px;border-radius:4px"><?= gw_h($gw['channel_id']) ?></code>
                             </td>
                             <td>
-                                <button class="lv-btn lv-btn--danger lv-btn--sm gw-delete-btn" data-id="<?= (int)$gw['id'] ?>">Löschen</button>
+                                <button class="bh-btn bh-btn--primary bh-btn bh-btn--danger bh-btn bh-btn--sm gw-delete-btn" data-id="<?= (int)$gw['id'] ?>">Löschen</button>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -298,18 +298,18 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:giveaways');
         <div class="lv-title" style="font-size:20px;margin-bottom:12px">Commands</div>
     </div>
 
-    <div class="lv-cmds-grid">
+    <div class="bh-cmd-grid">
         <?php foreach ($giveawayCommands as $cmd):
             $on = $cmdMap[$cmd['key']] ?? true;
         ?>
-        <div class="lv-cmd-card">
+        <div class="bh-cmd-card">
             <div>
-                <div class="lv-cmd__name"><?= gw_h($cmd['name']) ?></div>
-                <div class="lv-cmd__desc"><?= gw_h($cmd['desc']) ?></div>
+                <div class="bh-cmd-name"><?= gw_h($cmd['name']) ?></div>
+                <div class="bh-cmd-desc"><?= gw_h($cmd['desc']) ?></div>
             </div>
-            <label class="lv-toggle">
-                <input type="checkbox" class="gwCmdToggle" data-key="<?= gw_h($cmd['key']) ?>" <?= $on ? 'checked' : '' ?>>
-                <span class="lv-toggle__track"></span>
+            <label class="bh-toggle">
+                <input type="checkbox" class="gwCmdToggle bh-toggle-input" data-key="<?= gw_h($cmd['key']) ?>" <?= $on ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
         <?php endforeach; ?>

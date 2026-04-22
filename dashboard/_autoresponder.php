@@ -121,20 +121,20 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
 
 <?= bh_mod_render($modEnabled, $botId, 'module:autoresponder', 'Autoresponder', 'Autoresponder-Funktion für diesen Bot ein- oder ausschalten.') ?>
 <div id="bh-mod-body">
-<div class="ar-section-label">AUTORESPONDER</div>
-<div class="ar-section-title">New Autoresponder Message</div>
+<div class="bh-section-label">AUTORESPONDER</div>
+<div class="bh-section-title">New Autoresponder Message</div>
 
-<div id="ar-flash" style="display:none"></div>
+<div id="bh-alert" style="display:none"></div>
 
-<div class="ar-card">
-    <div class="ar-card-title">New Autoresponder Message</div>
-    <div class="ar-card-desc">Set up a new embedded or plain text message your bot will send as a reply, based on trigger keywords and phrases!</div>
+<div class="bh-card">
+    <div class="bh-card-title">New Autoresponder Message</div>
+    <div class="bh-card-desc">Set up a new embedded or plain text message your bot will send as a reply, based on trigger keywords and phrases!</div>
 
     <!-- Trigger Detection Type -->
-    <div class="ar-field">
-        <div class="ar-field-label">Trigger Detection Type</div>
-        <div class="ar-field-desc">Choose a setting about how your bot should handle detecting trigger keywords in a message. You can either require a user's message to start or end with one of your keywords exactly, or choose to trigger your reply every time a message contains your keywords anywhere.</div>
-        <select id="ar-trigger-type" class="ar-select">
+    <div class="bh-field">
+        <div class="bh-label">Trigger Detection Type</div>
+        <div class="bh-hint">Choose a setting about how your bot should handle detecting trigger keywords in a message. You can either require a user's message to start or end with one of your keywords exactly, or choose to trigger your reply every time a message contains your keywords anywhere.</div>
+        <select id="ar-trigger-type" class="bh-select">
             <option value="contains">Message Contains a Keyword</option>
             <option value="starts_with">Message Starts With a Keyword</option>
             <option value="exact">Exact Match</option>
@@ -142,9 +142,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
     </div>
 
     <!-- Trigger Keywords -->
-    <div class="ar-field">
-        <div class="ar-field-label">Trigger Keywords</div>
-        <div class="ar-field-desc">Set keywords individually you want your bot to send a reply to, based on the criteria above! You are currently able to set up <strong style="color:#f1f5f9">12</strong> keywords for each Autoresponder slot!</div>
+    <div class="bh-field">
+        <div class="bh-label">Trigger Keywords</div>
+        <div class="bh-hint">Set keywords individually you want your bot to send a reply to, based on the criteria above! You are currently able to set up <strong style="color:#f1f5f9">12</strong> keywords for each Autoresponder slot!</div>
         <div class="ar-keywords-box" id="ar-kw-box">
             <input type="text" class="ar-keyword-input" id="ar-kw-input" placeholder="Type a keyword and press Enter…" maxlength="100">
             <button type="button" class="ar-add-kw-btn" id="ar-kw-add-btn" onclick="arAddKeyword()">+</button>
@@ -152,18 +152,17 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
     </div>
 
     <!-- Autoresponder Message -->
-    <div class="ar-field">
-        <div class="ar-field-label">Autoresponder Message</div>
-        <div class="ar-field-desc">This embed or plain text message will be sent as a reply to a user, if their message contains one of the keywords. All custom and default variables can be used in the fields below!</div>
+    <div class="bh-field">
+        <div class="bh-label">Autoresponder Message</div>
+        <div class="bh-hint">This embed or plain text message will be sent as a reply to a user, if their message contains one of the keywords. All custom and default variables can be used in the fields below!</div>
 
-        <div class="ar-embed-toggle-row">
-            <span class="ar-embed-toggle-label">Message</span>
+        <div class="bh-toggle-row">
+            <span class="bh-toggle-row__title">Message</span>
             <div style="display:flex;align-items:center;gap:8px">
                 <span style="font-size:12px;color:#4f5f80">Embed</span>
                 <label class="bh-toggle">
-                    <input type="checkbox" id="ar-is-embed" checked>
-                    <span class="bh-toggle__track"></span>
-                    <span class="bh-toggle__thumb"></span>
+                    <input class="bh-toggle-input" type="checkbox" id="ar-is-embed" checked>
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
             </div>
         </div>
@@ -176,38 +175,38 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
                     <div class="ar-embed-body">
                         <div class="ar-embed-row">
                             <div>
-                                <div class="ar-embed-label">Author</div>
-                                <input type="text" id="ar-embed-author" class="ar-embed-input" placeholder="Author name">
+                                <div class="bh-embed-label">Author</div>
+                                <input type="text" id="ar-embed-author" class="bh-embed-input" placeholder="Author name">
                             </div>
                             <div>
-                                <div class="ar-embed-label">Thumbnail URL</div>
-                                <input type="text" id="ar-embed-thumb" class="ar-embed-input" placeholder="https://...">
+                                <div class="bh-embed-label">Thumbnail URL</div>
+                                <input type="text" id="ar-embed-thumb" class="bh-embed-input" placeholder="https://...">
                             </div>
                         </div>
                         <div>
-                            <div class="ar-embed-label">Title</div>
-                            <input type="text" id="ar-embed-title" class="ar-embed-input" placeholder="Autoresponder Message" value="Autoresponder Message">
+                            <div class="bh-embed-label">Title</div>
+                            <input type="text" id="ar-embed-title" class="bh-embed-input" placeholder="Autoresponder Message" value="Autoresponder Message">
                         </div>
                         <div>
-                            <div class="ar-embed-label">Description</div>
-                            <textarea id="ar-embed-body" class="ar-embed-textarea" placeholder="Hey there {user}! …">Hey there {user}! Enjoy your time in the server, let our server staff team know if you have any questions or concerns!</textarea>
+                            <div class="bh-embed-label">Description</div>
+                            <textarea id="ar-embed-body" class="bh-embed-textarea" placeholder="Hey there {user}! …">Hey there {user}! Enjoy your time in the server, let our server staff team know if you have any questions or concerns!</textarea>
                         </div>
                         <div>
-                            <div class="ar-embed-label">Image URL</div>
-                            <input type="text" id="ar-embed-image" class="ar-embed-input" placeholder="https://...">
+                            <div class="bh-embed-label">Image URL</div>
+                            <input type="text" id="ar-embed-image" class="bh-embed-input" placeholder="https://...">
                         </div>
                         <div class="ar-embed-footer-row">
                             <div>
-                                <div class="ar-embed-label">Color</div>
+                                <div class="bh-embed-label">Color</div>
                                 <div style="display:flex;align-items:center;gap:8px">
                                     <span id="ar-color-swatch" class="ar-color-btn" style="background:#ef4444" onclick="document.getElementById('ar-color-picker').click()"></span>
                                     <input type="color" id="ar-color-picker" value="#ef4444" style="display:none">
-                                    <input type="text" id="ar-color-hex" class="ar-embed-input" value="#ef4444" placeholder="#ef4444" style="width:90px;font-family:monospace">
+                                    <input type="text" id="ar-color-hex" class="bh-embed-input" value="#ef4444" placeholder="#ef4444" style="width:90px;font-family:monospace">
                                 </div>
                             </div>
                             <div>
-                                <div class="ar-embed-label">Embed URL</div>
-                                <input type="text" id="ar-embed-url" class="ar-embed-input" placeholder="https://...">
+                                <div class="bh-embed-label">Embed URL</div>
+                                <input type="text" id="ar-embed-url" class="bh-embed-input" placeholder="https://...">
                             </div>
                         </div>
                     </div>
@@ -222,66 +221,66 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
     </div>
 
     <!-- Channel Cooldown -->
-    <div class="ar-field">
-        <div class="ar-field-label">Channel Cooldown</div>
-        <div class="ar-field-desc">To avoid users spamming keywords constantly, set up a channel-wide cooldown in seconds, that defines the minimal time-delay between autoresponder messages sent to the given channel.</div>
-        <input type="number" id="ar-cooldown" class="ar-select" value="10" min="0" style="max-width:200px">
+    <div class="bh-field">
+        <div class="bh-label">Channel Cooldown</div>
+        <div class="bh-hint">To avoid users spamming keywords constantly, set up a channel-wide cooldown in seconds, that defines the minimal time-delay between autoresponder messages sent to the given channel.</div>
+        <input type="number" id="ar-cooldown" class="bh-select" value="10" min="0" style="max-width:200px">
     </div>
 
     <!-- Mention User -->
-    <div class="ar-field">
-        <div class="ar-field-label">Mention User</div>
-        <div class="ar-field-desc">Whether or not the bot's reply should mention the user who triggered the message based on the provided keywords. This will determine whether or no they hear a ping sound in the Discord client.</div>
-        <select id="ar-mention-user" class="ar-select">
+    <div class="bh-field">
+        <div class="bh-label">Mention User</div>
+        <div class="bh-hint">Whether or not the bot's reply should mention the user who triggered the message based on the provided keywords. This will determine whether or no they hear a ping sound in the Discord client.</div>
+        <select id="ar-mention-user" class="bh-select">
             <option value="1">Mention User</option>
             <option value="0">Do Not Mention</option>
         </select>
     </div>
 
     <!-- Channel Selection Type -->
-    <div class="ar-field">
-        <div class="ar-field-label">Channel Selection - Type</div>
-        <div class="ar-field-desc">Choose how you want to select filtered channels for this autoresponder message. Selecting the <strong style="color:#f1f5f9">All channels except…</strong> choice will send your message to any channels your bot has access to, except for the channels you whitelist below. The <strong style="color:#f1f5f9">Selected channels…</strong> choice will only trigger your message in the channels you select below!</div>
-        <select id="ar-ch-filter-type" class="ar-select">
+    <div class="bh-field">
+        <div class="bh-label">Channel Selection - Type</div>
+        <div class="bh-hint">Choose how you want to select filtered channels for this autoresponder message. Selecting the <strong style="color:#f1f5f9">All channels except…</strong> choice will send your message to any channels your bot has access to, except for the channels you whitelist below. The <strong style="color:#f1f5f9">Selected channels…</strong> choice will only trigger your message in the channels you select below!</div>
+        <select id="ar-ch-filter-type" class="bh-select">
             <option value="all_except">All channels except…</option>
             <option value="selected">Selected channels only</option>
         </select>
     </div>
 
     <!-- Channel Selection Channels -->
-    <div class="ar-field">
-        <div class="ar-field-label">Channel Selection - Channels</div>
-        <div class="ar-field-desc">Select the channels you want to use to trigger the message based on the defined selection type above.</div>
+    <div class="bh-field">
+        <div class="bh-label">Channel Selection - Channels</div>
+        <div class="bh-hint">Select the channels you want to use to trigger the message based on the defined selection type above.</div>
         <div class="ar-tags-box" id="ar-ch-box">
-            <button type="button" class="ar-add-btn" id="ar-ch-add-btn" title="Channel hinzufügen">+</button>
+            <button type="button" class="bh-btn bh-btn--primary" id="ar-ch-add-btn" title="Channel hinzufügen">+</button>
         </div>
     </div>
 
     <!-- Role Selection Type -->
-    <div class="ar-field">
-        <div class="ar-field-label">Role Selection - Type</div>
-        <div class="ar-field-desc">Choose how you want to select filtered roles for triggering this autoresponder reply. Selecting the <strong style="color:#f1f5f9">All roles except…</strong> choice will send a reply for members with all roles, except for the roles you whitelist below. The <strong style="color:#f1f5f9">Selected roles…</strong> choice will only invoke your trigger for members that own one of the roles you select below!</div>
-        <select id="ar-role-filter-type" class="ar-select">
+    <div class="bh-field">
+        <div class="bh-label">Role Selection - Type</div>
+        <div class="bh-hint">Choose how you want to select filtered roles for triggering this autoresponder reply. Selecting the <strong style="color:#f1f5f9">All roles except…</strong> choice will send a reply for members with all roles, except for the roles you whitelist below. The <strong style="color:#f1f5f9">Selected roles…</strong> choice will only invoke your trigger for members that own one of the roles you select below!</div>
+        <select id="ar-role-filter-type" class="bh-select">
             <option value="all_except">All roles except…</option>
             <option value="selected">Selected roles only</option>
         </select>
     </div>
 
     <!-- Role Selection Roles -->
-    <div class="ar-field">
-        <div class="ar-field-label">Role Selection - Roles</div>
-        <div class="ar-field-desc">Select the roles you want users to have to trigger the reply based on your criteria above!</div>
+    <div class="bh-field">
+        <div class="bh-label">Role Selection - Roles</div>
+        <div class="bh-hint">Select the roles you want users to have to trigger the reply based on your criteria above!</div>
         <div class="ar-tags-box" id="ar-role-box">
-            <button type="button" class="ar-add-btn" id="ar-role-add-btn" title="Rolle hinzufügen">+</button>
+            <button type="button" class="bh-btn bh-btn--primary" id="ar-role-add-btn" title="Rolle hinzufügen">+</button>
         </div>
     </div>
 
-    <button class="ar-submit-btn" id="ar-submit-btn" onclick="arSubmit()">Add</button>
+    <button class="bh-btn bh-btn--primary" id="bh-btn bh-btn--primary" onclick="arSubmit()">Add</button>
 </div>
 
 <!-- ── Existing autoresponders ────────────────────────────────────────── -->
 <?php if (!empty($autoresponders)): ?>
-<div class="ar-section-label" style="margin-top:28px">EXISTING AUTORESPONDERS</div>
+<div class="bh-section-label" style="margin-top:28px">EXISTING AUTORESPONDERS</div>
 <?php endif; ?>
 <div id="ar-list">
 <?php foreach ($autoresponders as $ar):
@@ -294,10 +293,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
         default       => 'Contains',
     };
 ?>
-<div class="ar-list-card" id="ar-row-<?= (int)$ar['id'] ?>">
+<div class="bh-list-card" id="ar-row-<?= (int)$ar['id'] ?>">
     <div>
-        <div class="ar-list-name"><?= $esc($kwPreview ?: '(no keywords)') ?></div>
-        <div class="ar-list-meta">
+        <div class="bh-list-name"><?= $esc($kwPreview ?: '(no keywords)') ?></div>
+        <div class="bh-list-meta">
             Type: <strong><?= $esc($typeLabel) ?></strong>
             &nbsp;·&nbsp; <?= (int)$ar['is_embed'] ? 'Embed' : 'Plain text' ?>
             &nbsp;·&nbsp; Cooldown: <?= (int)$ar['channel_cooldown'] ?>s
@@ -308,12 +307,11 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
     </div>
     <div style="display:flex;align-items:center;gap:8px">
         <label class="bh-toggle" title="Enable / Disable">
-            <input type="checkbox" <?= (int)$ar['is_active'] ? 'checked' : '' ?>
+            <input class="bh-toggle-input" type="checkbox" <?= (int)$ar['is_active'] ? 'checked' : '' ?>
                 onchange="arToggle(<?= (int)$ar['id'] ?>, this.checked)">
-            <span class="bh-toggle__track"></span>
-            <span class="bh-toggle__thumb"></span>
+            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
         </label>
-        <button class="ar-list-del-btn" onclick="arDelete(<?= (int)$ar['id'] ?>)">Delete</button>
+        <button class="bh-btn bh-btn--danger bh-btn--sm" onclick="arDelete(<?= (int)$ar['id'] ?>)">Delete</button>
     </div>
 </div>
 <?php endforeach; ?>
@@ -321,30 +319,30 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
 
 <!-- ── Module: Commands ────────────────────────────────────────────────── -->
 <div style="margin-top:32px">
-    <div class="ar-module-label">MODULE</div>
+    <div class="bh-section-label">MODULE</div>
     <div class="ar-module-title">Commands</div>
-    <div class="ar-cmd-grid">
-        <div class="ar-cmd-card">
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
             <div>
-                <div class="ar-cmd-name">Add Command</div>
-                <div class="ar-cmd-desc">This command will have access to all the variables and settings of this module.</div>
+                <div class="bh-cmd-name">Add Command</div>
+                <div class="bh-cmd-desc">This command will have access to all the variables and settings of this module.</div>
             </div>
-            <button class="ar-cmd-add-btn">Add</button>
+            <button class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 </div>
 
 <!-- ── Module: Events ─────────────────────────────────────────────────── -->
 <div style="margin-top:28px;margin-bottom:32px">
-    <div class="ar-module-label">MODULE</div>
+    <div class="bh-section-label">MODULE</div>
     <div class="ar-module-title">Events</div>
-    <div class="ar-cmd-grid">
-        <div class="ar-cmd-card">
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
             <div>
-                <div class="ar-cmd-name">Add Event</div>
-                <div class="ar-cmd-desc">This event will have access to all the variables and settings of this module.</div>
+                <div class="bh-cmd-name">Add Event</div>
+                <div class="bh-cmd-desc">This event will have access to all the variables and settings of this module.</div>
             </div>
-            <button class="ar-cmd-add-btn">Add</button>
+            <button class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 </div>
@@ -445,20 +443,20 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
     function renderTags(boxId, items, addBtnId, onRemove, extraClass) {
         const box    = document.getElementById(boxId);
         const addBtn = document.getElementById(addBtnId);
-        box.querySelectorAll('.ar-tag').forEach(t => t.remove());
+        box.querySelectorAll('.bh-tag').forEach(t => t.remove());
         for (const item of items) {
             const tag = document.createElement('span');
-            tag.className = 'ar-tag ' + (extraClass || '');
-            tag.innerHTML = `${escHtml(item.name || item.id)}<button class="ar-tag-rm" data-id="${escHtml(item.id)}">×</button>`;
-            tag.querySelector('.ar-tag-rm').addEventListener('click', () => onRemove(item.id));
+            tag.className = 'bh-tag ' + (extraClass || '');
+            tag.innerHTML = `${escHtml(item.name || item.id)}<button class="bh-tag-rm" data-id="${escHtml(item.id)}">×</button>`;
+            tag.querySelector('.bh-tag-rm').addEventListener('click', () => onRemove(item.id));
             box.insertBefore(tag, addBtn);
         }
     }
 
     // ── Flash ─────────────────────────────────────────────────────────────
     function flash(msg, ok) {
-        const el = document.getElementById('ar-flash');
-        el.className = 'ar-flash ' + (ok ? 'ar-flash--ok' : 'ar-flash--err');
+        const el = document.getElementById('bh-alert');
+        el.className = 'bh-alert ' + (ok ? 'bh-alert--ok' : 'bh-alert--err');
         el.textContent = msg;
         el.style.display = '';
         clearTimeout(el._t);
@@ -467,7 +465,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
 
     // ── Submit ────────────────────────────────────────────────────────────
     window.arSubmit = async function () {
-        const btn = document.getElementById('ar-submit-btn');
+        const btn = document.getElementById('bh-btn bh-btn--primary');
         btn.disabled = true;
 
         const payload = {
@@ -522,12 +520,12 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
         const typeLabel = { contains: 'Contains', starts_with: 'Starts with', exact: 'Exact match' }[p.trigger_type] || 'Contains';
         const kwPreview = p.keywords.slice(0, 4).join(', ') + (p.keywords.length > 4 ? ' …' : '');
         const div = document.createElement('div');
-        div.className = 'ar-list-card';
+        div.className = 'bh-list-card';
         div.id = 'ar-row-' + id;
         div.innerHTML = `
             <div>
-                <div class="ar-list-name">${escHtml(kwPreview || '(no keywords)')}</div>
-                <div class="ar-list-meta">
+                <div class="bh-list-name">${escHtml(kwPreview || '(no keywords)')}</div>
+                <div class="bh-list-meta">
                     Type: <strong>${escHtml(typeLabel)}</strong>
                     &nbsp;·&nbsp; ${p.is_embed ? 'Embed' : 'Plain text'}
                     &nbsp;·&nbsp; Cooldown: ${p.channel_cooldown}s
@@ -535,11 +533,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
             </div>
             <div style="display:flex;align-items:center;gap:8px">
                 <label class="bh-toggle">
-                    <input type="checkbox" checked onchange="arToggle(${id}, this.checked)">
-                    <span class="bh-toggle__track"></span>
-                    <span class="bh-toggle__thumb"></span>
+                    <input class="bh-toggle-input" type="checkbox" checked onchange="arToggle(${id}, this.checked)">
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
-                <button class="ar-list-del-btn" onclick="arDelete(${id})">Delete</button>
+                <button class="bh-btn bh-btn--danger bh-btn--sm" onclick="arDelete(${id})">Delete</button>
             </div>
         `;
         list.prepend(div);

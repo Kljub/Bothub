@@ -69,6 +69,7 @@ if ($view === 'settings') {
     $extraCssFiles[] = '/assets/css/plex/_plex.css';
 } elseif ($view === 'webhooks') {
     $pageTitle = 'Webhooks';
+    $extraCssFiles[] = '/assets/css/_webhook.css';
 } elseif ($view === 'welcomer') {
     $pageTitle = 'Welcomer';
     $extraCssFiles[] = '/assets/css/_welcomer.css';

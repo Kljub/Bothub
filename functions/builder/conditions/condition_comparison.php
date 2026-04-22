@@ -11,22 +11,12 @@ return [
     'color'       => 'green',
     'ports'       => [
         'inputs' => [
-            [
-                'key'             => 'in',
-                'label'           => 'Input',
-                'kind'            => 'flow',
-                'max_connections' => 1,
-            ],
+            'in',
         ],
         'outputs' => [
             // Static fallback port; condition ports (cond_0, cond_1 …) are
             // generated dynamically in JS from node.config.conditions at render time.
-            [
-                'key'             => 'else',
-                'label'           => 'Else',
-                'kind'            => 'flow',
-                'max_connections' => 1,
-            ],
+            'else',
         ],
     ],
     'defaults' => [
@@ -44,9 +34,6 @@ return [
         'collection_contains', 'collection_not_contains',
     ],
     'properties' => [
-        [
-            'key'  => 'conditions',
-            'type' => 'comparison_conditions',
-        ],
+        'conditions',
     ],
 ];

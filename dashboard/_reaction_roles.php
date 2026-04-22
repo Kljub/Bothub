@@ -87,54 +87,54 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:reaction-roles');
 
     <!-- ── Setup Card ─────────────────────────────────────────── -->
     <div class="mb-2">
-        <div class="rr-section-label">Reaction Roles</div>
-        <div class="rr-section-title">Setup</div>
+        <div class="bh-section-label">Reaction Roles</div>
+        <div class="bh-section-title">Setup</div>
     </div>
 
-    <div class="rr-card" id="rr-add-card">
-        <div class="rr-card-title">Reaction Roles Setup</div>
-        <div class="rr-card-desc">Configure new reaction roles below.</div>
+    <div class="bh-card" id="rr-add-card">
+        <div class="bh-card-title">Reaction Roles Setup</div>
+        <div class="bh-card-desc">Configure new reaction roles below.</div>
 
-        <div class="rr-field">
-            <label class="rr-label">Existing Message ID</label>
-            <span class="rr-label-desc">Enter the Discord message ID of the message people will need to react to to get role(s).</span>
-            <input type="text" class="rr-input" id="rr-message-id" placeholder="123456789012345678" maxlength="32">
+        <div class="bh-field">
+            <label class="bh-label">Existing Message ID</label>
+            <span class="bh-hint">Enter the Discord message ID of the message people will need to react to to get role(s).</span>
+            <input type="text" class="bh-input" id="rr-message-id" placeholder="123456789012345678" maxlength="32">
         </div>
 
-        <div class="rr-field">
-            <label class="rr-label">Channel <span style="color:#4f5f80;font-weight:400;">(optional)</span></label>
-            <span class="rr-label-desc">The channel where the message lives. Used for context.</span>
+        <div class="bh-field">
+            <label class="bh-label">Channel <span style="color:#4f5f80;font-weight:400;">(optional)</span></label>
+            <span class="bh-hint">The channel where the message lives. Used for context.</span>
             <div class="rr-roles-box" id="rr-channel-box">
                 <button type="button" class="rr-add-btn" id="rr-channel-pick-btn" title="Channel auswählen">+</button>
             </div>
         </div>
 
-        <div class="rr-field">
-            <label class="rr-label">Reaction Emoji</label>
-            <span class="rr-label-desc">The event will trigger when someone reacts with this emoji. Provide a default emoji or the name of a custom Discord emoji.</span>
-            <input type="text" class="rr-input" id="rr-emoji" placeholder="🔥  or  emoji_name" maxlength="128">
+        <div class="bh-field">
+            <label class="bh-label">Reaction Emoji</label>
+            <span class="bh-hint">The event will trigger when someone reacts with this emoji. Provide a default emoji or the name of a custom Discord emoji.</span>
+            <input type="text" class="bh-input" id="rr-emoji" placeholder="🔥  or  emoji_name" maxlength="128">
         </div>
 
-        <div class="rr-field">
-            <label class="rr-label">Roles to Add</label>
-            <span class="rr-label-desc">Choose up to 3 roles that will be given when a user reacts to the message.</span>
+        <div class="bh-field">
+            <label class="bh-label">Roles to Add</label>
+            <span class="bh-hint">Choose up to 3 roles that will be given when a user reacts to the message.</span>
             <div class="rr-roles-box" id="rr-roles-add-box">
                 <button type="button" class="rr-add-btn" id="rr-add-role-add" title="Rolle hinzufügen">+</button>
             </div>
         </div>
 
-        <div class="rr-field">
-            <label class="rr-label">Roles to Remove</label>
-            <span class="rr-label-desc">Choose up to 3 roles that will be removed when a user reacts to the message.</span>
+        <div class="bh-field">
+            <label class="bh-label">Roles to Remove</label>
+            <span class="bh-hint">Choose up to 3 roles that will be removed when a user reacts to the message.</span>
             <div class="rr-roles-box" id="rr-roles-remove-box">
                 <button type="button" class="rr-add-btn" id="rr-add-role-remove" title="Rolle hinzufügen">+</button>
             </div>
         </div>
 
-        <div class="rr-toggle-row">
-            <div class="rr-toggle-label-wrap">
-                <div class="rr-toggle-title">Restrict to one Reaction</div>
-                <div class="rr-toggle-desc">Will only allow users to react once on the reaction role message.</div>
+        <div class="bh-toggle-row">
+            <div class="bh-toggle-row__info">
+                <div class="bh-toggle-row__title">Restrict to one Reaction</div>
+                <div class="bh-toggle-row__desc">Will only allow users to react once on the reaction role message.</div>
             </div>
             <label class="toggle">
                 <input type="checkbox" id="rr-restrict-one">
@@ -142,10 +142,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:reaction-roles');
             </label>
         </div>
 
-        <div class="rr-toggle-row">
-            <div class="rr-toggle-label-wrap">
-                <div class="rr-toggle-title">Remove Reaction</div>
-                <div class="rr-toggle-desc">Removes the user's reaction from the message once the roles were given.</div>
+        <div class="bh-toggle-row">
+            <div class="bh-toggle-row__info">
+                <div class="bh-toggle-row__title">Remove Reaction</div>
+                <div class="bh-toggle-row__desc">Removes the user's reaction from the message once the roles were given.</div>
             </div>
             <label class="toggle">
                 <input type="checkbox" id="rr-remove-reaction" checked>
@@ -153,23 +153,23 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:reaction-roles');
             </label>
         </div>
 
-        <div class="rr-field" style="margin-top:14px;">
-            <label class="rr-label">Blacklisted Roles</label>
-            <span class="rr-label-desc">Users who have one of the chosen roles will be ignored by the reaction role system.</span>
+        <div class="bh-field" style="margin-top:14px;">
+            <label class="bh-label">Blacklisted Roles</label>
+            <span class="bh-hint">Users who have one of the chosen roles will be ignored by the reaction role system.</span>
             <div class="rr-roles-box" id="rr-roles-blacklist-box">
                 <button type="button" class="rr-add-btn" id="rr-add-role-blacklist" title="Rolle hinzufügen">+</button>
             </div>
         </div>
 
         <div class="mt-4 flex justify-end">
-            <button type="button" class="rr-save-btn" id="rr-add-submit">Add</button>
+            <button type="button" class="bh-btn bh-btn--primary" id="rr-add-submit">Add</button>
         </div>
     </div>
 
     <!-- ── Existing entries ───────────────────────────────────── -->
     <div class="mt-8 mb-2">
-        <div class="rr-section-label">Module</div>
-        <div class="rr-section-title">Events</div>
+        <div class="bh-section-label">Module</div>
+        <div class="bh-section-title">Events</div>
     </div>
 
     <div id="rr-entries-list">
@@ -246,10 +246,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:reaction-roles');
 
         list.forEach(function (role, idx) {
             var tag = document.createElement('span');
-            tag.className = 'rr-role-tag';
+            tag.className = 'bh-tag';
             tag.innerHTML = escHtml(role.name || role.id)
-                + '<button type="button" class="rr-role-tag-rm" title="Entfernen">×</button>';
-            tag.querySelector('.rr-role-tag-rm').addEventListener('click', function () {
+                + '<button type="button" class="bh-tag-rm" title="Entfernen">×</button>';
+            tag.querySelector('.bh-tag-rm').addEventListener('click', function () {
                 list.splice(idx, 1);
                 renderRoleBox(boxId, list, addBtnId, maxItems);
             });
@@ -288,14 +288,14 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:reaction-roles');
         if (!box || !pickBtn) return;
 
         function renderChannelTag(id, name) {
-            var existing = box.querySelector('.rr-role-tag');
+            var existing = box.querySelector('.bh-tag');
             if (existing) existing.remove();
 
             var tag = document.createElement('span');
-            tag.className = 'rr-role-tag';
+            tag.className = 'bh-tag';
             tag.innerHTML = escHtml('#' + (name || id))
-                + '<button type="button" class="rr-role-tag-rm" title="Entfernen">×</button>';
-            tag.querySelector('.rr-role-tag-rm').addEventListener('click', function () {
+                + '<button type="button" class="bh-tag-rm" title="Entfernen">×</button>';
+            tag.querySelector('.bh-tag-rm').addEventListener('click', function () {
                 selectedChannelId   = '';
                 selectedChannelName = '';
                 tag.remove();

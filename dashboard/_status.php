@@ -480,11 +480,10 @@ $currentPresence = (string)($g('presence_status', 'online'));
                 <div class="text-xs text-gray-500 dark:text-gray-400">Change the status of the bot</div>
             </div>
             <label class="bh-toggle">
-                <input type="checkbox" id="toggle-cmd_change_status"
+                <input class="bh-toggle-input" type="checkbox" id="toggle-cmd_change_status"
                     <?= (int)$g('cmd_change_status', 0) === 1 ? 'checked' : '' ?>
                     onchange="statusToggle('cmd_change_status', this.checked)">
-                <span class="bh-toggle__track"></span>
-                <span class="bh-toggle__thumb"></span>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
     </div>
@@ -501,11 +500,10 @@ $currentPresence = (string)($g('presence_status', 'online'));
                     <div class="text-xs text-gray-500 dark:text-gray-400">When the bot starts or is restarted</div>
                 </div>
                 <label class="bh-toggle">
-                    <input type="checkbox" id="toggle-event_restart"
+                    <input class="bh-toggle-input" type="checkbox" id="toggle-event_restart"
                         <?= (int)$g('event_restart', 1) === 1 ? 'checked' : '' ?>
                         onchange="statusToggle('event_restart', this.checked)">
-                    <span class="bh-toggle__track"></span>
-                    <span class="bh-toggle__thumb"></span>
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
             </div>
 
@@ -515,11 +513,10 @@ $currentPresence = (string)($g('presence_status', 'online'));
                     <div class="text-xs text-gray-500 dark:text-gray-400">When the bot is updated through the dashboard</div>
                 </div>
                 <label class="bh-toggle">
-                    <input type="checkbox" id="toggle-event_update"
+                    <input class="bh-toggle-input" type="checkbox" id="toggle-event_update"
                         <?= (int)$g('event_update', 1) === 1 ? 'checked' : '' ?>
                         onchange="statusToggle('event_update', this.checked)">
-                    <span class="bh-toggle__track"></span>
-                    <span class="bh-toggle__thumb"></span>
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
             </div>
 
@@ -529,11 +526,10 @@ $currentPresence = (string)($g('presence_status', 'online'));
                     <div class="text-xs text-gray-500 dark:text-gray-400">When a timed rotation is executed</div>
                 </div>
                 <label class="bh-toggle">
-                    <input type="checkbox" id="toggle-event_rotating"
+                    <input class="bh-toggle-input" type="checkbox" id="toggle-event_rotating"
                         <?= (int)$g('event_rotating', 1) === 1 ? 'checked' : '' ?>
                         onchange="statusToggle('event_rotating', this.checked)">
-                    <span class="bh-toggle__track"></span>
-                    <span class="bh-toggle__thumb"></span>
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
             </div>
         </div>

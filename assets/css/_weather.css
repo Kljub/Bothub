@@ -1,52 +1,45 @@
 /* ── Layout ────────────────────────────────────────────────── */
 .wx-wrap{padding:0 0 40px;max-width:100%}
 .wx-kicker{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8b5cf6;margin-bottom:2px}
-.wx-section-title{font-size:18px;font-weight:700;color:#e2e8f0;margin-bottom:12px}
 
 /* ── Cards ─────────────────────────────────────────────────── */
-.wx-card{background:#1e2536;border:1px solid #2e3850;border-radius:12px;padding:0 20px;margin-bottom:16px}
-.wx-card-title{font-size:13px;font-weight:700;color:#94a3b8;padding:14px 0 10px;border-bottom:1px solid #2e3850;margin-bottom:4px}
 
 /* ── Fields ─────────────────────────────────────────────────── */
-.wx-field{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding:16px 0;border-bottom:1px solid #1a2030;flex-wrap:wrap}
+
 .wx-field-left{flex:1;min-width:180px}
 .wx-field-right{flex-shrink:0;width:420px}
-.wx-field-label{font-size:13px;font-weight:600;color:#c8d0e0}
-.wx-field-desc{font-size:12px;color:#64748b;margin-top:3px;line-height:1.5}
+
 .wx-optional{font-size:11px;color:#475569;font-weight:400}
 .wx-link{color:#8b5cf6;text-decoration:none}
 .wx-link:hover{text-decoration:underline}
 .wx-code{font-family:monospace;font-size:11px;color:#a5b4fc;background:rgba(99,102,241,.15);padding:1px 5px;border-radius:4px;text-transform:none;letter-spacing:normal}
 
 /* ── Inputs ─────────────────────────────────────────────────── */
-.wx-input{width:100%;padding:8px 12px;background:#0d1320;border:1px solid #2e3850;border-radius:7px;color:#e2e8f0;font-size:13px;outline:none;box-sizing:border-box}
-.wx-input:focus{border-color:#8b5cf6}
+
 .wx-input--mono{font-family:monospace;letter-spacing:.03em}
 .wx-key-row{display:flex;gap:6px;align-items:center}
 .wx-eye-btn{background:#1a2030;border:1px solid #2e3850;border-radius:7px;padding:8px 10px;color:#64748b;cursor:pointer;flex-shrink:0;display:flex;align-items:center}
 .wx-eye-btn:hover{border-color:#8b5cf6;color:#a5b4fc}
 
 /* ── Unit toggle ─────────────────────────────────────────────── */
-.wx-unit-toggle{display:flex;gap:6px;flex-wrap:wrap}
+
 .wx-unit-btn{padding:7px 14px;border:1px solid #2e3850;border-radius:7px;background:#151a27;color:#64748b;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
 .wx-unit-btn:hover{border-color:#8b5cf6;color:#c8d0e0}
 .wx-unit-btn--active{background:#8b5cf6;border-color:#8b5cf6;color:#fff}
 
 /* ── Command card ────────────────────────────────────────────── */
-.wx-cmd-card{background:#1e2536;border:1px solid #2e3850;border-radius:12px;padding:18px 20px;margin-bottom:16px}
+
 .wx-cmd-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;color:#34d399}
 .wx-cmd-kicker{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:600}
 .wx-cmd-title{font-size:15px;font-weight:700;color:#e2e8f0;margin-top:1px}
 .wx-cmd-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
 .wx-cmd-row{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;background:#151a27;border-radius:8px;flex-wrap:wrap}
-.wx-cmd-name{font-size:13px;font-weight:700;color:#a5b4fc;font-family:monospace;white-space:nowrap}
-.wx-cmd-desc{font-size:12px;color:#64748b;line-height:1.5}
 
 /* ── Examples ────────────────────────────────────────────────── */
 .wx-example-box{background:#111827;border:1px dashed #2e3850;border-radius:8px;padding:12px 14px;margin-bottom:16px}
 .wx-example-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#475569;margin-bottom:8px}
 .wx-example-list{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.wx-example-tag{font-family:monospace;font-size:12px;background:#1e2536;border:1px solid #2e3850;color:#a5b4fc;padding:3px 9px;border-radius:5px}
+
 .wx-example-desc{font-size:11px;color:#475569;margin-left:4px}
 
 /* ── Preview embed ───────────────────────────────────────────── */
@@ -63,20 +56,35 @@
 .wx-preview-footer{font-size:10px;color:#80848e}
 
 /* ── Toggle ──────────────────────────────────────────────────── */
-.wx-toggle{position:relative;display:inline-block;width:36px;height:20px;flex-shrink:0;cursor:pointer}
-.wx-toggle input{opacity:0;width:0;height:0;position:absolute}
-.wx-toggle-track{position:absolute;inset:0;background:#2e3850;border-radius:20px;transition:background .2s}
-.wx-toggle-track::before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s}
-.wx-toggle input:checked + .wx-toggle-track{background:#8b5cf6}
-.wx-toggle input:checked + .wx-toggle-track::before{transform:translateX(16px)}
+
+.bh-toggle input{opacity:0;width:0;height:0;position:absolute}
+
+.bh-toggle input:checked + 
+.bh-toggle input:checked + 
 
 /* ── Flash ───────────────────────────────────────────────────── */
-.wx-flash{padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;margin-bottom:14px}
-.wx-flash--ok{background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.3);color:#34d399}
-.wx-flash--err{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#f87171}
 
 /* ── Save bar ────────────────────────────────────────────────── */
 .wx-save-bar{display:flex;justify-content:flex-end;padding-top:4px}
 .wx-save-btn{padding:9px 24px;background:#8b5cf6;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s}
 .wx-save-btn:hover{background:#7c3aed}
 .wx-save-btn:disabled{opacity:.55;cursor:default}
+
+/* ── Example tag ── */
+.wx-example-tag {
+    display: inline-block;
+    background: #1e2536;
+    border: 1px solid #2e3850;
+    border-radius: 5px;
+    color: #a5b4fc;
+    font-size: 11px;
+    font-family: monospace;
+    padding: 2px 7px;
+}
+
+/* ── Preview field label ── */
+.wx-preview-field {
+    font-size: 12px;
+    color: #4f5f80;
+    margin-top: 6px;
+}

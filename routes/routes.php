@@ -60,7 +60,7 @@ return [
         '/admin/settings'           => ['type' => 'php', 'file' => '/admin/settings.php'],
         '/admin/app-store'          => ['type' => 'php', 'file' => '/admin/app_store.php'],
         '/admin/danger'             => ['type' => 'php', 'file' => '/admin/danger.php'],
-        '/admin/project-builder'    => ['type' => 'php', 'file' => '/admin/project_builder.php'],
+        ...(defined('BH_DEV_MODE') && BH_DEV_MODE ? ['/admin/project-builder' => ['type' => 'php', 'file' => '/admin/project_builder.php']] : []),
 
         // Landing (after installation)
         '/'                         => ['type' => 'landing'],

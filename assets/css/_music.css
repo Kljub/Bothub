@@ -14,39 +14,21 @@
 .bh-music-title { font-size: 26px; font-weight: 800; color: #f1f5f9; margin: 0; }
 .bh-music-subtitle { font-size: 13px; color: #64748b; margin-top: 4px; }
 
-/* ── Alert ── */
-.bh-music-alert {
-    padding: 12px 16px; border-radius: 10px; font-size: 13px;
-    font-weight: 500; margin-bottom: 20px; border: 1px solid transparent;
-}
-.bh-music-alert--ok  { background: rgba(34,197,94,.12);  border-color: rgba(34,197,94,.3);  color: #86efac; }
-.bh-music-alert--err { background: rgba(239,68,68,.12);  border-color: rgba(239,68,68,.3);  color: #fca5a5; }
-
-/* ── Section card ── */
-.bh-music-card {
-    background: #1e2330; border: 1px solid #2e3547;
-    border-radius: 14px; margin-bottom: 24px; overflow: hidden;
-}
-.bh-music-card__header {
-    padding: 16px 24px 12px; border-bottom: 1px solid #2e3547;
-    display: flex; align-items: center; gap: 10px;
-}
+/* ── Card icon (used inside bh-card-hdr) ── */
 .bh-music-card__icon {
     width: 32px; height: 32px; border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
 }
-.bh-music-card__icon--indigo { background: rgba(99,102,241,.18); }
-.bh-music-card__icon--violet { background: rgba(139,92,246,.18); }
+.bh-music-card__icon--indigo  { background: rgba(99,102,241,.18); }
+.bh-music-card__icon--violet  { background: rgba(139,92,246,.18); }
 .bh-music-card__icon--emerald { background: rgba(16,185,129,.18); }
 .bh-music-card__icon--orange  { background: rgba(249,115,22,.18); }
 
-.bh-music-card__header-text { flex: 1; }
 .bh-music-card__sec-kicker {
     font-size: 10px; font-weight: 700; letter-spacing: .1em;
     text-transform: uppercase; color: #6b7280; margin-bottom: 2px;
 }
-.bh-music-card__title { font-size: 16px; font-weight: 700; color: #f1f5f9; margin: 0; }
 
 /* ── Source grid ── */
 .bh-music-sources-grid {
@@ -78,66 +60,42 @@
 .bh-music-source__name { font-size: 13px; font-weight: 700; color: #f1f5f9; margin-bottom: 1px; }
 .bh-music-source__desc { font-size: 11px; color: #64748b; line-height: 1.4; }
 
-/* ── Toggle ── */
-.bh-music-toggle {
-    position: relative; display: inline-flex;
-    width: 40px; height: 22px; flex-shrink: 0;
-}
-.bh-music-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
-.bh-music-toggle__track {
-    position: absolute; inset: 0; border-radius: 11px;
-    background: #374151; transition: background .2s; cursor: pointer;
-}
-.bh-music-toggle__track::after {
-    content: ''; position: absolute; left: 3px; top: 3px;
-    width: 16px; height: 16px; border-radius: 50%;
-    background: #6b7280; transition: transform .2s, background .2s;
-}
-.bh-music-toggle input:checked ~ .bh-music-toggle__track { background: rgba(99,102,241,.35); }
-.bh-music-toggle input:checked ~ .bh-music-toggle__track::after {
-    transform: translateX(18px); background: #6366f1;
-}
-
-/* Spotify credentials sub-panel */
+/* ── Spotify credentials sub-panel ── */
 .bh-music-creds {
     display: none;
     padding: 14px 20px 16px;
-    border-top: 1px solid #2e3547;
-    background: #181d28;
+    border-top: 1px solid #374461;
+    background: #1a2130;
     gap: 10px;
     flex-direction: column;
 }
 .bh-music-creds.is-open { display: flex; }
 .bh-music-creds__row { display: flex; gap: 10px; flex-wrap: wrap; }
 .bh-music-creds__input {
-    flex: 1 1 200px; background: #141820; border: 1px solid #2e3547;
+    flex: 1 1 200px; background: #1a2130; border: 1px solid #374461;
     border-radius: 8px; color: #f1f5f9; font-size: 12px; padding: 7px 11px;
-    outline: none; transition: border-color .15s;
+    outline: none; transition: border-color .15s, box-shadow .15s;
 }
-.bh-music-creds__input:focus { border-color: #6366f1; }
-.bh-music-creds__input::placeholder { color: #4b5563; }
+.bh-music-creds__input:hover { border-color: #4f6080; }
+.bh-music-creds__input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.25); }
+.bh-music-creds__input::placeholder { color: #4a5a78; }
 .bh-music-creds__label { font-size: 11px; color: #64748b; margin-bottom: 6px; }
 
 /* ── Settings form ── */
 .bh-music-settings { padding: 6px 0; }
+
 .bh-music-field {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    padding: 14px 24px; border-bottom: 1px solid #1a2030; gap: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid #1a2030;
+    gap: 16px;
 }
 .bh-music-field:last-child { border-bottom: none; }
-.bh-music-field__left { flex: 1; }
+.bh-music-field__left { flex: 1; min-width: 0; }
 .bh-music-field__label { font-size: 13px; font-weight: 700; color: #e2e8f0; margin-bottom: 2px; }
 .bh-music-field__hint  { font-size: 11px; color: #64748b; }
-.bh-music-field__right { display: flex; align-items: center; gap: 10px; }
-
-.bh-music-input {
-    background: #141820; border: 1px solid #2e3547; border-radius: 8px;
-    color: #f1f5f9; font-size: 13px; padding: 6px 12px;
-    outline: none; transition: border-color .15s; width: 200px; box-sizing: border-box;
-}
-.bh-music-input:focus { border-color: #6366f1; }
-.bh-music-input::placeholder { color: #4b5563; }
-.bh-music-input--sm { width: 80px; }
 
 /* ── Range / volume slider ── */
 .bh-music-volume-row { display: flex; align-items: center; gap: 10px; }
@@ -164,7 +122,6 @@
 .bh-music-cmd-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 4px 0;
 }
 @media (max-width: 540px) { .bh-music-cmd-grid { grid-template-columns: 1fr; } }
 
@@ -172,7 +129,7 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 12px 24px; border-bottom: 1px solid #1a2030; gap: 12px;
 }
-.bh-music-cmd-row:nth-child(odd)  { border-right: 1px solid #1a2030; }
+.bh-music-cmd-row:nth-child(odd) { border-right: 1px solid #1a2030; }
 .bh-music-cmd-row__info { flex: 1; }
 .bh-music-cmd-row__name { font-size: 13px; font-weight: 700; color: #f1f5f9; }
 .bh-music-cmd-row__desc { font-size: 11px; color: #64748b; margin-top: 1px; }
@@ -180,9 +137,8 @@
 /* ── Save bar ── */
 .bh-music-save-bar {
     display: flex; justify-content: flex-end; align-items: center;
-    padding: 14px 24px; border-top: 1px solid #2e3547; gap: 12px;
+    padding: 14px 24px; border-top: 1px solid #374461; gap: 12px;
 }
-.bh-music-save-hint { font-size: 12px; color: #64748b; }
 
 /* ── Button ── */
 .bh-music-btn {

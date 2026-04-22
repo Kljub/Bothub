@@ -121,20 +121,20 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
 
     <!-- ── Permission Settings ──────────────────────────────────── -->
     <div class="mb-2">
-        <div class="polls-section-label">Poll</div>
-        <div class="polls-section-title">Permission Settings</div>
+        <div class="bh-section-label">Poll</div>
+        <div class="bh-section-title">Permission Settings</div>
     </div>
 
-    <div id="polls-flash" class="polls-flash" style="display:none;"></div>
+    <div id="bh-alert" class="bh-alert" style="display:none;"></div>
 
-    <div class="polls-card">
-        <div class="polls-card-title">Permission Settings</div>
+    <div class="bh-card">
+        <div class="bh-card-title">Permission Settings</div>
 
         <!-- Manager Roles -->
-        <div class="polls-field">
+        <div class="bh-field">
             <div>
-                <div class="polls-field-label">Manager Roles</div>
-                <div class="polls-field-desc">Define the required roles to use the poll-management commands of the module.</div>
+                <div class="bh-label">Manager Roles</div>
+                <div class="bh-hint">Define the required roles to use the poll-management commands of the module.</div>
             </div>
             <div class="polls-tags-box" id="polls-manager-roles-box">
                 <button type="button" class="polls-add-btn" id="polls-add-manager-role" title="Rolle hinzufügen">+</button>
@@ -142,10 +142,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
         </div>
 
         <!-- Whitelisted Channels -->
-        <div class="polls-field">
+        <div class="bh-field">
             <div>
-                <div class="polls-field-label">Whitelisted Channels</div>
-                <div class="polls-field-desc">Only users that attempt to create polls will be able to post polls in those channels.</div>
+                <div class="bh-label">Whitelisted Channels</div>
+                <div class="bh-hint">Only users that attempt to create polls will be able to post polls in those channels.</div>
             </div>
             <div class="polls-tags-box" id="polls-whitelist-channels-box">
                 <button type="button" class="polls-add-btn" id="polls-add-whitelist-channel" title="Channel hinzufügen">+</button>
@@ -153,10 +153,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
         </div>
 
         <!-- Blacklisted Roles -->
-        <div class="polls-field">
+        <div class="bh-field">
             <div>
-                <div class="polls-field-label">Blacklisted Roles</div>
-                <div class="polls-field-desc">Users who have one of those roles will not be allowed to vote in polls.</div>
+                <div class="bh-label">Blacklisted Roles</div>
+                <div class="bh-hint">Users who have one of those roles will not be allowed to vote in polls.</div>
             </div>
             <div class="polls-tags-box" id="polls-blacklist-roles-box">
                 <button type="button" class="polls-add-btn" id="polls-add-blacklist-role" title="Rolle hinzufügen">+</button>
@@ -164,12 +164,12 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
         </div>
 
         <!-- Single Choice -->
-        <div class="polls-field">
+        <div class="bh-field">
             <div>
-                <div class="polls-field-label">Single Choice</div>
-                <div class="polls-field-desc">When enabled, users will only be able to choose a single option of the poll. This restriction is reset once a new poll is posted.</div>
+                <div class="bh-label">Single Choice</div>
+                <div class="bh-hint">When enabled, users will only be able to choose a single option of the poll. This restriction is reset once a new poll is posted.</div>
             </div>
-            <div class="polls-toggle-inline">
+            <div class="bh-toggle-row">
                 <label class="toggle">
                     <input type="checkbox" id="polls-single-choice" <?= $singleChoice ? 'checked' : '' ?>>
                     <span class="toggle-slider"></span>
@@ -180,44 +180,44 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
 
     <!-- ── Poll Settings ─────────────────────────────────────────── -->
     <div class="mb-2 mt-6">
-        <div class="polls-section-label">Poll</div>
-        <div class="polls-section-title">Poll Settings</div>
+        <div class="bh-section-label">Poll</div>
+        <div class="bh-section-title">Poll Settings</div>
     </div>
 
-    <div class="polls-card">
-        <div class="polls-card-title">Poll Settings</div>
+    <div class="bh-card">
+        <div class="bh-card-title">Poll Settings</div>
 
         <!-- Embed Title -->
-        <div class="polls-field">
+        <div class="bh-field">
             <div>
-                <div class="polls-field-label">Embed Title</div>
-                <div class="polls-field-desc">The title of the main poll messages that will be posted. The <code style="color:#f87171;background:rgba(239,68,68,.1);padding:1px 5px;border-radius:4px;">{poll.question}</code> variable can be used to return the configured question.</div>
+                <div class="bh-label">Embed Title</div>
+                <div class="bh-hint">The title of the main poll messages that will be posted. The <code style="color:#f87171;background:rgba(239,68,68,.1);padding:1px 5px;border-radius:4px;">{poll.question}</code> variable can be used to return the configured question.</div>
             </div>
             <div>
                 <div style="font-size:10px;color:#4f5f80;margin-bottom:4px;">Embed Title</div>
-                <input type="text" class="polls-input" id="polls-embed-title"
+                <input type="text" class="bh-input" id="polls-embed-title"
                        value="<?= $esc($embedTitle) ?>" maxlength="256"
                        placeholder="🗳️ Poll - {poll.question}">
             </div>
         </div>
 
         <!-- Embed Footer -->
-        <div class="polls-field">
+        <div class="bh-field">
             <div>
-                <div class="polls-field-label">Embed Footer</div>
-                <div class="polls-field-desc">The footer and closing rules of the main poll messages that will be posted.</div>
+                <div class="bh-label">Embed Footer</div>
+                <div class="bh-hint">The footer and closing rules of the main poll messages that will be posted.</div>
             </div>
             <div>
                 <div style="font-size:10px;color:#4f5f80;margin-bottom:4px;">Embed Footer</div>
-                <textarea class="polls-input" id="polls-embed-footer" maxlength="512" rows="3"><?= $esc($embedFooter) ?></textarea>
+                <textarea class="bh-input" id="polls-embed-footer" maxlength="512" rows="3"><?= $esc($embedFooter) ?></textarea>
             </div>
         </div>
 
         <!-- Embed Color -->
-        <div class="polls-field">
+        <div class="bh-field">
             <div>
-                <div class="polls-field-label">Embed Color</div>
-                <div class="polls-field-desc">The color of the poll embed messages that will be posted, and the follow-up option reaction comments.</div>
+                <div class="bh-label">Embed Color</div>
+                <div class="bh-hint">The color of the poll embed messages that will be posted, and the follow-up option reaction comments.</div>
             </div>
             <div class="polls-color-wrap">
                 <div class="polls-color-swatch" id="polls-color-swatch" style="background:<?= $esc($embedColor) ?>;"></div>
@@ -228,12 +228,12 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
         </div>
 
         <!-- Show Poster's Name -->
-        <div class="polls-field">
+        <div class="bh-field">
             <div>
-                <div class="polls-field-label">Show Poster's Name</div>
-                <div class="polls-field-desc">Choose whether or not to show the name of the user who posted the poll in the main message.</div>
+                <div class="bh-label">Show Poster's Name</div>
+                <div class="bh-hint">Choose whether or not to show the name of the user who posted the poll in the main message.</div>
             </div>
-            <div class="polls-toggle-inline">
+            <div class="bh-toggle-row">
                 <label class="toggle">
                     <input type="checkbox" id="polls-show-poster" <?= $showPosterName ? 'checked' : '' ?>>
                     <span class="toggle-slider"></span>
@@ -242,10 +242,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
         </div>
 
         <!-- Choice Reactions -->
-        <div class="polls-field">
+        <div class="bh-field">
             <div>
-                <div class="polls-field-label">Choice Reactions</div>
-                <div class="polls-field-desc">
+                <div class="bh-label">Choice Reactions</div>
+                <div class="bh-hint">
                     These emojis will be used as reaction options on the poll, in the exact order as you add them.
                     It is <strong style="color:#f1f5f9;">not recommended</strong> to change this, unless you know exactly what you are doing!
                     You can use <em>unicode</em> emojis supported in Discord.
@@ -260,89 +260,89 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
 
     <!-- ── Commands ──────────────────────────────────────────────── -->
     <div class="mb-2 mt-6">
-        <div class="polls-section-label">Module</div>
-        <div class="polls-section-title">Commands</div>
+        <div class="bh-section-label">Module</div>
+        <div class="bh-section-title">Commands</div>
     </div>
 
-    <div class="polls-cmd-grid">
-        <div class="polls-cmd-card">
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
             <div>
-                <div class="polls-cmd-name">/poll-create</div>
-                <div class="polls-cmd-desc">Create a new poll and configure a question and choices.</div>
+                <div class="bh-cmd-name">/poll-create</div>
+                <div class="bh-cmd-desc">Create a new poll and configure a question and choices.</div>
             </div>
             <label class="toggle" style="flex-shrink:0;">
                 <input type="checkbox" id="polls-cmd-create" <?= $cmdCreate ? 'checked' : '' ?>>
                 <span class="toggle-slider"></span>
             </label>
         </div>
-        <div class="polls-cmd-card">
+        <div class="bh-cmd-card">
             <div>
-                <div class="polls-cmd-name">/poll-find</div>
-                <div class="polls-cmd-desc">Find a poll by looking in the final results.</div>
+                <div class="bh-cmd-name">/poll-find</div>
+                <div class="bh-cmd-desc">Find a poll by looking in the final results.</div>
             </div>
             <label class="toggle" style="flex-shrink:0;">
                 <input type="checkbox" id="polls-cmd-find" <?= $cmdFind ? 'checked' : '' ?>>
                 <span class="toggle-slider"></span>
             </label>
         </div>
-        <div class="polls-cmd-card">
+        <div class="bh-cmd-card">
             <div>
-                <div class="polls-cmd-name">/poll-list</div>
-                <div class="polls-cmd-desc">Show all currently active polls in this server.</div>
+                <div class="bh-cmd-name">/poll-list</div>
+                <div class="bh-cmd-desc">Show all currently active polls in this server.</div>
             </div>
             <label class="toggle" style="flex-shrink:0;">
                 <input type="checkbox" id="polls-cmd-list" <?= $cmdList ? 'checked' : '' ?>>
                 <span class="toggle-slider"></span>
             </label>
         </div>
-        <div class="polls-cmd-card">
+        <div class="bh-cmd-card">
             <div>
-                <div class="polls-cmd-name">/poll-delete</div>
-                <div class="polls-cmd-desc">Delete a poll and its embed message. Requires Manage Server or a manager role.</div>
+                <div class="bh-cmd-name">/poll-delete</div>
+                <div class="bh-cmd-desc">Delete a poll and its embed message. Requires Manage Server or a manager role.</div>
             </div>
             <label class="toggle" style="flex-shrink:0;">
                 <input type="checkbox" id="polls-cmd-delete" <?= $cmdDelete ? 'checked' : '' ?>>
                 <span class="toggle-slider"></span>
             </label>
         </div>
-        <div class="polls-cmd-card polls-cmd-card--add">
+        <div class="bh-cmd-card polls-cmd-card--add">
             <div>
-                <div class="polls-cmd-name">Add Command</div>
-                <div class="polls-cmd-desc">This command will have access to all the variables and settings of this module.</div>
+                <div class="bh-cmd-name">Add Command</div>
+                <div class="bh-cmd-desc">This command will have access to all the variables and settings of this module.</div>
             </div>
-            <button type="button" class="polls-add-cmd-btn">Add</button>
+            <button type="button" class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 
     <!-- ── Events ────────────────────────────────────────────────── -->
     <div class="mb-2 mt-6">
-        <div class="polls-section-label">Module</div>
-        <div class="polls-section-title">Events</div>
+        <div class="bh-section-label">Module</div>
+        <div class="bh-section-title">Events</div>
     </div>
 
-    <div class="polls-cmd-grid">
-        <div class="polls-cmd-card">
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
             <div>
-                <div class="polls-cmd-name">Polls Handler</div>
-                <div class="polls-cmd-desc">When a reaction is added to a message.</div>
+                <div class="bh-cmd-name">Polls Handler</div>
+                <div class="bh-cmd-desc">When a reaction is added to a message.</div>
             </div>
             <label class="toggle" style="flex-shrink:0;">
                 <input type="checkbox" id="polls-evt-handler" <?= $evtHandler ? 'checked' : '' ?>>
                 <span class="toggle-slider"></span>
             </label>
         </div>
-        <div class="polls-cmd-card polls-cmd-card--add">
+        <div class="bh-cmd-card polls-cmd-card--add">
             <div>
-                <div class="polls-cmd-name">Add Event</div>
-                <div class="polls-cmd-desc">This event will have access to all the variables and settings of this module.</div>
+                <div class="bh-cmd-name">Add Event</div>
+                <div class="bh-cmd-desc">This event will have access to all the variables and settings of this module.</div>
             </div>
-            <button type="button" class="polls-add-cmd-btn">Add</button>
+            <button type="button" class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 
     <!-- ── Save ──────────────────────────────────────────────────── -->
     <div class="polls-save-bar">
-        <button type="button" class="polls-save-btn" id="polls-save-btn">Save</button>
+        <button type="button" class="bh-btn bh-btn--primary" id="bh-btn bh-btn--primary">Save</button>
     </div>
 
 </div>
@@ -376,10 +376,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
 
         list.forEach(function (item, idx) {
             var tag = document.createElement('span');
-            tag.className = 'polls-tag' + (isChannel ? ' polls-tag--channel' : '');
+            tag.className = 'bh-tag' + (isChannel ? ' polls-tag--channel' : '');
             tag.innerHTML = esc(item.name || item.id)
-                + '<button type="button" class="polls-tag-rm" title="Entfernen">×</button>';
-            tag.querySelector('.polls-tag-rm').addEventListener('click', function () {
+                + '<button type="button" class="bh-tag-rm" title="Entfernen">×</button>';
+            tag.querySelector('.bh-tag-rm').addEventListener('click', function () {
                 list.splice(idx, 1);
                 renderTagBox(boxId, list, addBtnId, isChannel);
             });
@@ -417,10 +417,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
 
         state.choiceReactions.forEach(function (emoji, idx) {
             var chip = document.createElement('span');
-            chip.className = 'polls-emoji-chip';
+            chip.className = 'bh-tag';
             chip.innerHTML = esc(emoji)
-                + '<button type="button" class="polls-emoji-chip-rm" title="Entfernen">×</button>';
-            chip.querySelector('.polls-emoji-chip-rm').addEventListener('click', function () {
+                + '<button type="button" class="bh-tag-rm" title="Entfernen">×</button>';
+            chip.querySelector('.bh-tag-rm').addEventListener('click', function () {
                 state.choiceReactions.splice(idx, 1);
                 renderEmojiList();
             });
@@ -456,7 +456,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
     });
 
     // ── Save ──────────────────────────────────────────────────────────────
-    document.getElementById('polls-save-btn').addEventListener('click', async function () {
+    document.getElementById('bh-btn bh-btn--primary').addEventListener('click', async function () {
         var btn = this;
         btn.disabled = true;
         btn.textContent = '…';
@@ -496,8 +496,8 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:polls');
     });
 
     function showFlash(type, msg) {
-        var el = document.getElementById('polls-flash');
-        el.className = 'polls-flash polls-flash--' + type;
+        var el = document.getElementById('bh-alert');
+        el.className = 'bh-alert bh-alert--' + type;
         el.textContent = msg;
         el.style.display = 'block';
         setTimeout(function () { el.style.display = 'none'; }, 3500);

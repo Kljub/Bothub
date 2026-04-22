@@ -135,52 +135,52 @@ try { $timedMsgs = bhtm_list($pdo, $botId); } catch (Throwable) {}
 $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 ?>
 
-<div class="tm-section-label">TIMED MESSAGES</div>
-<div class="tm-section-title">New Timed Message</div>
+<div class="bh-section-label">TIMED MESSAGES</div>
+<div class="bh-section-title">New Timed Message</div>
 
-<div id="tm-flash" style="display:none"></div>
+<div id="bh-alert" style="display:none"></div>
 
 <!-- ── Create form ─────────────────────────────────────────────────────── -->
-<div class="tm-card">
-    <div class="tm-card-title">Create Timed Message</div>
-    <div class="tm-card-desc">
+<div class="bh-card">
+    <div class="bh-card-title">Create Timed Message</div>
+    <div class="bh-card-desc">
         Create and customise a new timed message with a scheduled interval time.
         The message you build will be delivered to a selected channel, with optional reactions.
     </div>
 
     <!-- Unique Name -->
-    <div class="tm-field">
-        <div class="tm-field-label">Timed Message Name</div>
-        <div class="tm-field-desc">Create a <span style="color:#ef4444;font-weight:700">unique</span> identifier name for each one of your timed events. This name will be used for error messages and storing your intervals.</div>
-        <input type="text" id="tm-name" class="tm-input" placeholder="A name is required for your timed message to operate!">
+    <div class="bh-field">
+        <div class="bh-label">Timed Message Name</div>
+        <div class="bh-hint">Create a <span style="color:#ef4444;font-weight:700">unique</span> identifier name for each one of your timed events. This name will be used for error messages and storing your intervals.</div>
+        <input type="text" id="tm-name" class="bh-input" placeholder="A name is required for your timed message to operate!">
     </div>
 
     <!-- Channel -->
-    <div class="tm-field">
-        <div class="tm-field-label">Channel Selection</div>
-        <div class="tm-field-desc">Choose any <span style="color:#ef4444;font-weight:700">text</span> or <span style="color:#ef4444;font-weight:700">announcement</span> channel to send your timed message to.</div>
-        <input type="text" id="tm-channel" class="tm-input" placeholder="Channel ID">
+    <div class="bh-field">
+        <div class="bh-label">Channel Selection</div>
+        <div class="bh-hint">Choose any <span style="color:#ef4444;font-weight:700">text</span> or <span style="color:#ef4444;font-weight:700">announcement</span> channel to send your timed message to.</div>
+        <input type="text" id="tm-channel" class="bh-input" placeholder="Channel ID">
     </div>
 
     <!-- Interval Days -->
-    <div class="tm-field">
-        <div class="tm-field-label">Time Interval - Days</div>
-        <div class="tm-field-desc">Choose the amount of days of a delay you want to have between timed messages that are sent.</div>
-        <input type="number" id="tm-days" class="tm-input" value="0" min="0" max="365">
+    <div class="bh-field">
+        <div class="bh-label">Time Interval - Days</div>
+        <div class="bh-hint">Choose the amount of days of a delay you want to have between timed messages that are sent.</div>
+        <input type="number" id="tm-days" class="bh-input" value="0" min="0" max="365">
     </div>
 
     <!-- Interval Hours -->
-    <div class="tm-field">
-        <div class="tm-field-label">Time Interval - Hours</div>
-        <div class="tm-field-desc">Choose the amount of hours of a delay you want to have between timed messages that are sent.</div>
-        <input type="number" id="tm-hours" class="tm-input" value="1" min="0" max="23">
+    <div class="bh-field">
+        <div class="bh-label">Time Interval - Hours</div>
+        <div class="bh-hint">Choose the amount of hours of a delay you want to have between timed messages that are sent.</div>
+        <input type="number" id="tm-hours" class="bh-input" value="1" min="0" max="23">
     </div>
 
     <!-- Interval Minutes -->
-    <div class="tm-field">
-        <div class="tm-field-label">Time Interval - Minutes</div>
-        <div class="tm-field-desc">Choose the amount of minutes of a delay you want to have between timed messages that are sent. You are only able to specify a timeframe in 5 minute steps.</div>
-        <select id="tm-minutes" class="tm-select" style="max-width:200px">
+    <div class="bh-field">
+        <div class="bh-label">Time Interval - Minutes</div>
+        <div class="bh-hint">Choose the amount of minutes of a delay you want to have between timed messages that are sent. You are only able to specify a timeframe in 5 minute steps.</div>
+        <select id="tm-minutes" class="bh-select" style="max-width:200px">
             <?php foreach ([0,5,10,15,20,25,30,35,40,45,50,55] as $m): ?>
             <option value="<?= $m ?>"><?= $m ?> Minutes</option>
             <?php endforeach; ?>
@@ -188,18 +188,17 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
     </div>
 
     <!-- Message Structure -->
-    <div class="tm-field">
-        <div class="tm-field-label">Timed Message Structure</div>
-        <div class="tm-field-desc">Set up a custom embed or plain text message, that will be sent based off your interval set up above.</div>
+    <div class="bh-field">
+        <div class="bh-label">Timed Message Structure</div>
+        <div class="bh-hint">Set up a custom embed or plain text message, that will be sent based off your interval set up above.</div>
 
-        <div class="tm-embed-toggle-row">
-            <span class="tm-embed-toggle-label">Message</span>
+        <div class="bh-toggle-row">
+            <span class="bh-toggle-row__title">Message</span>
             <div style="display:flex;align-items:center;gap:8px">
                 <span style="font-size:12px;color:#4f5f80">Embed</span>
                 <label class="bh-toggle">
-                    <input type="checkbox" id="tm-is-embed" checked>
-                    <span class="bh-toggle__track"></span>
-                    <span class="bh-toggle__thumb"></span>
+                    <input class="bh-toggle-input" type="checkbox" id="tm-is-embed" checked>
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
             </div>
         </div>
@@ -213,46 +212,46 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
                         <!-- Author + Thumbnail -->
                         <div class="tm-embed-row">
                             <div>
-                                <div class="tm-embed-label">Author</div>
-                                <input type="text" id="tm-embed-author" class="tm-embed-input" placeholder="Author name">
+                                <div class="bh-embed-label">Author</div>
+                                <input type="text" id="tm-embed-author" class="bh-embed-input" placeholder="Author name">
                             </div>
                             <div>
-                                <div class="tm-embed-label">Thumbnail URL</div>
-                                <input type="text" id="tm-embed-thumb" class="tm-embed-input" placeholder="https://...">
+                                <div class="bh-embed-label">Thumbnail URL</div>
+                                <input type="text" id="tm-embed-thumb" class="bh-embed-input" placeholder="https://...">
                             </div>
                         </div>
 
                         <!-- Title -->
                         <div>
-                            <div class="tm-embed-label">Title</div>
-                            <input type="text" id="tm-embed-title" class="tm-embed-input" placeholder="Example Timed Message" value="Example Timed Message">
+                            <div class="bh-embed-label">Title</div>
+                            <input type="text" id="tm-embed-title" class="bh-embed-input" placeholder="Example Timed Message" value="Example Timed Message">
                         </div>
 
                         <!-- Body -->
                         <div>
-                            <div class="tm-embed-label">Description</div>
-                            <textarea id="tm-embed-body" class="tm-embed-textarea" placeholder="This is a demo of how your timed message will look like! Feel free to customize it to your own needs!">This is a demo of how your timed message will look like! Feel free to customize it to your own needs!</textarea>
+                            <div class="bh-embed-label">Description</div>
+                            <textarea id="tm-embed-body" class="bh-embed-textarea" placeholder="This is a demo of how your timed message will look like! Feel free to customize it to your own needs!">This is a demo of how your timed message will look like! Feel free to customize it to your own needs!</textarea>
                         </div>
 
                         <!-- Image URL -->
                         <div>
-                            <div class="tm-embed-label">Image URL</div>
-                            <input type="text" id="tm-embed-image" class="tm-embed-input" placeholder="https://...">
+                            <div class="bh-embed-label">Image URL</div>
+                            <input type="text" id="tm-embed-image" class="bh-embed-input" placeholder="https://...">
                         </div>
 
                         <!-- Footer / Color / Embed URL -->
                         <div class="tm-embed-footer-row">
                             <div>
-                                <div class="tm-embed-label">Color</div>
+                                <div class="bh-embed-label">Color</div>
                                 <div style="display:flex;align-items:center;gap:8px">
                                     <span id="tm-color-swatch" class="tm-color-btn" style="background:#ef4444" onclick="document.getElementById('tm-color-picker').click()"></span>
                                     <input type="color" id="tm-color-picker" value="#ef4444" style="display:none">
-                                    <input type="text" id="tm-color-hex" class="tm-embed-input" value="#ef4444" placeholder="#ef4444" style="width:90px;font-family:monospace">
+                                    <input type="text" id="tm-color-hex" class="bh-embed-input" value="#ef4444" placeholder="#ef4444" style="width:90px;font-family:monospace">
                                 </div>
                             </div>
                             <div>
-                                <div class="tm-embed-label">Embed URL</div>
-                                <input type="text" id="tm-embed-url" class="tm-embed-input" placeholder="https://...">
+                                <div class="bh-embed-label">Embed URL</div>
+                                <input type="text" id="tm-embed-url" class="bh-embed-input" placeholder="https://...">
                             </div>
                         </div>
                     </div>
@@ -262,29 +261,28 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
 
         <!-- Plain text panel -->
         <div id="tm-plain-panel" style="display:none">
-            <textarea id="tm-plain-text" class="tm-textarea" placeholder="Your timed message text..."></textarea>
+            <textarea id="tm-plain-text" class="bh-textarea" placeholder="Your timed message text..."></textarea>
         </div>
     </div>
 
     <!-- Block Stacked -->
-    <div class="tm-toggle-row">
-        <div class="tm-toggle-info">
-            <div class="tm-toggle-label">Block Stacked Messages</div>
-            <div class="tm-toggle-desc">If the previous message in the channel was sent by your bot when it would send a timed message, it will delay sending the message until the next execution.</div>
+    <div class="bh-toggle-row">
+        <div class="bh-toggle-row__info">
+            <div class="bh-toggle-row__title">Block Stacked Messages</div>
+            <div class="bh-toggle-row__desc">If the previous message in the channel was sent by your bot when it would send a timed message, it will delay sending the message until the next execution.</div>
         </div>
         <label class="bh-toggle" style="margin-left:16px">
-            <input type="checkbox" id="tm-block-stacked">
-            <span class="bh-toggle__track"></span>
-            <span class="bh-toggle__thumb"></span>
+            <input class="bh-toggle-input" type="checkbox" id="tm-block-stacked">
+            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
         </label>
     </div>
 
-    <button class="tm-add-btn" id="tm-add-btn" onclick="tmAdd()">Add</button>
+    <button class="bh-btn bh-btn--primary" id="bh-btn bh-btn--primary" onclick="tmAdd()">Add</button>
 </div>
 
 <!-- ── Existing messages ────────────────────────────────────────────────── -->
 <?php if (!empty($timedMsgs)): ?>
-<div id="tm-section-label" class="tm-section-label" style="margin-top:28px">EXISTING TIMED MESSAGES</div>
+<div id="bh-section-label" class="bh-section-label" style="margin-top:28px">EXISTING TIMED MESSAGES</div>
 <div id="tm-list">
     <?php foreach ($timedMsgs as $tm): ?>
     <?php
@@ -294,10 +292,10 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
         if ((int)$tm['interval_minutes'] > 0) $intervalParts[] = $tm['interval_minutes'] . 'm';
         $intervalStr = $intervalParts ? implode(' ', $intervalParts) : '1h';
     ?>
-    <div class="tm-list-card" id="tm-row-<?= (int)$tm['id'] ?>">
+    <div class="bh-list-card" id="tm-row-<?= (int)$tm['id'] ?>">
         <div>
-            <div class="tm-list-name"><?= $esc((string)$tm['name']) ?></div>
-            <div class="tm-list-meta">
+            <div class="bh-list-name"><?= $esc((string)$tm['name']) ?></div>
+            <div class="bh-list-meta">
                 Channel: <code style="color:#a5b4fc"><?= $esc((string)$tm['channel_id']) ?></code>
                 &nbsp;·&nbsp; Interval: <strong><?= $esc($intervalStr) ?></strong>
                 &nbsp;·&nbsp; <?= (int)$tm['is_embed'] ? 'Embed' : 'Plain text' ?>
@@ -308,12 +306,11 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
         </div>
         <div style="display:flex;align-items:center;gap:8px">
             <label class="bh-toggle" title="Enable / Disable">
-                <input type="checkbox" <?= (int)$tm['is_active'] ? 'checked' : '' ?>
+                <input class="bh-toggle-input" type="checkbox" <?= (int)$tm['is_active'] ? 'checked' : '' ?>
                     onchange="tmToggle(<?= (int)$tm['id'] ?>, this.checked)">
-                <span class="bh-toggle__track"></span>
-                <span class="bh-toggle__thumb"></span>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
-            <button class="tm-list-del-btn" onclick="tmDelete(<?= (int)$tm['id'] ?>)">Delete</button>
+            <button class="bh-btn bh-btn--danger bh-btn--sm" onclick="tmDelete(<?= (int)$tm['id'] ?>)">Delete</button>
         </div>
     </div>
     <?php endforeach; ?>
@@ -324,42 +321,41 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
 
 <!-- ── Module: Commands ────────────────────────────────────────────────── -->
 <div style="margin-top:32px">
-    <div class="tm-module-label">MODULE</div>
+    <div class="bh-section-label">MODULE</div>
     <div class="tm-module-title">Commands</div>
-    <div class="tm-cmd-grid">
-        <div class="tm-cmd-card">
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
             <div>
-                <div class="tm-cmd-name">Add Command</div>
-                <div class="tm-cmd-desc">This command will have access to all the variables and settings of this module.</div>
+                <div class="bh-cmd-name">Add Command</div>
+                <div class="bh-cmd-desc">This command will have access to all the variables and settings of this module.</div>
             </div>
-            <button class="tm-cmd-add-btn">Add</button>
+            <button class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 </div>
 
 <!-- ── Module: Events ─────────────────────────────────────────────────── -->
 <div style="margin-top:28px;margin-bottom:32px">
-    <div class="tm-module-label">MODULE</div>
+    <div class="bh-section-label">MODULE</div>
     <div class="tm-module-title">Events</div>
-    <div class="tm-cmd-grid">
-        <div class="tm-cmd-card">
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
             <div>
-                <div class="tm-cmd-name">Timed Messages Handler</div>
-                <div class="tm-cmd-desc">When a timed event is executed</div>
+                <div class="bh-cmd-name">Timed Messages Handler</div>
+                <div class="bh-cmd-desc">When a timed event is executed</div>
             </div>
             <label class="bh-toggle" style="margin-left:16px">
-                <input type="checkbox" id="tm-evt-handler" <?= $evtHandler ? 'checked' : '' ?>
+                <input class="bh-toggle-input" type="checkbox" id="tm-evt-handler" <?= $evtHandler ? 'checked' : '' ?>
                     onchange="tmSaveSettings()">
-                <span class="bh-toggle__track"></span>
-                <span class="bh-toggle__thumb"></span>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
-        <div class="tm-cmd-card">
+        <div class="bh-cmd-card">
             <div>
-                <div class="tm-cmd-name">Add Event</div>
-                <div class="tm-cmd-desc">This event will have access to all the variables and settings of this module.</div>
+                <div class="bh-cmd-name">Add Event</div>
+                <div class="bh-cmd-desc">This event will have access to all the variables and settings of this module.</div>
             </div>
-            <button class="tm-cmd-add-btn">Add</button>
+            <button class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 </div>
@@ -399,8 +395,8 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
 
     // ── Flash ─────────────────────────────────────────────────────────────
     function flash(msg, ok) {
-        const el = document.getElementById('tm-flash');
-        el.className = 'tm-flash ' + (ok ? 'tm-flash--ok' : 'tm-flash--err');
+        const el = document.getElementById('bh-alert');
+        el.className = 'bh-alert ' + (ok ? 'bh-alert--ok' : 'bh-alert--err');
         el.textContent = msg;
         el.style.display = '';
         clearTimeout(el._t);
@@ -409,7 +405,7 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
 
     // ── Add timed message ─────────────────────────────────────────────────
     window.tmAdd = async function () {
-        const btn = document.getElementById('tm-add-btn');
+        const btn = document.getElementById('bh-btn bh-btn--primary');
         btn.disabled = true;
 
         const payload = {
@@ -462,12 +458,12 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
         const intStr = parts.length ? parts.join(' ') : '1h';
 
         const div = document.createElement('div');
-        div.className = 'tm-list-card';
+        div.className = 'bh-list-card';
         div.id = 'tm-row-' + id;
         div.innerHTML = `
             <div>
-                <div class="tm-list-name">${escHtml(p.name)}</div>
-                <div class="tm-list-meta">
+                <div class="bh-list-name">${escHtml(p.name)}</div>
+                <div class="bh-list-meta">
                     Channel: <code style="color:#a5b4fc">${escHtml(p.channel_id)}</code>
                     &nbsp;·&nbsp; Interval: <strong>${escHtml(intStr)}</strong>
                     &nbsp;·&nbsp; ${p.is_embed ? 'Embed' : 'Plain text'}
@@ -475,11 +471,10 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
             </div>
             <div style="display:flex;align-items:center;gap:8px">
                 <label class="bh-toggle" title="Enable / Disable">
-                    <input type="checkbox" checked onchange="tmToggle(${id}, this.checked)">
-                    <span class="bh-toggle__track"></span>
-                    <span class="bh-toggle__thumb"></span>
+                    <input class="bh-toggle-input" type="checkbox" checked onchange="tmToggle(${id}, this.checked)">
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
-                <button class="tm-list-del-btn" onclick="tmDelete(${id})">Delete</button>
+                <button class="bh-btn bh-btn--danger bh-btn--sm" onclick="tmDelete(${id})">Delete</button>
             </div>
         `;
         list.prepend(div);

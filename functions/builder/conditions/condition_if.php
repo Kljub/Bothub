@@ -11,40 +11,21 @@ return [
     'color' => 'green',
     'ports' => [
         'inputs' => [
-            [
-                'key' => 'input',
-                'label' => 'Input',
-                'kind' => 'flow',
-                'max_connections' => 1,
-            ],
+            'input',
         ],
         'outputs' => [
-            [
-                'key' => 'true',
-                'label' => 'True',
-                'kind' => 'flow',
-                'max_connections' => 1,
-            ],
-            [
-                'key' => 'false',
-                'label' => 'False',
-                'kind' => 'flow',
-                'max_connections' => 1,
-            ],
+            'true',
+            'false',
         ],
     ],
-    'defaults' => [
-        'left_value' => '',
-        'operator' => 'equals',
-        'right_value' => '',
-    ],
+    'defaults' => [],
     'properties' => [
         [
-            'key' => 'left_value',
-            'type' => 'text',
-            'label' => 'Linker Wert',
-            'required' => true,
-            'max_length' => 255,
+            'key'         => 'left_value',
+            'type'        => 'text',
+            'label'       => 'Left Value',
+            'placeholder' => '{user.id}',
+            'required'    => true,
         ],
         [
             'key' => 'operator',
@@ -60,11 +41,11 @@ return [
             ],
         ],
         [
-            'key' => 'right_value',
-            'type' => 'text',
-            'label' => 'Rechter Wert',
-            'required' => true,
-            'max_length' => 255,
+            'key'         => 'right_value',
+            'type'        => 'text',
+            'label'       => 'Right Value',
+            'placeholder' => '1234567890',
+            'required'    => true,
         ],
     ],
 ];

@@ -263,12 +263,11 @@ class BotManager {
         });
 
         client.once('ready', async () => {
-            const tag = client.user ? client.user.tag : 'unknown';
-            console.log(`[BotHub Core] Bot ${botId} ready: ${tag}`);
+            const tag      = client.user ? client.user.tag : 'unknown';
+            const isReload = Boolean(botRow._isReload);
 
             await this.setBotStarted(botId);
 
-            // Sync guild list to DB
             try {
                 await this.syncBotGuilds(client, botId);
             } catch (error) {
@@ -289,8 +288,10 @@ class BotManager {
                 this.customCommandRegistries.set(botId, new Map());
             }
 
+            let commandTotal = 0;
             try {
-                await syncSlashCommands(client, botId, this.commandRegistry, null, this.customCommandRegistries.get(botId));
+                const syncResult = await syncSlashCommands(client, botId, this.commandRegistry, null, this.customCommandRegistries.get(botId));
+                if (syncResult) commandTotal = syncResult.total ?? 0;
             } catch (error) {
                 console.error(
                     `[BotHub Core] Slash sync failed for bot ${botId}:`,
@@ -305,6 +306,12 @@ class BotManager {
                     `[BotHub Core] Status init failed for bot ${botId}:`,
                     error instanceof Error ? error.message : String(error)
                 );
+            }
+
+            if (isReload) {
+                console.log(`[Bot ${botId}] Config Reloaded`);
+            } else {
+                console.log(`[Bot ${botId}] Ready: ${tag} | ${commandTotal} commands loaded`);
             }
         });
 
@@ -467,7 +474,7 @@ class BotManager {
         await this.stopBot(botId, null);
         // Give Discord time to close the previous WebSocket session
         await new Promise(resolve => setTimeout(resolve, 3000));
-        await this.startBot(botRow);
+        await this.startBot({ ...botRow, _isReload: true });
     }
 
     async reloadBotById(botId) {
@@ -574,7 +581,6 @@ class BotManager {
             [botId, ...currentIds]
         );
 
-        console.log(`[BotHub Core] Bot ${botId}: synced ${guilds.length} guild(s) to DB.`);
     }
 
     async syncAllBots() {

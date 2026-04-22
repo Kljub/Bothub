@@ -133,10 +133,10 @@ $webhookBase = 'https://' . $host . '/api/webhook/' . ($botDiscordId !== null &&
     </div>
 
     <?php if ($flashOk !== null): ?>
-        <div class="bh-wh-alert bh-wh-alert--ok"><?= bh_wh_h($flashOk) ?></div>
+        <div class="bh-alert bh-alert--ok"><?= bh_wh_h($flashOk) ?></div>
     <?php endif; ?>
     <?php if ($flashErr !== null): ?>
-        <div class="bh-wh-alert bh-wh-alert--err"><?= bh_wh_h($flashErr) ?></div>
+        <div class="bh-alert bh-alert--err"><?= bh_wh_h($flashErr) ?></div>
     <?php endif; ?>
 
     <?php if ($currentBotId === null || $currentBotId <= 0): ?>

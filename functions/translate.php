@@ -54,8 +54,12 @@ function bh_builder_translate_definition(array $def): array
             continue;
         }
 
-        if (is_string($output) && $output !== '') {
-            $translatedOutputs[] = $output;
+        if (is_string($output)) {
+            // ' ' (space) is the canonical "no-name" flow port — maps to 'next' internally
+            $key = trim($output) === '' ? ' ' : $output;
+            if ($key !== '') {
+                $translatedOutputs[] = $key;
+            }
         }
     }
 

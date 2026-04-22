@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-# PFAD: /functions/builder/trigger_error.php
+# PFAD: /functions/builder/general/trigger_error.php
 
 return [
     'type' => 'utility.error_handler',
@@ -13,31 +13,33 @@ return [
     'ports' => [
         'inputs' => [],
         'outputs' => [
-            [
-                'key' => 'next',
-                'label' => 'Next',
-                'kind' => 'flow',
-                'max_connections' => 1,
-            ],
+            ' ',
         ],
     ],
-    'defaults' => [
-        'display_name' => 'Error Handler',
-        'enabled' => true,
-    ],
+    'defaults' => [],
     'properties' => [
         [
             'key' => 'display_name',
             'type' => 'text',
-            'label' => 'Anzeigename',
-            'required' => true,
-            'max_length' => 120,
+            'label' => 'Display Name',
+            'placeholder' => 'Error Handler',
+            'required' => false,
         ],
         [
             'key' => 'enabled',
-            'type' => 'switch',
-            'label' => 'Aktiv',
-            'required' => false,
+            'type' => 'select',
+            'label' => 'Enabled',
+            'help' => 'Enable or disable this error handler.',
+            'options' => [
+                [
+                    'value' => '1',
+                    'label' => 'Enabled',
+                ],
+                [
+                    'value' => '0',
+                    'label' => 'Disabled',
+                ],
+            ],
         ],
     ],
 ];

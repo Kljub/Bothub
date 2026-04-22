@@ -376,13 +376,13 @@ function ceBadgeClasses(string $category, array $colorMap): string
                     <div class="ce-event-row flex items-center gap-4 px-5 py-4" data-event-id="<?= $eventId ?>">
 
                         <!-- Enable toggle -->
-                        <label class="ce-event-toggle flex-shrink-0" title="<?= $isEnabled ? 'Deaktivieren' : 'Aktivieren' ?>">
+                        <label class="bh-toggle flex-shrink-0" title="<?= $isEnabled ? 'Deaktivieren' : 'Aktivieren' ?>">
                             <input type="checkbox"
-                                   class="ce-event-toggle-input"
+                                   class="bh-toggle-input"
                                    <?= $isEnabled ? 'checked' : '' ?>
                                    data-event-id="<?= $eventId ?>">
-                            <span class="ce-event-toggle-track">
-                                <span class="ce-event-toggle-thumb"></span>
+                            <span class="bh-toggle-track">
+                                <span class="bh-toggle-thumb"></span>
                             </span>
                         </label>
 
@@ -452,36 +452,13 @@ function ceBadgeClasses(string $category, array $colorMap): string
 
 <!-- New Event Modal -->
 <div id="ce-new-event-modal" class="ce-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="ce-modal-title">
-    <div class="ce-modal ce-modal--wide">
+    <div class="ce-modal">
         <div class="ce-modal-header">
             <span id="ce-modal-title">Neues Event erstellen</span>
             <button type="button" class="ce-modal-close" id="ce-modal-close-btn" aria-label="Schließen">✕</button>
         </div>
 
-        <!-- Step 1: Pick event type -->
-        <div id="ce-step-1" class="ce-modal-body">
-            <div class="mb-3">
-                <input type="search"
-                       id="ce-type-search"
-                       placeholder="Event-Typ suchen…"
-                       class="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:border-teal-400"
-                       autocomplete="off">
-            </div>
-            <div id="ce-type-grid" class="overflow-y-auto" style="max-height:420px;">
-                <!-- Populated by JS -->
-            </div>
-        </div>
-
-        <!-- Step 2: Name + Description -->
-        <div id="ce-step-2" class="ce-modal-body" style="display:none;">
-            <button type="button" id="ce-step-back-btn" class="mb-4 text-sm text-teal-500 hover:text-teal-400 flex items-center gap-1">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-                Zurück zur Auswahl
-            </button>
-            <div class="mb-4 flex items-center gap-2">
-                <span class="text-sm text-gray-500 dark:text-gray-400">Event-Typ:</span>
-                <span id="ce-selected-type-badge" class="inline-flex items-center text-xs font-semibold rounded-full px-2.5 py-1 bg-teal-100 dark:bg-teal-500/20 text-teal-700 dark:text-teal-300"></span>
-            </div>
+        <div class="ce-modal-body">
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5" for="ce-event-name-input">
                     Name <span class="text-rose-500">*</span>
@@ -490,6 +467,7 @@ function ceBadgeClasses(string $category, array $colorMap): string
                        id="ce-event-name-input"
                        placeholder="z.B. Willkommen Nachricht"
                        maxlength="100"
+                       autocomplete="off"
                        class="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:border-teal-400">
                 <div id="ce-name-error" class="mt-1 text-xs text-rose-500" style="display:none;">Bitte einen Namen eingeben.</div>
             </div>
@@ -503,6 +481,7 @@ function ceBadgeClasses(string $category, array $colorMap): string
                        maxlength="255"
                        class="w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:border-teal-400">
             </div>
+            <p class="text-xs text-gray-400 dark:text-gray-500 mb-4">Das Event-Typ wird direkt im Builder im Trigger-Block festgelegt.</p>
             <button type="button" id="ce-open-builder-btn"
                     class="btn bg-teal-500 hover:bg-teal-600 text-white w-full">
                 Builder öffnen
@@ -534,7 +513,7 @@ function ceBadgeClasses(string $category, array $colorMap): string
     }
 
     // ── Toggle enable/disable ─────────────────────────────────────────────────
-    document.querySelectorAll('.ce-event-toggle-input').forEach((input) => {
+    document.querySelectorAll('.bh-toggle-input').forEach((input) => {
         input.addEventListener('change', async function () {
             const eventId = parseInt(this.dataset.eventId, 10);
             const enabled = this.checked;
@@ -635,122 +614,31 @@ function ceBadgeClasses(string $category, array $colorMap): string
     });
 
     // ── New Event Modal ───────────────────────────────────────────────────────
-    const EVENT_TYPES = <?= json_encode($ceEventTypes, JSON_UNESCAPED_UNICODE) ?>;
-    const EVENT_LABELS = <?= json_encode($ceEventLabels, JSON_UNESCAPED_UNICODE) ?>;
-    const CATEGORY_COLORS = <?= json_encode($ceCategoryColors, JSON_UNESCAPED_UNICODE) ?>;
-
     const modal       = document.getElementById('ce-new-event-modal');
-    const step1       = document.getElementById('ce-step-1');
-    const step2       = document.getElementById('ce-step-2');
-    const typeGrid    = document.getElementById('ce-type-grid');
-    const typeSearch  = document.getElementById('ce-type-search');
     const closeBtn    = document.getElementById('ce-modal-close-btn');
-    const backBtn     = document.getElementById('ce-step-back-btn');
     const nameInput   = document.getElementById('ce-event-name-input');
     const descInput   = document.getElementById('ce-event-desc-input');
     const nameError   = document.getElementById('ce-name-error');
     const openBuilder = document.getElementById('ce-open-builder-btn');
-    const selectedBadge = document.getElementById('ce-selected-type-badge');
 
-    let selectedEventType = '';
-
-    // Category display names
-    const CATEGORY_LABELS = {
-        reaction: 'Reaction', role: 'Role', scheduled_event: 'Scheduled Event',
-        stage: 'Stage', sticker: 'Sticker', thread: 'Thread', webhook: 'Webhook',
-        boost: 'Boost', bot: 'Bot', channel: 'Channel', invite: 'Invite',
-        member: 'Member', guild: 'Guild', message: 'Message', music: 'Music',
-        audit: 'Audit', automod: 'AutoMod',
-    };
-
-    function buildTypeGrid(filter) {
-        filter = (filter || '').toLowerCase().trim();
-        typeGrid.innerHTML = '';
-
-        Object.keys(EVENT_TYPES).forEach((category) => {
-            const types = EVENT_TYPES[category];
-            const catLabel = CATEGORY_LABELS[category] || category;
-
-            const filteredTypes = types.filter((type) => {
-                if (!filter) return true;
-                const label = (EVENT_LABELS[type] || type).toLowerCase();
-                return type.toLowerCase().includes(filter) || label.includes(filter) || category.toLowerCase().includes(filter);
-            });
-
-            if (filteredTypes.length === 0) return;
-
-            const catColors = CATEGORY_COLORS[category] || {};
-            const bgCls  = (catColors.bg  || 'bg-gray-100 dark:bg-gray-700/60').replace(/dark:[^\s]+/g, '').trim();
-            const txtCls = (catColors.text || 'text-gray-600').replace(/dark:[^\s]+/g, '').trim();
-
-            const catDiv = document.createElement('div');
-            catDiv.className = 'ce-type-category';
-
-            const catLabelEl = document.createElement('div');
-            catLabelEl.className = 'ce-type-category-label';
-            catLabelEl.textContent = catLabel;
-            catDiv.appendChild(catLabelEl);
-
-            const cardsDiv = document.createElement('div');
-            cardsDiv.className = 'ce-type-cards';
-
-            filteredTypes.forEach((type) => {
-                const label = EVENT_LABELS[type] || type;
-                const card = document.createElement('button');
-                card.type = 'button';
-                card.className = 'ce-type-card';
-                card.dataset.type = type;
-                card.innerHTML =
-                    '<span class="ce-type-card-label">' + escHtml(label) + '</span>' +
-                    '<span class="ce-type-card-type">' + escHtml(type) + '</span>';
-                card.addEventListener('click', () => selectEventType(type, label));
-                cardsDiv.appendChild(card);
-            });
-
-            catDiv.appendChild(cardsDiv);
-            typeGrid.appendChild(catDiv);
-        });
-
-        if (typeGrid.children.length === 0) {
-            typeGrid.innerHTML = '<div class="text-sm text-gray-400 text-center py-8">Keine Event-Typen gefunden.</div>';
-        }
-    }
-
-    function selectEventType(type, label) {
-        selectedEventType = type;
-        selectedBadge.textContent = label + ' (' + type + ')';
+    function openModal() {
         nameInput.value = '';
         descInput.value = '';
         nameError.style.display = 'none';
-        step1.style.display = 'none';
-        step2.style.display = 'block';
-        nameInput.focus();
-    }
-
-    function openModal() {
-        selectedEventType = '';
-        step1.style.display = 'block';
-        step2.style.display = 'none';
-        typeSearch.value = '';
-        buildTypeGrid('');
         modal.classList.add('is-open');
-        typeSearch.focus();
+        nameInput.focus();
     }
 
     function closeModal() {
         modal.classList.remove('is-open');
     }
 
-    typeSearch.addEventListener('input', () => buildTypeGrid(typeSearch.value));
-
-    backBtn.addEventListener('click', () => {
-        step2.style.display = 'none';
-        step1.style.display = 'block';
-        typeSearch.focus();
-    });
-
     closeBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    nameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); openBuilder.click(); }
+    });
 
     openBuilder.addEventListener('click', () => {
         const name = nameInput.value.trim();
@@ -761,12 +649,10 @@ function ceBadgeClasses(string $category, array $colorMap): string
         }
         nameError.style.display = 'none';
         const desc = descInput.value.trim();
-        const url = '/dashboard/custom-events/builder'
+        window.location.href = '/dashboard/custom-events/builder'
             + '?bot_id=' + encodeURIComponent(BOT_ID)
-            + '&event_type=' + encodeURIComponent(selectedEventType)
             + '&event_name=' + encodeURIComponent(name)
             + (desc ? '&event_description=' + encodeURIComponent(desc) : '');
-        window.location.href = url;
     });
 
     // Wire up all "+ Neues Event" buttons

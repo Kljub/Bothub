@@ -24,4 +24,10 @@ if (empty($_SESSION['csrf_token'])) {
 $projectRoot = dirname(__FILE__);
 $lockPath = $projectRoot . '/db/config/install.lock';
 
+// Define BH_DEV_MODE from app.php so dev-only features (e.g. Project Builder) can be gated
+if (!defined('BH_DEV_MODE')) {
+    $appCfg = @include $projectRoot . '/db/config/app.php';
+    define('BH_DEV_MODE', is_array($appCfg) && !empty($appCfg['dev_mode']));
+}
+
 require __DIR__ . '/routes/router.php';

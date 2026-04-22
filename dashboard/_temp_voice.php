@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['tv_action'])) {
             $bitrate          = max(8000, min(384000, (int)($_POST['bitrate'] ?? 64000)));
             $isEnabled        = isset($_POST['is_enabled']) ? 1 : 0;
             bh_tv_save_settings($botId, $guildId, $triggerChannelId, $categoryId, $channelName, $userLimit, $bitrate, $isEnabled);
+            try { bh_notify_bot_reload($botId); } catch (Throwable) {}
             echo json_encode(['ok' => true]); exit;
         }
 
@@ -114,10 +115,10 @@ $modEnabled      = bh_mod_is_enabled($pdo, $botId, 'module:temp-voice');
         </div>
     </div>
 
-    <div id="tv-alert" style="display:none;margin-bottom:16px" class="lv-alert"></div>
+    <div id="tv-alert" style="display:none;margin-bottom:16px" class="bh-alert"></div>
 
     <?php if (empty($guilds)): ?>
-    <div class="lv-card">
+    <div class="bh-card">
         <div class="tv-empty">
             <div class="tv-empty__icon">🤖</div>
             <div class="tv-empty__title">Keine Server gefunden</div>
@@ -161,7 +162,7 @@ $modEnabled      = bh_mod_is_enabled($pdo, $botId, 'module:temp-voice');
     <div class="tv-guild-panel<?= $i === 0 ? ' is-active' : '' ?>" data-guild-id="<?= tv_h($gid) ?>">
 
         <!-- ── Enable toggle ── -->
-        <div class="lv-card">
+        <div class="bh-card">
             <div class="lv-feature" style="border-bottom:none">
                 <div class="lv-feature__left">
                     <div class="lv-feature__title">Modul aktiviert</div>
@@ -172,22 +173,22 @@ $modEnabled      = bh_mod_is_enabled($pdo, $botId, 'module:temp-voice');
                         <span class="tv-status__dot"></span>
                         <?= $isOn ? 'Aktiv' : 'Inaktiv' ?>
                     </span>
-                    <label class="lv-toggle">
-                        <input type="checkbox" class="tv-enabled-toggle"
+                    <label class="bh-toggle">
+                        <input type="checkbox" class="tv-enabled-toggle bh-toggle-input"
                             data-guild-id="<?= tv_h($gid) ?>"
                             <?= !empty($s['is_enabled']) ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
         </div>
 
         <!-- ── Configuration ── -->
-        <div class="lv-card">
-            <div class="lv-card__hdr">
+        <div class="bh-card">
+            <div class="bh-card-hdr">
                 <div class="lv-card__hdr-left">
                     <div class="lv-card__kicker">Setup</div>
-                    <div class="lv-card__title">Channel-Konfiguration</div>
+                    <div class="bh-card-title">Channel-Konfiguration</div>
                 </div>
             </div>
             <div class="lv-card__body">
@@ -195,15 +196,15 @@ $modEnabled      = bh_mod_is_enabled($pdo, $botId, 'module:temp-voice');
                 <!-- Trigger + Category -->
                 <div class="tv-grid2">
                     <!-- Trigger Channel picker -->
-                    <div class="lv-field">
-                        <label class="lv-label">
+                    <div class="bh-field">
+                        <label class="bh-label">
                             Trigger Channel
                             <span style="color:#f87171;margin-left:2px">*</span>
                         </label>
                         <div class="tv-ch-wrap" id="tv-wrap-trigger-<?= tv_h($gid) ?>">
                             <div class="tv-ch-row">
                                 <input type="text"
-                                    class="lv-input tv-field"
+                                    class="bh-input tv-field"
                                     id="tv-trigger-input-<?= tv_h($gid) ?>"
                                     data-field="trigger_channel_id"
                                     data-guild-id="<?= tv_h($gid) ?>"
@@ -235,19 +236,19 @@ $modEnabled      = bh_mod_is_enabled($pdo, $botId, 'module:temp-voice');
                                 <div class="tv-dropdown-list" id="tv-dd-trigger-list-<?= tv_h($gid) ?>"></div>
                             </div>
                         </div>
-                        <div class="lv-hint">Voice Channel, dem Nutzer beitreten → Trigger.</div>
+                        <div class="bh-hint">Voice Channel, dem Nutzer beitreten → Trigger.</div>
                     </div>
 
                     <!-- Category picker -->
-                    <div class="lv-field">
-                        <label class="lv-label">
+                    <div class="bh-field">
+                        <label class="bh-label">
                             Kategorie
                             <span style="color:#8991a1;font-size:10px;font-weight:400;margin-left:4px">optional</span>
                         </label>
                         <div class="tv-ch-wrap" id="tv-wrap-category-<?= tv_h($gid) ?>">
                             <div class="tv-ch-row">
                                 <input type="text"
-                                    class="lv-input tv-field"
+                                    class="bh-input tv-field"
                                     id="tv-category-input-<?= tv_h($gid) ?>"
                                     data-field="category_id"
                                     data-guild-id="<?= tv_h($gid) ?>"
@@ -279,15 +280,15 @@ $modEnabled      = bh_mod_is_enabled($pdo, $botId, 'module:temp-voice');
                                 <div class="tv-dropdown-list" id="tv-dd-category-list-<?= tv_h($gid) ?>"></div>
                             </div>
                         </div>
-                        <div class="lv-hint">Temp Channels werden in dieser Kategorie angelegt. Leer = keine Kategorie.</div>
+                        <div class="bh-hint">Temp Channels werden in dieser Kategorie angelegt. Leer = keine Kategorie.</div>
                     </div>
                 </div>
 
                 <!-- Channel name -->
-                <div class="lv-field">
-                    <label class="lv-label">Channel-Name Vorlage</label>
+                <div class="bh-field">
+                    <label class="bh-label">Channel-Name Vorlage</label>
                     <input type="text"
-                        class="lv-input tv-field"
+                        class="bh-input tv-field"
                         data-field="channel_name"
                         data-guild-id="<?= tv_h($gid) ?>"
                         value="<?= tv_h((string)($s['channel_name'] ?? 'Temp #{n}')) ?>"
@@ -303,19 +304,19 @@ $modEnabled      = bh_mod_is_enabled($pdo, $botId, 'module:temp-voice');
 
                 <!-- User limit + Bitrate -->
                 <div class="tv-grid2">
-                    <div class="lv-field">
-                        <label class="lv-label">Nutzer-Limit</label>
+                    <div class="bh-field">
+                        <label class="bh-label">Nutzer-Limit</label>
                         <input type="number"
-                            class="lv-input tv-field"
+                            class="bh-input tv-field"
                             data-field="user_limit"
                             data-guild-id="<?= tv_h($gid) ?>"
                             value="<?= (int)($s['user_limit'] ?? 0) ?>"
                             min="0" max="99" placeholder="0">
-                        <div class="lv-hint">0 = unbegrenzt</div>
+                        <div class="bh-hint">0 = unbegrenzt</div>
                     </div>
-                    <div class="lv-field">
-                        <label class="lv-label">Bitrate</label>
-                        <select class="lv-input tv-field"
+                    <div class="bh-field">
+                        <label class="bh-label">Bitrate</label>
+                        <select class="bh-input tv-field"
                             data-field="bitrate"
                             data-guild-id="<?= tv_h($gid) ?>">
                             <?php
@@ -326,12 +327,12 @@ $modEnabled      = bh_mod_is_enabled($pdo, $botId, 'module:temp-voice');
                             <option value="<?= $val ?>" <?= $currentBitrate === $val ? 'selected' : '' ?>><?= $label ?></option>
                             <?php endforeach; ?>
                         </select>
-                        <div class="lv-hint">Maximale Bitrate je nach Server-Boost-Level.</div>
+                        <div class="bh-hint">Maximale Bitrate je nach Server-Boost-Level.</div>
                     </div>
                 </div>
 
                 <div class="lv-btn-row">
-                    <button type="button" class="lv-btn tv-save-btn" data-guild-id="<?= tv_h($gid) ?>" onclick="tvSave('<?= tv_h($gid) ?>')">
+                    <button type="button" class="bh-btn bh-btn--primary tv-save-btn" data-guild-id="<?= tv_h($gid) ?>" onclick="tvSave('<?= tv_h($gid) ?>')">
                         Speichern
                     </button>
                     <span class="lv-save-msg tv-save-msg" data-guild-id="<?= tv_h($gid) ?>" style="display:none"></span>
@@ -356,11 +357,11 @@ $modEnabled      = bh_mod_is_enabled($pdo, $botId, 'module:temp-voice');
         </div>
 
         <!-- ── Live channels ── -->
-        <div class="lv-card">
-            <div class="lv-card__hdr">
+        <div class="bh-card">
+            <div class="bh-card-hdr">
                 <div class="lv-card__hdr-left">
                     <div class="lv-card__kicker">Live</div>
-                    <div class="lv-card__title">Aktive Temp Channels</div>
+                    <div class="bh-card-title">Aktive Temp Channels</div>
                 </div>
                 <?php if ($activeNow > 0): ?>
                 <span class="tv-status tv-status--on">

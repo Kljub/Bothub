@@ -11,12 +11,25 @@ $botId   = $currentBotId;
 $pdo     = bh_get_pdo();
 $guildId = trim((string)($_GET['guild_id'] ?? ''));
 
+require_once dirname(__DIR__) . '/functions/db_functions/commands.php';
+require_once dirname(__DIR__) . '/functions/custom_commands.php';
+
 $flash  = [];
 $errors = [];
 
-// ── Command definition ────────────────────────────────────────────────────────
+// ── Command definitions ───────────────────────────────────────────────────────
 $pkmCommands = [
     ['key' => 'pokemia', 'name' => '/pokemia', 'desc' => 'Pokémon fangen, trainieren und kämpfen. (Alle Subcommands)'],
+];
+
+$pkmSubCommands = [
+    ['key' => 'pokemia-start',       'name' => '/pokemia start',            'desc' => 'Starter-Pokémon wählen (Bisasam, Glumanda, Schiggy)'],
+    ['key' => 'pokemia-catch',       'name' => '/pokemia catch',            'desc' => 'Erschienenes wildes Pokémon fangen'],
+    ['key' => 'pokemia-list',        'name' => '/pokemia list [seite]',     'desc' => 'Alle eigenen Pokémon auflisten'],
+    ['key' => 'pokemia-info',        'name' => '/pokemia info [nummer]',    'desc' => 'Details zu einem Pokémon anzeigen'],
+    ['key' => 'pokemia-select',      'name' => '/pokemia select <nummer>',  'desc' => 'Aktives Pokémon wechseln'],
+    ['key' => 'pokemia-battle-bot',  'name' => '/pokemia battle bot [1-10]','desc' => 'Gegen den Bot kämpfen (Schwierigkeitsstufe 1–10)'],
+    ['key' => 'pokemia-battle-user', 'name' => '/pokemia battle user @user','desc' => 'Gegen einen anderen User kämpfen'],
 ];
 
 // ── Load guilds ───────────────────────────────────────────────────────────────
@@ -30,6 +43,17 @@ if ($guildId === '' && count($guilds) > 0) {
     $guildId = (string)$guilds[0]['guild_id'];
 }
 
+// ── Seed subcommands ─────────────────────────────────────────────────────────
+try {
+    $seedStmt = $pdo->prepare(
+        "INSERT IGNORE INTO commands (bot_id, command_key, command_type, name, description, is_enabled, created_at, updated_at)
+         VALUES (?, ?, 'module', ?, NULL, 1, NOW(), NOW())"
+    );
+    foreach ($pkmSubCommands as $sc) {
+        $seedStmt->execute([$botId, $sc['key'], $sc['key']]);
+    }
+} catch (Throwable) {}
+
 // ── Load command states ───────────────────────────────────────────────────────
 $enabledCommands = [];
 try {
@@ -41,6 +65,13 @@ try {
         $enabledCommands[$row['command_key']] = (int)$row['is_enabled'];
     }
 } catch (Throwable) {}
+
+// ── Load subcommand states ────────────────────────────────────────────────────
+$subCmdEnabled = [];
+foreach ($pkmSubCommands as $sc) {
+    try { $subCmdEnabled[$sc['key']] = bhcmd_is_enabled($pdo, $botId, $sc['key']); }
+    catch (Throwable) { $subCmdEnabled[$sc['key']] = 1; }
+}
 
 // ── Load spawn config per guild ───────────────────────────────────────────────
 $spawnConfig = ['spawn_channel' => '', 'spawn_rate' => 20];
@@ -61,6 +92,26 @@ try {
     $stats['spawns_caught'] = (int)$pdo->query("SELECT COUNT(*) FROM pokemia_spawn WHERE bot_id = $botId AND caught = 1")->fetchColumn();
 } catch (Throwable) {}
 
+// ── AJAX toggle handler ───────────────────────────────────────────────────────
+$isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+    && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAjax) {
+    while (ob_get_level() > 0) { ob_end_clean(); }
+    header('Content-Type: application/json; charset=utf-8');
+    $field = trim((string)($_POST['field'] ?? ''));
+    $val   = ($_POST['value'] ?? '') === '1' ? 1 : 0;
+    $allowedKeys = array_column($pkmSubCommands, 'key');
+    if (in_array($field, $allowedKeys, true)) {
+        bhcmd_set_module_enabled($pdo, $botId, $field, $val);
+        try { bh_notify_slash_sync($botId); } catch (Throwable) {}
+        echo json_encode(['ok' => true]);
+    } else {
+        echo json_encode(['ok' => false, 'error' => 'invalid_field']);
+    }
+    exit;
+}
+
 // ── Handle POST ───────────────────────────────────────────────────────────────
 $post       = ($_SERVER['REQUEST_METHOD'] === 'POST') ? $_POST : [];
 $postAction = trim((string)($post['pkm_action'] ?? ''));
@@ -76,7 +127,6 @@ if ($postAction !== '') {
             )->execute([':bid' => $botId, ':enabled' => $enabled]);
             $enabledCommands['pokemia'] = $enabled;
             $flash[] = 'Command gespeichert.';
-            require_once dirname(__DIR__) . '/functions/custom_commands.php';
             bh_notify_slash_sync($botId);
         }
 
@@ -108,6 +158,7 @@ $baseUrl = '/dashboard/pokemia?bot_id=' . $botId . ($guildId !== '' ? '&guild_id
 $esc = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 ?>
 <link rel="stylesheet" href="/assets/css/_economy_minigames.css?v=1">
+<link rel="stylesheet" href="/assets/css/_music.css?v=1">
 
 <div class="bh-eco-page">
 
@@ -118,25 +169,25 @@ $esc = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE
     </div>
 
     <?php foreach ($flash as $msg): ?>
-        <div class="bh-eco-alert bh-eco-alert--ok"><?= $esc($msg) ?></div>
+        <div class="bh-alert bh-alert--ok"><?= $esc($msg) ?></div>
     <?php endforeach; ?>
     <?php foreach ($errors as $err): ?>
-        <div class="bh-eco-alert bh-eco-alert--err"><?= $esc($err) ?></div>
+        <div class="bh-alert bh-alert--err"><?= $esc($err) ?></div>
     <?php endforeach; ?>
 
     <!-- ── Stats ──────────────────────────────────────────────────────────────── -->
-    <div class="bh-eco-stats-row" style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px;">
-        <div class="bh-eco-stat-box" style="flex:1;min-width:140px;background:var(--bh-card-bg,#1e2433);border-radius:10px;padding:18px 20px;text-align:center;">
-            <div style="font-size:28px;font-weight:700;color:var(--bh-accent,#6c63ff)"><?= $stats['users'] ?></div>
-            <div style="font-size:12px;color:var(--bh-text-muted,#8b949e);margin-top:4px;">Trainer</div>
+    <div class="bh-eco-stats-row">
+        <div class="bh-eco-stat-box">
+            <div class="bh-eco-stat-num"><?= $stats['users'] ?></div>
+            <div class="bh-eco-stat-label">Trainer</div>
         </div>
-        <div class="bh-eco-stat-box" style="flex:1;min-width:140px;background:var(--bh-card-bg,#1e2433);border-radius:10px;padding:18px 20px;text-align:center;">
-            <div style="font-size:28px;font-weight:700;color:var(--bh-accent,#6c63ff)"><?= $stats['pokemon'] ?></div>
-            <div style="font-size:12px;color:var(--bh-text-muted,#8b949e);margin-top:4px;">Pokémon gefangen</div>
+        <div class="bh-eco-stat-box">
+            <div class="bh-eco-stat-num"><?= $stats['pokemon'] ?></div>
+            <div class="bh-eco-stat-label">Pokémon gefangen</div>
         </div>
-        <div class="bh-eco-stat-box" style="flex:1;min-width:140px;background:var(--bh-card-bg,#1e2433);border-radius:10px;padding:18px 20px;text-align:center;">
-            <div style="font-size:28px;font-weight:700;color:var(--bh-accent,#6c63ff)"><?= $stats['spawns_caught'] ?></div>
-            <div style="font-size:12px;color:var(--bh-text-muted,#8b949e);margin-top:4px;">Wild gefangen</div>
+        <div class="bh-eco-stat-box">
+            <div class="bh-eco-stat-num"><?= $stats['spawns_caught'] ?></div>
+            <div class="bh-eco-stat-label">Wild gefangen</div>
         </div>
     </div>
 
@@ -164,15 +215,15 @@ $esc = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE
                         <div class="bh-eco-feature__desc"><?= $esc($cmd['desc']) ?></div>
                     </div>
                     <div class="bh-eco-feature__right">
-                        <label class="bh-eco-toggle">
-                            <input type="hidden" name="enabled[<?= $esc($key) ?>]" value="0">
-                            <input type="checkbox" name="enabled[<?= $esc($key) ?>]" value="1" <?= $enabled ? 'checked' : '' ?>>
-                            <span class="bh-eco-toggle__track"></span>
+                        <label class="bh-toggle">
+                            <input class="bh-toggle-input" type="hidden" name="enabled[<?= $esc($key) ?>]" value="0">
+                            <input class="bh-toggle-input" type="checkbox" name="enabled[<?= $esc($key) ?>]" value="1" <?= $enabled ? 'checked' : '' ?>>
+                            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                         </label>
                     </div>
                 </div>
                 <?php endforeach; ?>
-                <div style="padding:12px 16px;">
+                <div class="bh-eco-save-row">
                     <button type="submit" class="bh-eco-btn">Speichern</button>
                 </div>
             </form>
@@ -210,11 +261,11 @@ $esc = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE
             <?php if ($guildId !== ''): ?>
             <form method="post" action="<?= $esc($baseUrl) ?>" data-autosave>
                 <input type="hidden" name="pkm_action" value="save_spawn">
-                <div class="bh-eco-settings-grid" style="padding:16px;">
+                <div class="bh-eco-settings-grid">
                     <div class="bh-eco-field">
                         <label class="bh-eco-label">Spawn-Channel (Channel-ID)</label>
                         <input type="text" name="spawn_channel"
-                               class="bh-eco-input"
+                               class="bh-input"
                                value="<?= $esc((string)($spawnConfig['spawn_channel'] ?? '')) ?>"
                                placeholder="z. B. 123456789012345678"
                                pattern="[0-9]*" maxlength="25">
@@ -223,56 +274,46 @@ $esc = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE
                     <div class="bh-eco-field">
                         <label class="bh-eco-label">Spawn-Rate (Nachrichten)</label>
                         <input type="number" name="spawn_rate"
-                               class="bh-eco-input"
+                               class="bh-input"
                                value="<?= (int)($spawnConfig['spawn_rate'] ?? 20) ?>"
                                min="1" max="500">
                         <div class="bh-eco-hint">Alle wie vielen Nachrichten ein wildes Pokémon erscheint (Standard: 20).</div>
                     </div>
                 </div>
-                <div style="padding:0 16px 16px;">
+                <div class="bh-eco-save-row">
                     <button type="submit" class="bh-eco-btn">Einstellungen speichern</button>
                 </div>
             </form>
             <?php else: ?>
-                <div style="padding:24px;color:var(--bh-text-muted,#8b949e);">Kein Server ausgewählt.</div>
+                <div class="bh-eco-empty">Kein Server ausgewählt.</div>
             <?php endif; ?>
         </div>
     </div>
 
-    <!-- ── Info ───────────────────────────────────────────────────────────────── -->
+    <!-- ── Subcommands ───────────────────────────────────────────────────────── -->
     <div class="bh-eco-card">
         <div class="bh-eco-card__header">
             <div class="bh-eco-card__header-left">
-                <div class="bh-eco-card__kicker">INFO</div>
-                <div class="bh-eco-card__title">Verfügbare Subcommands</div>
+                <div class="bh-eco-card__kicker">Slash Commands</div>
+                <div class="bh-eco-card__title">Subcommands</div>
             </div>
         </div>
-        <div style="padding:16px;">
-            <table style="width:100%;border-collapse:collapse;font-size:13px;">
-                <thead>
-                    <tr style="color:var(--bh-text-muted,#8b949e);text-align:left;border-bottom:1px solid var(--bh-border,#2d3346);">
-                        <th style="padding:6px 10px;">Command</th>
-                        <th style="padding:6px 10px;">Beschreibung</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ([
-                        ['/pokemia start',           'Starter-Pokémon wählen (Bisasam, Glumanda, Schiggy)'],
-                        ['/pokemia catch',            'Erschienenes wildes Pokémon fangen'],
-                        ['/pokemia list [seite]',     'Alle eigenen Pokémon auflisten'],
-                        ['/pokemia info [nummer]',    'Details zu einem Pokémon anzeigen'],
-                        ['/pokemia select <nummer>',  'Aktives Pokémon wechseln'],
-                        ['/pokemia battle bot [1-10]','Gegen den Bot kämpfen (Schwierigkeitsstufe 1–10)'],
-                        ['/pokemia battle user @user','Gegen einen anderen User kämpfen'],
-                    ] as [$cmd, $desc]):
-                    ?>
-                    <tr style="border-bottom:1px solid var(--bh-border,#2d3346);">
-                        <td style="padding:8px 10px;"><code style="background:var(--bh-code-bg,#161b27);padding:2px 6px;border-radius:4px;font-size:12px;"><?= $esc($cmd) ?></code></td>
-                        <td style="padding:8px 10px;color:var(--bh-text-muted,#8b949e);"><?= $esc($desc) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <div class="bh-music-cmd-grid">
+            <?php foreach ($pkmSubCommands as $sc): ?>
+            <div class="bh-music-cmd-row">
+                <div class="bh-music-cmd-row__info">
+                    <div class="bh-music-cmd-row__name"><?= $esc($sc['name']) ?></div>
+                    <div class="bh-music-cmd-row__desc"><?= $esc($sc['desc']) ?></div>
+                </div>
+                <label class="bh-toggle">
+                    <input class="bh-toggle-input" type="checkbox"
+                        <?= ($subCmdEnabled[$sc['key']] ?? 1) ? 'checked' : '' ?>
+                        data-field="<?= $esc($sc['key']) ?>"
+                        onchange="pkmToggle(this)">
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
+                </label>
+            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 
@@ -280,6 +321,8 @@ $esc = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE
 
 <script>
 (function () {
+    var url = window.location.pathname + window.location.search;
+
     // Collapsible card headers
     document.querySelectorAll('.bh-eco-card__header--toggle').forEach(function (hdr) {
         hdr.addEventListener('click', function () {
@@ -289,5 +332,24 @@ $esc = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE
             hdr.querySelector('.bh-eco-collapse-chevron')?.classList.toggle('bh-eco-collapse-chevron--open');
         });
     });
+
+    // Subcommand toggles
+    function pkmToggle(el) {
+        var field = el.dataset.field;
+        var val   = el.checked ? '1' : '0';
+        var fd    = new FormData();
+        fd.append('field', field);
+        fd.append('value', val);
+        fetch(url, {
+            method: 'POST',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            body: fd
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (d) { if (!d.ok) { el.checked = !el.checked; } })
+        .catch(function () { el.checked = !el.checked; });
+    }
+
+    window.pkmToggle = pkmToggle;
 }());
 </script>

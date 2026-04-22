@@ -1,0 +1,519 @@
+/* # PFAD: /assets/css/_components.css
+ * Unified BotHub component library — loaded globally via _layout.php
+ * All module-specific duplicates of these patterns are removed in favour of these classes.
+ */
+
+/* ── Alert / Flash ──────────────────────────────────────────────────────────── */
+
+.bh-alert {
+    margin-bottom: 16px;
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.bh-alert--inline {
+    margin-top: 18px;
+    margin-bottom: 18px;
+}
+
+.bh-alert--ok {
+    background: rgba(16, 185, 129, 0.14);
+    border-color: rgba(16, 185, 129, 0.24);
+    color: #d1fae5;
+}
+
+.bh-alert--err {
+    background: rgba(239, 68, 68, 0.14);
+    border-color: rgba(239, 68, 68, 0.24);
+    color: #fecaca;
+}
+
+.bh-alert--warn {
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(245, 158, 11, 0.24);
+    color: #fde68a;
+}
+
+/* ── Toggle switch ──────────────────────────────────────────────────────────── */
+
+.bh-toggle {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.bh-toggle-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.bh-toggle-track {
+    display: inline-block;
+    position: relative;
+    width: 40px;
+    height: 22px;
+    border-radius: 999px;
+    background: #4b5563;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+}
+
+.bh-toggle-input:checked + .bh-toggle-track {
+    background: #4338ca;
+}
+
+.bh-toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease;
+}
+
+.bh-toggle-input:checked + .bh-toggle-track .bh-toggle-thumb {
+    transform: translateX(18px);
+}
+
+/* Toggle row layout (label + desc + switch) */
+.bh-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid #2e3850;
+}
+
+.bh-toggle-row:last-child { border-bottom: none; }
+
+.bh-toggle-row__info { flex: 1; }
+
+.bh-toggle-row__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 2px;
+}
+
+.bh-toggle-row__desc {
+    font-size: 11px;
+    color: #4f5f80;
+    line-height: 1.4;
+}
+
+/* ── Card ───────────────────────────────────────────────────────────────────── */
+
+.bh-card {
+    background: #1e2536;
+    border: 1px solid #2e3850;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.bh-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+}
+
+.bh-card-desc {
+    font-size: 12px;
+    color: #4f5f80;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.bh-card-hdr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 22px;
+    border-bottom: 1px solid #2e3850;
+}
+
+.bh-card-body {
+    padding: 20px 22px;
+}
+
+/* ── Form fields ────────────────────────────────────────────────────────────── */
+
+.bh-field {
+    margin-bottom: 18px;
+}
+
+.bh-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+}
+
+.bh-hint {
+    font-size: 11px;
+    color: #4f5f80;
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+/* ── Inputs ─────────────────────────────────────────────────────────────────── */
+
+.bh-input,
+.bh-select,
+.bh-textarea {
+    width: 100%;
+    background: #1a2130;
+    border: 1px solid #374461;
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 13px;
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.bh-input:hover,
+.bh-select:hover,
+.bh-textarea:hover {
+    border-color: #4f6080;
+}
+
+.bh-input:focus,
+.bh-select:focus,
+.bh-textarea:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    background: #1e2640;
+}
+
+.bh-input::placeholder,
+.bh-textarea::placeholder {
+    color: #4a5a78;
+}
+
+.bh-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7fad' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+    cursor: pointer;
+}
+
+.bh-textarea {
+    padding: 10px 12px;
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+}
+
+/* ── Buttons (C — dark indigo) ──────────────────────────────────────────────── */
+
+.bh-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.1s, opacity 0.15s;
+}
+
+.bh-btn:hover {
+    transform: translateY(-1px);
+}
+
+.bh-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.bh-btn--primary {
+    background: #4338ca;
+    color: #fff;
+}
+
+.bh-btn--primary:hover {
+    background: #3730a3;
+}
+
+.bh-btn--danger {
+    background: #ef4444;
+    color: #fff;
+}
+
+.bh-btn--danger:hover {
+    background: #dc2626;
+}
+
+.bh-btn--secondary {
+    background: rgba(255, 255, 255, 0.06);
+    color: #c8d0e0;
+    border: 1px solid #2e3850;
+}
+
+.bh-btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f1f5f9;
+}
+
+.bh-btn--sm {
+    padding: 5px 14px;
+    font-size: 12px;
+}
+
+/* ── Tags / Chips (B — blue channels) ──────────────────────────────────────── */
+
+.bh-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(99, 102, 246, 0.18);
+    color: #a5b4fc;
+    border-radius: 6px;
+    font-size: 11px;
+    padding: 3px 8px;
+    font-weight: 600;
+}
+
+.bh-tag--channel {
+    background: rgba(56, 189, 248, 0.14);
+    color: #7dd3fc;
+}
+
+.bh-tag-rm {
+    background: none;
+    border: none;
+    color: #6b7fad;
+    cursor: pointer;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* ── Section header ─────────────────────────────────────────────────────────── */
+
+.bh-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6366f1;
+    margin-bottom: 2px;
+}
+
+.bh-section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 18px;
+}
+
+/* ── Command grid ───────────────────────────────────────────────────────────── */
+
+.bh-cmd-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+@media (max-width: 640px) {
+    .bh-cmd-grid { grid-template-columns: 1fr; }
+}
+
+.bh-cmd-card {
+    background: #1e2536;
+    border: 1px solid #2e3850;
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.bh-cmd-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 3px;
+}
+
+.bh-cmd-desc {
+    font-size: 11px;
+    color: #4f5f80;
+    line-height: 1.4;
+}
+
+/* ── List card rows ─────────────────────────────────────────────────────────── */
+
+.bh-list-card {
+    background: #1e2536;
+    border: 1px solid #2e3850;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.bh-list-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f1f5f9;
+}
+
+.bh-list-meta {
+    font-size: 11px;
+    color: #4f5f80;
+    margin-top: 3px;
+}
+
+/* ── Dashed add button ──────────────────────────────────────────────────────── */
+
+.bh-add-btn {
+    background: none;
+    border: 1px dashed #3d4f6e;
+    border-radius: 6px;
+    color: #4f5f80;
+    font-size: 20px;
+    line-height: 1;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+.bh-add-btn:hover {
+    border-color: #4338ca;
+    color: #818cf8;
+}
+
+/* ── Embed builder inputs (compact, used inside embed panels) ───────────────── */
+
+.bh-embed-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #8892a4;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.bh-embed-textarea {
+    width: 100%;
+    background: #2e3850;
+    border: 1px solid #3d4f6e;
+    border-radius: 8px;
+    color: #e6edf3;
+    font-size: 13px;
+    padding: 8px 12px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.bh-embed-textarea:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.35);
+}
+
+.bh-embed-textarea::placeholder {
+    color: #484f58;
+}
+
+.bh-embed-input {
+    width: 100%;
+    background: #2e3850;
+    border: 1px solid #3d4f6e;
+    border-radius: 8px;
+    color: #e6edf3;
+    font-size: 13px;
+    padding: 8px 12px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.bh-embed-input:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.35);
+}
+
+.bh-embed-input::placeholder {
+    color: #484f58;
+}
+
+/* ── Variable chips (shared: Message Builder, Notifications…) ───────────────── */
+
+.bh-vars {
+    background: #151b2b;
+    border: 1px solid #2e3850;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+}
+
+.bh-vars-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: #4f5f80;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 7px;
+}
+
+.bh-vars-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.bh-var-chip {
+    background: #1e2536;
+    border: 1px solid #2e3850;
+    border-radius: 5px;
+    color: #a5b4fc;
+    font-size: 11px;
+    font-family: monospace;
+    padding: 3px 8px;
+    cursor: pointer;
+    transition: border-color .15s, color .15s, background .15s;
+    user-select: none;
+}
+
+.bh-var-chip:hover { border-color: #6366f1; color: #818cf8; background: #1e2740; }
+.bh-var-chip.is-copied { border-color: #10b981; color: #6ee7b7; background: rgba(16,185,129,.1); }

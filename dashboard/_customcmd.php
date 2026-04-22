@@ -216,13 +216,13 @@ $csrfToken = h((string)$_SESSION['bh_cc_csrf']);
                     <div class="cc-cmd-row flex items-center gap-4 px-5 py-4" data-command-id="<?= $commandId ?>">
 
                         <!-- Enable toggle -->
-                        <label class="cc-cmd-toggle flex-shrink-0" title="<?= $isEnabled ? 'Deaktivieren' : 'Aktivieren' ?>">
+                        <label class="bh-toggle flex-shrink-0" title="<?= $isEnabled ? 'Deaktivieren' : 'Aktivieren' ?>">
                             <input type="checkbox"
-                                   class="cc-cmd-toggle-input"
+                                   class="bh-toggle-input"
                                    <?= $isEnabled ? 'checked' : '' ?>
                                    data-command-id="<?= $commandId ?>">
-                            <span class="cc-cmd-toggle-track">
-                                <span class="cc-cmd-toggle-thumb"></span>
+                            <span class="bh-toggle-track">
+                                <span class="bh-toggle-thumb"></span>
                             </span>
                         </label>
 
@@ -313,7 +313,7 @@ $csrfToken = h((string)$_SESSION['bh_cc_csrf']);
     }
 
     // ── Toggle enable/disable ─────────────────────────────────────────────────
-    document.querySelectorAll('.cc-cmd-toggle-input').forEach((input) => {
+    document.querySelectorAll('.bh-toggle-input').forEach((input) => {
         input.addEventListener('change', async function () {
             const commandId = parseInt(this.dataset.commandId, 10);
             const enabled   = this.checked;

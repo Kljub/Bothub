@@ -183,7 +183,7 @@ $builder = is_array($builderState) && isset($builderState['builder']) && is_arra
                 'label'  => 'Event Trigger',
                 'x'      => 160,
                 'y'      => 260,
-                'config' => ['event_type' => ''],
+                'config' => ['event_type' => trim((string)($_GET['event_type'] ?? ''))],
             ],
             [
                 'id'     => 'node_error_1',
@@ -205,9 +205,9 @@ $currentBotId = $event !== null
     ? (int)($event['bot_id'] ?? 0)
     : (isset($_GET['bot_id']) && is_numeric($_GET['bot_id']) ? (int)$_GET['bot_id'] : 0);
 
-$displayName = $event !== null ? trim((string)($event['name']        ?? '')) : '';
-$eventType   = $event !== null ? trim((string)($event['event_type']  ?? '')) : '';
-$description = $event !== null ? trim((string)($event['description'] ?? '')) : '';
+$displayName = $event !== null ? trim((string)($event['name']        ?? '')) : trim((string)($_GET['event_name']        ?? ''));
+$eventType   = $event !== null ? trim((string)($event['event_type']  ?? '')) : trim((string)($_GET['event_type']         ?? ''));
+$description = $event !== null ? trim((string)($event['description'] ?? '')) : trim((string)($_GET['event_description']  ?? ''));
 
 // Bot meta for preview
 $botPreviewName   = 'Bot';
@@ -399,13 +399,13 @@ $eventLabelsJson = json_encode($ceEventLabels, JSON_UNESCAPED_UNICODE | JSON_UNE
         </header>
 
         <?php if ($flashSuccess !== null): ?>
-            <div class="cc-alert cc-alert--success"><?= h($flashSuccess) ?></div>
+            <div class="bh-alert bh-alert--ok"><?= h($flashSuccess) ?></div>
         <?php endif; ?>
         <?php if ($flashError !== null): ?>
-            <div class="cc-alert cc-alert--error"><?= h($flashError) ?></div>
+            <div class="bh-alert bh-alert--err"><?= h($flashError) ?></div>
         <?php endif; ?>
         <?php if ($loadError !== null): ?>
-            <div class="cc-alert cc-alert--error"><?= h($loadError) ?></div>
+            <div class="bh-alert bh-alert--err"><?= h($loadError) ?></div>
         <?php endif; ?>
 
         <main class="cc-main">
@@ -1087,5 +1087,25 @@ $eventLabelsJson = json_encode($ceEventLabels, JSON_UNESCAPED_UNICODE | JSON_UNE
     window.CebEventLabels = <?= $eventLabelsJson ?>;
 </script>
 <script src="/assets/js/custom-command-builder.js"></script>
+<?php if ($eventId === 0 && $eventType === ''): ?>
+<script>
+// New event with no type yet — auto-select the trigger node so the properties drawer
+// opens immediately and the user sees the event type selector.
+(function () {
+    function selectTrigger() {
+        const triggerNode = document.querySelector('.cc-node[data-node-type="trigger.event"]');
+        if (triggerNode) {
+            triggerNode.click();
+            return true;
+        }
+        return false;
+    }
+    if (!selectTrigger()) {
+        // Builder may still be initializing; retry once after a frame
+        requestAnimationFrame(() => selectTrigger());
+    }
+}());
+</script>
+<?php endif; ?>
 </body>
 </html>

@@ -1,39 +1,39 @@
-/* ── Toggle ──────────────────────────────────────────────────────────────── */
-.fg-toggle {
-    display: inline-flex; align-items: center; cursor: pointer; flex-shrink: 0;
-}
-.fg-toggle-input { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
-.fg-toggle-track {
-    display: inline-block; position: relative;
-    width: 40px; height: 22px; border-radius: 999px;
-    background: #d1d5db; transition: background 0.2s ease; flex-shrink: 0;
-}
-.dark .fg-toggle-track { background: #4b5563; }
-.fg-toggle-input:checked + .fg-toggle-track { background: #10b981; }
-.fg-toggle-thumb {
-    position: absolute; top: 3px; left: 3px;
-    width: 16px; height: 16px; border-radius: 50%;
-    background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25);
-    transition: transform .2s ease;
-}
-.fg-toggle-input:checked + .fg-toggle-track .fg-toggle-thumb { transform: translateX(18px); }
-
-/* ── Game cards ──────────────────────────────────────────────────────────── */
+/* ── Game card ───────────────────────────────────────────────────────────── */
 .fg-game-card {
-    background: white; border: 1px solid #e5e7eb; border-radius: 12px;
-    overflow: hidden; transition: box-shadow .15s, border-color .15s;
-    display: flex; flex-direction: column;
+    background: #1e2536;
+    border: 1px solid #2e3850;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color .15s, box-shadow .15s;
 }
-.dark .fg-game-card { background: #1f2937; border-color: rgba(55,65,81,.6); }
-.fg-game-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); border-color: #10b981; }
+.fg-game-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,.3);
+    border-color: #10b981;
+}
 .fg-game-card-img {
     width: 100%; aspect-ratio: 16/9; object-fit: cover;
     background: #111; display: block;
 }
-.fg-game-card-body { padding: 12px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
-.fg-game-card-title { font-size: 13px; font-weight: 700; color: #111827; line-height: 1.3; }
-.dark .fg-game-card-title { color: #f3f4f6; }
-.fg-game-card-desc { font-size: 11px; color: #6b7280; line-height: 1.4; flex: 1; }
+.fg-game-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px;
+}
+.fg-game-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+}
+.fg-game-card-desc {
+    font-size: 11px;
+    color: #4f5f80;
+    line-height: 1.4;
+}
 .fg-game-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; gap: 8px; }
 .fg-game-card-end { font-size: 10px; color: #9ca3af; }
 .fg-game-card-link {
@@ -48,123 +48,68 @@
 
 /* ── Skeleton ────────────────────────────────────────────────────────────── */
 .fg-skeleton {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background: linear-gradient(90deg, #2e3850 25%, #374461 50%, #2e3850 75%);
     background-size: 200% 100%; animation: fg-shimmer 1.4s infinite;
     border-radius: 8px;
 }
-.dark .fg-skeleton {
-    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
-    background-size: 200% 100%;
-}
 @keyframes fg-shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
-/* ── Accent label (replaces text-emerald-500 + uppercase) ───────────────── */
+/* ── Accent label ────────────────────────────────────────────────────────── */
 .fg-label-accent {
     font-size: .75rem; font-weight: 700; letter-spacing: .05em;
     text-transform: uppercase; color: #10b981; margin-bottom: .25rem;
     display: block;
 }
 
-/* ── Primary button (replaces btn + bg-emerald-500) ─────────────────────── */
-.fg-btn-primary {
-    background-color: #10b981;
-    color: #fff;
-}
-.fg-btn-primary:hover:not(:disabled) { background-color: #059669; }
-.fg-btn-primary:disabled { opacity: .6; cursor: not-allowed; }
-
-/* ── Secondary button (reset cache – amber hover) ────────────────────────── */
+/* ── Secondary button (reset cache) ─────────────────────────────────────── */
 .fg-btn-secondary {
     width: 100%; display: inline-flex; align-items: center; justify-content: center;
     padding: .375rem .75rem; font-size: .75rem; font-weight: 500;
-    color: #6b7280; border: 1px solid #e5e7eb; border-radius: .5rem;
+    color: #9ca3af; border: 1px solid #374151; border-radius: .5rem;
     background: transparent; cursor: pointer;
     transition: border-color .15s, color .15s;
 }
-.dark .fg-btn-secondary { color: #9ca3af; border-color: #374151; }
-.fg-btn-secondary:hover { border-color: #fbbf24; color: #d97706; }
-.dark .fg-btn-secondary:hover { color: #fbbf24; }
+.fg-btn-secondary:hover { border-color: #fbbf24; color: #fbbf24; }
 .fg-btn-secondary:disabled { opacity: .6; cursor: not-allowed; }
 
-/* ── Input field ─────────────────────────────────────────────────────────── */
-.fg-input {
-    width: 100%; background-color: #fff;
-    border: 1px solid #d1d5db; border-radius: .5rem;
-    padding: .5rem .75rem; font-size: .875rem; color: #111827;
-    outline: none; transition: border-color .15s;
-}
-.dark .fg-input { background-color: #111827; border-color: #4b5563; color: #f3f4f6; }
-.fg-input::placeholder { color: #9ca3af; }
-.fg-input:focus { border-color: #34d399; }
-
-/* ── Flash messages ──────────────────────────────────────────────────────── */
-.fg-flash--ok {
-    border-radius: .75rem; border: 1px solid #a7f3d0;
-    background-color: #ecfdf5; padding: .75rem 1rem;
-    font-size: .875rem; color: #065f46; margin-bottom: 1rem;
-}
-.dark .fg-flash--ok {
-    border-color: rgba(16,185,129,.3);
-    background-color: rgba(16,185,129,.1); color: #6ee7b7;
-}
-.fg-flash--err {
-    border-radius: .75rem; border: 1px solid #fecaca;
-    background-color: #fff1f2; padding: .75rem 1rem;
-    font-size: .875rem; color: #9f1239; margin-bottom: 1rem;
-}
-.dark .fg-flash--err {
-    border-color: rgba(248,113,113,.3);
-    background-color: rgba(248,113,113,.1); color: #fca5a5;
-}
-
 /* ── Schedule section ────────────────────────────────────────────────────── */
-.fg-sched-time-input {
-    width: 100%; background: #fff; border: 1px solid #d1d5db; border-radius: .5rem;
-    padding: .4rem .75rem; font-size: .875rem; color: #111827;
-    outline: none; transition: border-color .15s; font-family: inherit;
-}
-.dark .fg-sched-time-input { background: #111827; border-color: #4b5563; color: #f3f4f6; }
-.fg-sched-time-input:focus { border-color: #6366f1; }
-
 .fg-sched-days { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .fg-sched-day-btn {
     padding: 4px 10px; border-radius: 6px; font-size: .75rem; font-weight: 600;
-    border: 1px solid #d1d5db; background: transparent; cursor: pointer;
-    color: #6b7280; transition: border-color .15s, background .15s, color .15s;
+    border: 1px solid #4b5563; background: transparent; cursor: pointer;
+    color: #9ca3af; transition: border-color .15s, background .15s, color .15s;
 }
-.dark .fg-sched-day-btn { border-color: #4b5563; color: #9ca3af; }
 .fg-sched-day-btn:hover { border-color: #6366f1; color: #818cf8; }
 .fg-sched-day-btn.is-active {
-    background: rgba(99,102,241,.12); border-color: #6366f1; color: #818cf8;
+    background: rgba(99,102,241,.2); border-color: #6366f1; color: #818cf8;
 }
-.dark .fg-sched-day-btn.is-active { background: rgba(99,102,241,.2); }
+
+/* ── Schedule time input ─────────────────────────────────────────────────── */
+.fg-sched-time-input {
+    background: #1a2130;
+    border: 1px solid #374461;
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 13px;
+    padding: 7px 10px;
+    outline: none;
+    width: 110px;
+    transition: border-color .15s, box-shadow .15s;
+}
+.fg-sched-time-input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.25); }
 
 /* ── Picker tag box (channel / role selector) ────────────────────────────── */
 .fg-picker-box {
     display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
     min-height: 38px; padding: 5px 8px;
-    border: 1px solid #d1d5db; border-radius: .5rem; background: #fff;
+    border: 1px solid #374461; border-radius: .5rem; background: #1a2130;
     transition: border-color .15s;
 }
-.dark .fg-picker-box { background: #111827; border-color: #4b5563; }
 .fg-picker-box:focus-within { border-color: #6366f1; }
 
-.fg-picker-tag {
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 2px 8px; border-radius: 999px; font-size: .75rem; font-weight: 500;
-    background: rgba(99,102,241,.12); color: #818cf8;
-}
-.fg-picker-tag--channel { background: rgba(34,197,94,.12); color: #4ade80; }
-
-.fg-picker-tag-rm {
-    background: none; border: none; padding: 0; margin: 0;
-    font-size: 13px; line-height: 1; cursor: pointer; color: inherit; opacity: .7;
-}
-.fg-picker-tag-rm:hover { opacity: 1; color: #f87171; }
-
 .fg-picker-add-btn {
-    background: none; border: 1px dashed #6b7280; border-radius: 6px;
+    background: none; border: 1px dashed #4a5a78; border-radius: 6px;
     width: 24px; height: 24px; font-size: 16px; line-height: 1;
     color: #6b7280; cursor: pointer; transition: border-color .15s, color .15s;
     display: flex; align-items: center; justify-content: center;
@@ -174,7 +119,6 @@
 /* ── Worth badge ─────────────────────────────────────────────────────────── */
 .fg-worth-badge {
     display: inline-block; font-size: .75rem; font-weight: 500;
-    background-color: #d1fae5; color: #065f46;
+    background-color: rgba(16,185,129,.2); color: #6ee7b7;
     border-radius: 9999px; padding: .125rem .5rem;
 }
-.dark .fg-worth-badge { background-color: rgba(16,185,129,.2); color: #6ee7b7; }

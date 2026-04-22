@@ -300,15 +300,15 @@ if (!is_string($initialBuilderJson) || $initialBuilderJson === '') {
         </header>
 
         <?php if ($flashSuccess !== null): ?>
-            <div class="cc-alert cc-alert--success"><?= h($flashSuccess) ?></div>
+            <div class="bh-alert bh-alert--ok"><?= h($flashSuccess) ?></div>
         <?php endif; ?>
 
         <?php if ($flashError !== null): ?>
-            <div class="cc-alert cc-alert--error"><?= h($flashError) ?></div>
+            <div class="bh-alert bh-alert--err"><?= h($flashError) ?></div>
         <?php endif; ?>
 
         <?php if ($loadError !== null): ?>
-            <div class="cc-alert cc-alert--error"><?= h($loadError) ?></div>
+            <div class="bh-alert bh-alert--err"><?= h($loadError) ?></div>
         <?php endif; ?>
 
         <main class="cc-main">

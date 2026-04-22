@@ -88,129 +88,129 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
 <div class="mb-page">
 
     <!-- Flash -->
-    <div id="mb-flash" class="mb-flash"></div>
+    <div id="bh-alert" class="bh-alert bh-alert--inline" style="display:none"></div>
 
     <!-- Header -->
     <div class="mb-header">
         <div>
-            <div class="mb-header-title">Message Builder</div>
-            <div class="mb-header-desc">Erstelle wiederverwendbare Nachrichten-Templates für deinen Bot.</div>
+            <div class="bh-section-label">Message Builder</div>
+            <div class="mb-header-title">Templates</div>
+            <div class="mb-header-desc">Wiederverwendbare Nachrichten-Templates für deinen Bot.</div>
         </div>
     </div>
 
-    <!-- ── Form ────────────────────────────────────────────────────────── -->
-    <div>
-        <div class="mb-card">
-                <div class="mb-card-title">Neues Template erstellen</div>
-                <div class="mb-card-desc">Verwende Variablen wie <code style="color:#a5b4fc">{user.mention}</code> für dynamische Inhalte.</div>
+    <!-- ── Create form ──────────────────────────────────────────────────── -->
+    <div class="bh-card">
+        <div class="bh-card-title">Neues Template</div>
+        <div class="bh-card-desc">Verwende Variablen wie <code style="color:#a5b4fc;font-size:12px">{user.mention}</code> für dynamische Inhalte.</div>
 
-                <!-- Name + Tag -->
-                <div class="mb-field mb-field-row">
-                    <div>
-                        <div class="mb-label">Name <span style="color:#f87171">*</span></div>
-                        <input type="text" id="mb-name" class="mb-input" placeholder="z.B. Willkommens-Nachricht" maxlength="100">
-                    </div>
-                    <div>
-                        <div class="mb-label">Kategorie / Tag</div>
-                        <input type="text" id="mb-tag" class="mb-input" placeholder="z.B. welcome, info" maxlength="50">
-                    </div>
-                </div>
+        <!-- Name + Tag -->
+        <div class="bh-field mb-field-row">
+            <div>
+                <div class="bh-label">Name <span style="color:#f87171">*</span></div>
+                <input type="text" id="mb-name" class="bh-input" placeholder="z.B. Willkommens-Nachricht" maxlength="100">
+            </div>
+            <div>
+                <div class="bh-label">Kategorie / Tag</div>
+                <input type="text" id="mb-tag" class="bh-input" placeholder="z.B. welcome, info" maxlength="50">
+            </div>
+        </div>
 
-                <!-- Embed toggle -->
-                <div class="mb-toggle-row">
-                    <div>
-                        <div class="mb-toggle-label">Embed-Nachricht</div>
-                        <div class="mb-toggle-desc">Formatierte Nachricht mit Farbe, Titel und Feldern.</div>
-                    </div>
-                    <label class="bh-toggle" style="margin-left:16px">
-                        <input type="checkbox" id="mb-is-embed" checked>
-                        <span class="bh-toggle__track"></span>
-                        <span class="bh-toggle__thumb"></span>
-                    </label>
-                </div>
+        <!-- Embed toggle -->
+        <div class="bh-toggle-row">
+            <div class="bh-toggle-row__info">
+                <div class="bh-toggle-row__title">Embed-Nachricht</div>
+                <div class="bh-toggle-row__desc">Formatierte Nachricht mit Farbe, Titel und Feldern.</div>
+            </div>
+            <label class="bh-toggle">
+                <input class="bh-toggle-input" type="checkbox" id="mb-is-embed" checked>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
+            </label>
+        </div>
 
-                <!-- Embed builder -->
-                <div id="mb-embed-panel">
-                    <div class="mb-embed-panel">
-                        <div class="mb-embed-inner">
-                            <div id="mb-embed-stripe" class="mb-embed-stripe" title="Farbe ändern" onclick="document.getElementById('mb-color-picker').click()"></div>
-                            <div class="mb-embed-body">
-                                <div class="mb-embed-row">
-                                    <div>
-                                        <div class="mb-embed-label">Author</div>
-                                        <input type="text" id="mb-embed-author" class="mb-embed-input" placeholder="Autor-Name">
-                                    </div>
-                                    <div>
-                                        <div class="mb-embed-label">Thumbnail URL</div>
-                                        <input type="text" id="mb-embed-thumb" class="mb-embed-input" placeholder="https://...">
-                                    </div>
+        <!-- Embed builder -->
+        <div id="mb-embed-panel" style="margin-top:14px">
+            <div class="mb-embed-panel">
+                <div class="mb-embed-inner">
+                    <div id="mb-embed-stripe" class="mb-embed-stripe" title="Farbe ändern" onclick="document.getElementById('mb-color-picker').click()"></div>
+                    <div class="mb-embed-body">
+                        <div class="mb-embed-row">
+                            <div>
+                                <div class="bh-embed-label">Author</div>
+                                <input type="text" id="mb-embed-author" class="bh-embed-input" placeholder="Autor-Name">
+                            </div>
+                            <div>
+                                <div class="bh-embed-label">Thumbnail URL</div>
+                                <input type="text" id="mb-embed-thumb" class="bh-embed-input" placeholder="https://...">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="bh-embed-label">Titel</div>
+                            <input type="text" id="mb-embed-title" class="bh-embed-input" placeholder="Template-Titel">
+                        </div>
+                        <div>
+                            <div class="bh-embed-label">Beschreibung</div>
+                            <textarea id="mb-embed-body" class="bh-embed-textarea" placeholder="Nachrichtentext… {user.mention} sind hier erlaubt."></textarea>
+                        </div>
+                        <div>
+                            <div class="bh-embed-label">Bild URL</div>
+                            <input type="text" id="mb-embed-image" class="bh-embed-input" placeholder="https://...">
+                        </div>
+                        <div class="mb-embed-footer-row">
+                            <div>
+                                <div class="bh-embed-label">Farbe</div>
+                                <div style="display:flex;align-items:center;gap:8px">
+                                    <span id="mb-color-swatch" class="mb-color-swatch" style="background:#5865f2" onclick="document.getElementById('mb-color-picker').click()"></span>
+                                    <input type="color" id="mb-color-picker" value="#5865f2" style="display:none">
+                                    <input type="text" id="mb-color-hex" class="bh-embed-input" value="#5865f2" placeholder="#5865f2" style="width:88px;font-family:monospace">
                                 </div>
-                                <div>
-                                    <div class="mb-embed-label">Titel</div>
-                                    <input type="text" id="mb-embed-title" class="mb-embed-input" placeholder="Template-Titel">
-                                </div>
-                                <div>
-                                    <div class="mb-embed-label">Beschreibung</div>
-                                    <textarea id="mb-embed-body" class="mb-embed-textarea" placeholder="Nachrichtentext… {user.mention} sind hier erlaubt."></textarea>
-                                </div>
-                                <div>
-                                    <div class="mb-embed-label">Bild URL</div>
-                                    <input type="text" id="mb-embed-image" class="mb-embed-input" placeholder="https://...">
-                                </div>
-                                <div class="mb-embed-footer-row">
-                                    <div>
-                                        <div class="mb-embed-label">Farbe</div>
-                                        <div style="display:flex;align-items:center;gap:8px">
-                                            <span id="mb-color-swatch" class="mb-color-swatch" style="background:#5865f2" onclick="document.getElementById('mb-color-picker').click()"></span>
-                                            <input type="color" id="mb-color-picker" value="#5865f2" style="display:none">
-                                            <input type="text" id="mb-color-hex" class="mb-embed-input" value="#5865f2" placeholder="#5865f2" style="width:88px;font-family:monospace">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="mb-embed-label">Embed URL</div>
-                                        <input type="text" id="mb-embed-url" class="mb-embed-input" placeholder="https://...">
-                                    </div>
-                                </div>
+                            </div>
+                            <div>
+                                <div class="bh-embed-label">Embed URL</div>
+                                <input type="text" id="mb-embed-url" class="bh-embed-input" placeholder="https://...">
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Plain text panel -->
-                <div id="mb-plain-panel" style="display:none">
-                    <div class="mb-label" style="margin-bottom:6px">Text</div>
-                    <textarea id="mb-plain-text" class="mb-textarea" placeholder="Nachrichtentext..."></textarea>
-                </div>
+        <!-- Plain text panel -->
+        <div id="mb-plain-panel" style="display:none;margin-top:14px">
+            <div class="bh-label" style="margin-bottom:6px">Text</div>
+            <textarea id="mb-plain-text" class="mb-textarea" placeholder="Nachrichtentext..."></textarea>
+        </div>
 
-                <!-- Variables -->
-                <div class="mb-vars" style="margin-top:16px">
-                    <div class="mb-vars-title">Verfügbare Variablen — klicken zum Kopieren</div>
-                    <div class="mb-vars-list">
-                        <?php foreach ([
-                            '{user}', '{user.mention}', '{user.id}', '{user.name}', '{user.tag}',
-                            '{guild.name}', '{guild.id}', '{guild.memberCount}',
-                            '{channel}', '{channel.name}',
-                            '{date}', '{time}',
-                        ] as $v): ?>
-                        <span class="mb-var-chip" onclick="mbCopyVar(this, '<?= $esc($v) ?>')"><?= $esc($v) ?></span>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
+        <!-- Variables -->
+        <div class="mb-vars" style="margin-top:16px">
+            <div class="mb-vars-title">Verfügbare Variablen — klicken zum Kopieren</div>
+            <div class="mb-vars-list">
+                <?php foreach ([
+                    '{user}', '{user.mention}', '{user.id}', '{user.name}', '{user.tag}',
+                    '{guild.name}', '{guild.id}', '{guild.memberCount}',
+                    '{channel}', '{channel.name}',
+                    '{date}', '{time}',
+                ] as $v): ?>
+                <span class="mb-var-chip" onclick="mbCopyVar(this, '<?= $esc($v) ?>')"><?= $esc($v) ?></span>
+                <?php endforeach; ?>
+            </div>
+        </div>
 
-                <!-- Save -->
-                <div class="mb-btn-row">
-                    <button class="mb-btn" id="mb-save-btn" onclick="mbSave()">Template speichern</button>
-                </div>
+        <!-- Save -->
+        <div class="mb-btn-row">
+            <button class="bh-btn bh-btn--primary" id="mb-save-btn" onclick="mbSave()">Template speichern</button>
         </div>
     </div>
 
     <!-- ── Template list ────────────────────────────────────────────────── -->
-    <div>
-        <div class="mb-section-label" style="margin-bottom:10px">
-                VORHANDENE TEMPLATES
-                <span id="mb-count-badge" style="color:#6b7fad;font-weight:400;text-transform:none;letter-spacing:0;margin-left:4px">(<?= count($templates) ?>)</span>
+    <div class="bh-card" style="padding:0">
+        <div class="bh-card-hdr">
+            <div>
+                <div class="bh-card-title" style="margin-bottom:0">Vorhandene Templates</div>
             </div>
-
+            <span id="mb-count-badge" class="bh-tag"><?= count($templates) ?></span>
+        </div>
+        <div style="padding:16px 22px">
             <div id="mb-list" class="mb-list">
                 <?php foreach ($templates as $tpl): ?>
                 <?php
@@ -220,14 +220,14 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
                     $tisEmbed = (int)$tpl['is_embed'];
                     $tcolor   = (string)$tpl['embed_color'];
                 ?>
-                <div class="mb-list-card" id="mb-row-<?= $tid ?>">
+                <div class="bh-list-card" id="mb-row-<?= $tid ?>">
                     <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
                         <?php if ($tisEmbed): ?>
                         <div style="width:3px;height:32px;background:<?= $esc($tcolor) ?>;border-radius:2px;flex-shrink:0"></div>
                         <?php endif; ?>
                         <div class="mb-list-info">
-                            <div class="mb-list-name"><?= $esc($tname) ?></div>
-                            <div class="mb-list-meta">
+                            <div class="bh-list-name"><?= $esc($tname) ?></div>
+                            <div class="bh-list-meta">
                                 <?= $tisEmbed ? 'Embed' : 'Plain text' ?>
                                 <?php if ($ttag !== ''): ?>
                                 <span class="mb-tag-badge"><?= $esc($ttag) ?></span>
@@ -237,19 +237,17 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
                     </div>
                     <div class="mb-list-actions">
                         <button class="mb-btn-edit" onclick="mbEdit(<?= $tid ?>)">Bearbeiten</button>
-                        <button class="mb-btn-del"  onclick="mbDelete(<?= $tid ?>)">Löschen</button>
+                        <button class="bh-btn bh-btn--danger bh-btn--sm" onclick="mbDelete(<?= $tid ?>)">Löschen</button>
                     </div>
                 </div>
                 <?php endforeach; ?>
             </div>
 
-            <?php if (empty($templates)): ?>
-            <div id="mb-empty" class="mb-empty-hint">Noch keine Templates vorhanden.<br>Erstelle dein erstes Template links.</div>
-            <?php else: ?>
-            <div id="mb-empty" class="mb-empty-hint" style="display:none">Noch keine Templates vorhanden.<br>Erstelle dein erstes Template links.</div>
-            <?php endif; ?>
+            <div id="mb-empty" class="mb-empty-hint"<?= !empty($templates) ? ' style="display:none"' : '' ?>>
+                Noch keine Templates vorhanden. Erstelle dein erstes Template oben.
+            </div>
+        </div>
     </div>
-
 
 </div>
 
@@ -258,26 +256,25 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
     <div class="mb-modal">
         <div class="mb-modal-title">Template bearbeiten</div>
 
-        <div class="mb-field mb-field-row">
+        <div class="bh-field mb-field-row">
             <div>
-                <div class="mb-label">Name <span style="color:#f87171">*</span></div>
-                <input type="text" id="mb-edit-name" class="mb-input" maxlength="100">
+                <div class="bh-label">Name <span style="color:#f87171">*</span></div>
+                <input type="text" id="mb-edit-name" class="bh-input" maxlength="100">
             </div>
             <div>
-                <div class="mb-label">Kategorie / Tag</div>
-                <input type="text" id="mb-edit-tag" class="mb-input" maxlength="50">
+                <div class="bh-label">Kategorie / Tag</div>
+                <input type="text" id="mb-edit-tag" class="bh-input" maxlength="50">
             </div>
         </div>
 
-        <div class="mb-toggle-row">
+        <div class="bh-toggle-row">
             <div>
-                <div class="mb-toggle-label">Embed-Nachricht</div>
-                <div class="mb-toggle-desc">Aktiviere für eine formatierte Embed-Nachricht.</div>
+                <div class="bh-toggle-row__title">Embed-Nachricht</div>
+                <div class="bh-toggle-row__desc">Aktiviere für eine formatierte Embed-Nachricht.</div>
             </div>
             <label class="bh-toggle" style="margin-left:16px">
-                <input type="checkbox" id="mb-edit-is-embed">
-                <span class="bh-toggle__track"></span>
-                <span class="bh-toggle__thumb"></span>
+                <input class="bh-toggle-input" type="checkbox" id="mb-edit-is-embed">
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
 
@@ -288,38 +285,38 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
                     <div class="mb-embed-body">
                         <div class="mb-embed-row">
                             <div>
-                                <div class="mb-embed-label">Author</div>
-                                <input type="text" id="mb-edit-author" class="mb-embed-input" placeholder="Autor-Name">
+                                <div class="bh-embed-label">Author</div>
+                                <input type="text" id="mb-edit-author" class="bh-embed-input" placeholder="Autor-Name">
                             </div>
                             <div>
-                                <div class="mb-embed-label">Thumbnail URL</div>
-                                <input type="text" id="mb-edit-thumb" class="mb-embed-input" placeholder="https://...">
+                                <div class="bh-embed-label">Thumbnail URL</div>
+                                <input type="text" id="mb-edit-thumb" class="bh-embed-input" placeholder="https://...">
                             </div>
                         </div>
                         <div>
-                            <div class="mb-embed-label">Titel</div>
-                            <input type="text" id="mb-edit-title" class="mb-embed-input">
+                            <div class="bh-embed-label">Titel</div>
+                            <input type="text" id="mb-edit-title" class="bh-embed-input">
                         </div>
                         <div>
-                            <div class="mb-embed-label">Beschreibung</div>
-                            <textarea id="mb-edit-body" class="mb-embed-textarea"></textarea>
+                            <div class="bh-embed-label">Beschreibung</div>
+                            <textarea id="mb-edit-body" class="bh-embed-textarea"></textarea>
                         </div>
                         <div>
-                            <div class="mb-embed-label">Bild URL</div>
-                            <input type="text" id="mb-edit-image" class="mb-embed-input" placeholder="https://...">
+                            <div class="bh-embed-label">Bild URL</div>
+                            <input type="text" id="mb-edit-image" class="bh-embed-input" placeholder="https://...">
                         </div>
                         <div class="mb-embed-footer-row">
                             <div>
-                                <div class="mb-embed-label">Farbe</div>
+                                <div class="bh-embed-label">Farbe</div>
                                 <div style="display:flex;align-items:center;gap:8px">
                                     <span id="mb-edit-color-swatch" class="mb-color-swatch" onclick="document.getElementById('mb-edit-color-picker').click()"></span>
                                     <input type="color" id="mb-edit-color-picker" style="display:none">
-                                    <input type="text" id="mb-edit-color-hex" class="mb-embed-input" style="width:88px;font-family:monospace">
+                                    <input type="text" id="mb-edit-color-hex" class="bh-embed-input" style="width:88px;font-family:monospace">
                                 </div>
                             </div>
                             <div>
-                                <div class="mb-embed-label">Embed URL</div>
-                                <input type="text" id="mb-edit-url" class="mb-embed-input" placeholder="https://...">
+                                <div class="bh-embed-label">Embed URL</div>
+                                <input type="text" id="mb-edit-url" class="bh-embed-input" placeholder="https://...">
                             </div>
                         </div>
                     </div>
@@ -328,13 +325,13 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
         </div>
 
         <div id="mb-edit-plain-panel" style="display:none">
-            <div class="mb-label" style="margin-bottom:6px">Text</div>
+            <div class="bh-label" style="margin-bottom:6px">Text</div>
             <textarea id="mb-edit-plain" class="mb-textarea"></textarea>
         </div>
 
         <div class="mb-btn-row">
-            <button class="mb-btn-cancel" onclick="mbCloseModal()">Abbrechen</button>
-            <button class="mb-btn" id="mb-edit-save-btn" onclick="mbEditSave()">Speichern</button>
+            <button class="bh-btn bh-btn--secondary" onclick="mbCloseModal()">Abbrechen</button>
+            <button class="bh-btn bh-btn--primary" id="mb-edit-save-btn" onclick="mbEditSave()">Speichern</button>
         </div>
     </div>
 </div>
@@ -350,10 +347,10 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
 
     // ── Flash ────────────────────────────────────────────────────────────
     function flash(msg, ok) {
-        const el = document.getElementById('mb-flash');
-        el.className = 'mb-flash ' + (ok ? 'mb-flash--ok' : 'mb-flash--err');
+        const el = document.getElementById('bh-alert');
+        el.className = 'bh-alert bh-alert--inline ' + (ok ? 'bh-alert--ok' : 'bh-alert--err');
         el.textContent = msg;
-        el.style.display = '';
+        el.style.display = 'block';
         clearTimeout(el._t);
         el._t = setTimeout(() => { el.style.display = 'none'; }, 4000);
     }
@@ -491,9 +488,9 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
 
     // ── Update count badge ────────────────────────────────────────────────
     function mbUpdateCount() {
-        const n = document.querySelectorAll('#mb-list .mb-list-card').length;
+        const n = document.querySelectorAll('#mb-list .bh-list-card').length;
         const badge = document.getElementById('mb-count-badge');
-        if (badge) badge.textContent = '(' + n + ')';
+        if (badge) badge.textContent = n;
     }
 
     // ── Build list row HTML ───────────────────────────────────────────────
@@ -511,19 +508,19 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
         const stripe  = isEmbed ? `<div style="width:4px;height:36px;background:${esc(color)};border-radius:2px;flex-shrink:0"></div>` : '';
 
         const div = document.createElement('div');
-        div.className = 'mb-list-card';
+        div.className = 'bh-list-card';
         div.id        = 'mb-row-' + tpl.id;
         div.innerHTML = `
             <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">
                 ${stripe}
                 <div class="mb-list-info">
-                    <div class="mb-list-name">${esc(tpl.name)}</div>
-                    <div class="mb-list-meta">${isEmbed ? 'Embed' : 'Plain text'} ${tag}</div>
+                    <div class="bh-list-name">${esc(tpl.name)}</div>
+                    <div class="bh-list-meta">${isEmbed ? 'Embed' : 'Plain text'} ${tag}</div>
                 </div>
             </div>
             <div class="mb-list-actions">
                 <button class="mb-btn-edit" onclick="mbEdit(${tpl.id})">Bearbeiten</button>
-                <button class="mb-btn-del"  onclick="mbDelete(${tpl.id})">Löschen</button>
+                <button class="bh-btn bh-btn--danger bh-btn--sm"  onclick="mbDelete(${tpl.id})">Löschen</button>
             </div>`;
 
         document.getElementById('mb-list').prepend(div);
@@ -544,7 +541,7 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
             document.getElementById('mb-row-' + id)?.remove();
             delete tplMap[id];
             mbUpdateCount();
-            if (document.querySelectorAll('#mb-list .mb-list-card').length === 0) {
+            if (document.querySelectorAll('#mb-list .bh-list-card').length === 0) {
                 document.getElementById('mb-empty').style.display = '';
             }
             flash('✅ Template gelöscht.', true);

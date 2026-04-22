@@ -13,8 +13,9 @@ $isCoreCheck = ($path === '/admin/core-check');
 $isCoreUpdate = ($path === '/admin/core-update');
 $isCoreRunners = ($path === '/admin/core-runners');
 $isSettings = ($path === '/admin/settings');
-$isAppStore = ($path === '/admin/app-store');
+$isAppStore      = ($path === '/admin/app-store');
 $isDanger        = ($path === '/admin/danger');
+$isBuilder       = ($path === '/admin/project-builder');
 ?>
 <div
     class="fixed inset-0 bg-gray-900/30 z-40 lg:hidden lg:z-auto transition-opacity duration-200"
@@ -132,6 +133,19 @@ $isDanger        = ($path === '/admin/danger');
                         </div>
                     </a>
                 </li>
+
+                <?php if (defined('BH_DEV_MODE') && BH_DEV_MODE): ?>
+                <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 <?= $isBuilder ? 'bg-linear-to-r from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' : '' ?>">
+                    <a class="block text-gray-800 dark:text-gray-100 truncate transition" href="/admin/project-builder">
+                        <div class="flex items-center">
+                            <svg class="shrink-0 fill-current <?= $isBuilder ? 'text-violet-500' : 'text-gray-400 dark:text-gray-500' ?>" width="16" height="16" viewBox="0 0 16 16">
+                                <path d="M1 1h6v6H1V1Zm0 8h6v6H1V9Zm8-8h6v6H9V1Zm0 8h6v6H9V9ZM2 2v4h4V2H2Zm0 8v4h4v-4H2Zm8-8v4h4V2h-4Zm0 8v4h4v-4h-4Z"/>
+                            </svg>
+                            <span class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Project Builder</span>
+                        </div>
+                    </a>
+                </li>
+                <?php endif; ?>
 
                 <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 <?= $isDanger ? 'bg-linear-to-r from-rose-500/[0.12] dark:from-rose-500/[0.24] to-rose-500/[0.04]' : '' ?>">
                     <a class="block text-gray-800 dark:text-gray-100 truncate transition" href="/admin/danger">

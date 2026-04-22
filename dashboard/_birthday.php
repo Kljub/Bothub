@@ -90,24 +90,24 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
 <div id="bh-mod-body">
 <div class="bday-wrap">
 
-    <div id="bday-flash" class="bday-flash"></div>
+    <div id="bh-alert" class="bh-alert"></div>
 
     <?php if (count($guilds) === 0): ?>
-        <div class="bday-flash bday-flash--err" style="display:block">
+        <div class="bh-alert bh-alert--err" style="display:block">
             Der Bot ist noch in keinem Server. Lade ihn zunächst auf einen Server ein.
         </div>
     <?php else: ?>
 
     <!-- Guild Selector -->
     <div class="mb-2">
-        <div class="bday-section-label">Birthday</div>
-        <div class="bday-section-title">Server auswählen</div>
+        <div class="bh-section-label">Birthday</div>
+        <div class="bh-section-title">Server auswählen</div>
     </div>
-    <div class="bday-card">
-        <div class="bday-field" style="border-bottom:none">
+    <div class="bh-card">
+        <div class="bh-field" style="border-bottom:none">
             <div>
-                <div class="bday-field-label">Server</div>
-                <div class="bday-field-desc">Wähle den Server für den du die Einstellungen bearbeiten möchtest.</div>
+                <div class="bh-label">Server</div>
+                <div class="bh-hint">Wähle den Server für den du die Einstellungen bearbeiten möchtest.</div>
             </div>
             <div class="bday-field-right">
                 <select id="bday-guild-select"
@@ -127,18 +127,18 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
 
     <!-- Settings -->
     <div class="mb-2 mt-2">
-        <div class="bday-section-label">Birthday</div>
-        <div class="bday-section-title">Einstellungen</div>
+        <div class="bh-section-label">Birthday</div>
+        <div class="bh-section-title">Einstellungen</div>
     </div>
 
-    <div class="bday-card">
-        <div class="bday-card-title">Geburtstags-Ankündigung</div>
+    <div class="bh-card">
+        <div class="bh-card-title">Geburtstags-Ankündigung</div>
 
         <!-- Enabled toggle -->
-        <div class="bday-field">
+        <div class="bh-field">
             <div>
-                <div class="bday-field-label">Ankündigungen aktiviert</div>
-                <div class="bday-field-desc">Bot sendet automatisch um Mitternacht (UTC) eine Glückwunschnachricht für Nutzer die heute Geburtstag haben.</div>
+                <div class="bh-label">Ankündigungen aktiviert</div>
+                <div class="bh-hint">Bot sendet automatisch um Mitternacht (UTC) eine Glückwunschnachricht für Nutzer die heute Geburtstag haben.</div>
             </div>
             <label class="toggle" style="flex-shrink:0">
                 <input type="checkbox" id="bday-enabled" <?= $isEnabled ? 'checked' : '' ?>>
@@ -147,25 +147,25 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
         </div>
 
         <!-- Channel picker -->
-        <div class="bday-field">
+        <div class="bh-field">
             <div>
-                <div class="bday-field-label">Ankündigungs-Kanal</div>
-                <div class="bday-field-desc">Kanal in dem der Bot Geburtstage ankündigt.</div>
+                <div class="bh-label">Ankündigungs-Kanal</div>
+                <div class="bh-hint">Kanal in dem der Bot Geburtstage ankündigt.</div>
             </div>
             <div class="bday-tags-box" id="bday-channel-box">
-                <button type="button" class="bday-add-btn" id="bday-channel-add-btn" title="Kanal wählen"
+                <button type="button" class="bh-btn bh-btn--primary" id="bday-channel-add-btn" title="Kanal wählen"
                     <?= $announceChannelId !== '' ? 'style="display:none"' : '' ?>>+</button>
             </div>
         </div>
 
         <!-- Message -->
-        <div class="bday-field">
+        <div class="bh-field">
             <div>
-                <div class="bday-field-label">Glückwunschnachricht</div>
-                <div class="bday-field-desc">Platzhalter: <code style="color:#a5b4fc;background:rgba(99,102,241,.15);padding:1px 5px;border-radius:4px">{user}</code> wird durch die Discord-Erwähnung ersetzt.</div>
+                <div class="bh-label">Glückwunschnachricht</div>
+                <div class="bh-hint">Platzhalter: <code style="color:#a5b4fc;background:rgba(99,102,241,.15);padding:1px 5px;border-radius:4px">{user}</code> wird durch die Discord-Erwähnung ersetzt.</div>
             </div>
             <div class="bday-field-right">
-                <input type="text" id="bday-message" class="bday-input" maxlength="512"
+                <input type="text" id="bday-message" class="bh-input" maxlength="512"
                     value="<?= $esc($announceMessage) ?>">
             </div>
         </div>
@@ -173,11 +173,11 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
 
     <!-- Birthday List -->
     <div class="mb-2 mt-2">
-        <div class="bday-section-label">Birthday</div>
-        <div class="bday-section-title">Eingetragene Geburtstage (<?= count($birthdays) ?>)</div>
+        <div class="bh-section-label">Birthday</div>
+        <div class="bh-section-title">Eingetragene Geburtstage (<?= count($birthdays) ?>)</div>
     </div>
 
-    <div class="bday-card">
+    <div class="bh-card">
         <?php if (count($birthdays) === 0): ?>
             <div class="bday-empty">
                 <div class="bday-empty-icon">🎂</div>
@@ -200,7 +200,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
                         <td style="font-weight:600"><?= $esc((string)($bday['username'] ?: 'Unbekannt')) ?></td>
                         <td style="font-size:11px;font-family:monospace;color:#4f5f80"><?= $esc((string)$bday['user_id']) ?></td>
                         <td style="text-align:right">
-                            <button type="button" class="bday-del-btn" data-id="<?= (int)$bday['id'] ?>">Löschen</button>
+                            <button type="button" class="bh-btn bh-btn--danger bh-btn--sm" data-id="<?= (int)$bday['id'] ?>">Löschen</button>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -214,25 +214,25 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
 
     <!-- Commands -->
     <div class="mb-2 mt-2">
-        <div class="bday-section-label">Module</div>
-        <div class="bday-section-title">Commands</div>
+        <div class="bh-section-label">Module</div>
+        <div class="bh-section-title">Commands</div>
     </div>
 
-    <div class="bday-cmd-grid">
-        <div class="bday-cmd-card">
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
             <div>
-                <div class="bday-cmd-name">/birthday add</div>
-                <div class="bday-cmd-desc">Geburtstag eintragen oder aktualisieren (Monat + Tag).</div>
+                <div class="bh-cmd-name">/birthday add</div>
+                <div class="bh-cmd-desc">Geburtstag eintragen oder aktualisieren (Monat + Tag).</div>
             </div>
             <label class="toggle" style="flex-shrink:0">
                 <input type="checkbox" id="bday-cmd-add" <?= $cmdAdd ? 'checked' : '' ?>>
                 <span class="toggle-slider"></span>
             </label>
         </div>
-        <div class="bday-cmd-card">
+        <div class="bh-cmd-card">
             <div>
-                <div class="bday-cmd-name">/birthday delete</div>
-                <div class="bday-cmd-desc">Eigenen Geburtstag von diesem Server entfernen.</div>
+                <div class="bh-cmd-name">/birthday delete</div>
+                <div class="bh-cmd-desc">Eigenen Geburtstag von diesem Server entfernen.</div>
             </div>
             <label class="toggle" style="flex-shrink:0">
                 <input type="checkbox" id="bday-cmd-delete" <?= $cmdDelete ? 'checked' : '' ?>>
@@ -243,7 +243,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
 
     <!-- Save -->
     <div class="bday-save-bar">
-        <button type="button" class="bday-save-btn" id="bday-save-btn">Save</button>
+        <button type="button" class="bh-btn bh-btn--primary" id="bh-btn bh-btn--primary">Save</button>
     </div>
 
 </div>
@@ -305,7 +305,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
     initTagBox('bday-channel-box', channelState, 'bday-channel-add-btn', 'channels');
 
     // ── Delete birthday rows ──────────────────────────────────────────────────
-    document.querySelectorAll('.bday-del-btn').forEach(function (btn) {
+    document.querySelectorAll('.bh-btn bh-btn--danger bh-btn--sm').forEach(function (btn) {
         btn.addEventListener('click', async function () {
             if (!confirm('Geburtstag wirklich löschen?')) return;
             var id  = parseInt(btn.dataset.id, 10);
@@ -324,7 +324,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
     });
 
     // ── Save ──────────────────────────────────────────────────────────────────
-    document.getElementById('bday-save-btn').addEventListener('click', async function () {
+    document.getElementById('bh-btn bh-btn--primary').addEventListener('click', async function () {
         var btn = this;
         btn.disabled = true;
         btn.textContent = '…';
@@ -356,9 +356,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
     });
 
     function showFlash(type, msg) {
-        var el = document.getElementById('bday-flash');
+        var el = document.getElementById('bh-alert');
         if (!el) return;
-        el.className = 'bday-flash bday-flash--' + type;
+        el.className = 'bh-alert bh-alert--' + type;
         el.textContent = msg;
         el.style.display = 'block';
         setTimeout(function () { el.style.display = 'none'; }, 3500);

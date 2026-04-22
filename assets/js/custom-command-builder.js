@@ -1115,7 +1115,6 @@
                         + (isPendingPort(node.id, portName) ? ' is-pending' : '')
                         + '" data-node-id="' + escapeAttr(node.id) + '" data-port-type="output" data-port-name="' + escapeAttr(portName) + '"'
                         + ' style="left: calc(' + spacing + '% - 6px);" title="' + escapeAttr(portName) + '">'
-                        + '<span class="cc-port-label">' + escapeHtml(portName) + '</span>'
                         + '</button>';
                 });
 
@@ -1222,20 +1221,30 @@
                 const portType = portEl.getAttribute('data-port-type') || '';
                 const portName = portEl.getAttribute('data-port-name') || '';
 
-                if (portType !== 'output' || event.button !== 0) {
-                    return;
-                }
+                if (event.button !== 0 || (portType !== 'output' && portType !== 'input')) return;
 
                 selectSingleNode(node.id);
 
                 const point = getWorldPoint(event.clientX, event.clientY);
-                state.pendingConnection = {
-                    fromNodeId: node.id,
-                    fromPort: portName,
-                    mouseX: point.x,
-                    mouseY: point.y,
-                    isDragging: true
-                };
+                if (portType === 'output') {
+                    state.pendingConnection = {
+                        fromNodeId: node.id,
+                        fromPort: portName,
+                        mouseX: point.x,
+                        mouseY: point.y,
+                        isDragging: true,
+                        startedFromInput: false
+                    };
+                } else {
+                    state.pendingConnection = {
+                        toNodeId: node.id,
+                        toPort: portName,
+                        mouseX: point.x,
+                        mouseY: point.y,
+                        isDragging: true,
+                        startedFromInput: true
+                    };
+                }
                 renderAll();
             });
 
@@ -1245,8 +1254,20 @@
                 const portType = portEl.getAttribute('data-port-type') || '';
                 const portName = portEl.getAttribute('data-port-name') || '';
 
-                if (portType === 'input' && state.pendingConnection && state.pendingConnection.isDragging) {
+                if (!state.pendingConnection || !state.pendingConnection.isDragging) return;
+
+                if (portType === 'input' && !state.pendingConnection.startedFromInput) {
                     connectPendingTo(node.id, portName);
+                } else if (portType === 'output' && state.pendingConnection.startedFromInput) {
+                    const toNodeId = state.pendingConnection.toNodeId;
+                    const toPort   = state.pendingConnection.toPort;
+                    state.pendingConnection = {
+                        fromNodeId: node.id,
+                        fromPort: portName,
+                        isDragging: true,
+                        startedFromInput: false
+                    };
+                    connectPendingTo(toNodeId, toPort);
                 }
             });
         });
@@ -1488,19 +1509,30 @@
         });
 
         if (state.pendingConnection && state.pendingConnection.isDragging) {
-            const fromNodeEl = canvasInner.querySelector('.cc-node[data-node-id="' + cssEscape(state.pendingConnection.fromNodeId) + '"]');
-            if (fromNodeEl instanceof HTMLElement) {
-                const fromPortEl = fromNodeEl.querySelector('.cc-port--output[data-port-name="' + cssEscape(state.pendingConnection.fromPort) + '"]');
-                if (fromPortEl instanceof HTMLElement) {
-                    const start = getPortCenter(fromPortEl);
-                    const end = {
-                        x: state.pendingConnection.mouseX,
-                        y: state.pendingConnection.mouseY
-                    };
-                    const pendingPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                    pendingPath.setAttribute('class', 'cc-edge-path cc-edge-path--pending');
-                    pendingPath.setAttribute('d', buildBezierPath(start.x, start.y, end.x, end.y));
-                    edgesSvg.appendChild(pendingPath);
+            const mouse = { x: state.pendingConnection.mouseX, y: state.pendingConnection.mouseY };
+            if (state.pendingConnection.startedFromInput) {
+                const toNodeEl = canvasInner.querySelector('.cc-node[data-node-id="' + cssEscape(state.pendingConnection.toNodeId) + '"]');
+                if (toNodeEl instanceof HTMLElement) {
+                    const toPortEl = toNodeEl.querySelector('.cc-port--input[data-port-name="' + cssEscape(state.pendingConnection.toPort) + '"]');
+                    if (toPortEl instanceof HTMLElement) {
+                        const anchor = getPortCenter(toPortEl);
+                        const pendingPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        pendingPath.setAttribute('class', 'cc-edge-path cc-edge-path--pending');
+                        pendingPath.setAttribute('d', buildBezierPath(mouse.x, mouse.y, anchor.x, anchor.y));
+                        edgesSvg.appendChild(pendingPath);
+                    }
+                }
+            } else {
+                const fromNodeEl = canvasInner.querySelector('.cc-node[data-node-id="' + cssEscape(state.pendingConnection.fromNodeId) + '"]');
+                if (fromNodeEl instanceof HTMLElement) {
+                    const fromPortEl = fromNodeEl.querySelector('.cc-port--output[data-port-name="' + cssEscape(state.pendingConnection.fromPort) + '"]');
+                    if (fromPortEl instanceof HTMLElement) {
+                        const start = getPortCenter(fromPortEl);
+                        const pendingPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        pendingPath.setAttribute('class', 'cc-edge-path cc-edge-path--pending');
+                        pendingPath.setAttribute('d', buildBezierPath(start.x, start.y, mouse.x, mouse.y));
+                        edgesSvg.appendChild(pendingPath);
+                    }
                 }
             }
         }
@@ -3246,8 +3278,12 @@
     }
 
     function isPendingPort(nodeId, portName) {
-        return !!state.pendingConnection
-            && state.pendingConnection.fromNodeId === nodeId
+        if (!state.pendingConnection) return false;
+        if (state.pendingConnection.startedFromInput) {
+            return state.pendingConnection.toNodeId === nodeId
+                && state.pendingConnection.toPort === portName;
+        }
+        return state.pendingConnection.fromNodeId === nodeId
             && state.pendingConnection.fromPort === portName;
     }
 

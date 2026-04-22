@@ -4942,23 +4942,8 @@ span.flatpickr-weekday {
   .form-checkbox {
     border-radius: var(--radius-sm);
   }
-  .form-input, .form-textarea, .form-multiselect, .form-select {
-    border-radius: var(--radius-lg);
-    border-color: var(--color-gray-200);
-    padding-inline: calc(var(--spacing) * 3);
-    padding-block: calc(var(--spacing) * 2);
-    font-size: var(--text-sm);
-    line-height: var(--tw-leading, var(--text-sm--line-height));
-    --tw-leading: calc(var(--spacing) * 5);
-    line-height: calc(var(--spacing) * 5);
-    color: var(--color-gray-800);
-    --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-    &:hover {
-      @media (hover: hover) {
-        border-color: var(--color-gray-300);
-      }
-    }
+  .form-input, .form-textarea, .form-multiselect, 
+    
     &:focus {
       border-color: var(--color-gray-300);
     }
@@ -4980,20 +4965,15 @@ span.flatpickr-weekday {
         border-color: var(--color-gray-600);
       }
     }
-  }
-  .form-input, .form-textarea {
-    &::placeholder {
-      color: var(--color-gray-400);
-    }
+  
+  .form-input, 
     &:is(.dark *) {
       &::placeholder {
         color: var(--color-gray-500);
       }
     }
-  }
-  .form-select {
-    padding-right: calc(var(--spacing) * 10);
-  }
+  
+  
   .form-checkbox, .form-radio {
     border-style: var(--tw-border-style);
     border-width: 1px;
@@ -5083,7 +5063,7 @@ span.flatpickr-weekday {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-}
+
 @layer base {
   *, ::after, ::before, ::backdrop, ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
@@ -5100,7 +5080,7 @@ span.flatpickr-weekday {
 @layer base {
   [type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select {
     appearance: none;
-    background-color: #fff;
+    
     border-color: #6b7280;
     border-width: 1px;
     border-radius: 0px;
@@ -5574,4 +5554,5 @@ span.flatpickr-weekday {
 .overflow-y-scroll {
     scrollbar-width: thin;
     scrollbar-color: #374151 transparent;
+}
 }

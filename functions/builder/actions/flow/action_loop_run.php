@@ -3,55 +3,62 @@ declare(strict_types=1);
 # PFAD: /functions/builder/actions/flow/action_loop_run.php
 
 return [
-    'type'        => 'action.flow.loop.run',
-    'category'    => 'action',
-    'title'       => 'Run Loop',
+    'type' => 'action.flow.loop.run',
+    'category' => 'action',
+    'title' => 'Run Loop',
     'description' => 'Führe eine Schleife aus. Variablen: {varname.index}, {varname.count}, {varname.item}',
-    'icon'        => 'action',
-    'color'       => 'orange',
-    'ports'       => [
-        'inputs'  => [
-            ['key' => 'in',   'label' => 'Input',     'kind' => 'flow', 'max_connections' => 1],
+    'icon' => 'action',
+    'color' => 'orange',
+    'ports' => [
+        'inputs' => [
+            'in',
         ],
         'outputs' => [
-            ['key' => 'body', 'label' => 'Loop Body', 'kind' => 'flow', 'max_connections' => 1],
-            ['key' => 'next', 'label' => 'Nach Loop', 'kind' => 'flow', 'max_connections' => 1],
+            'body',
+            ' ',
         ],
     ],
-    'defaults'    => [
-        'var_name' => 'loop',
-        'mode'     => 'count',
-        'count'    => '3',
-        'list_var' => '',
-    ],
-    'properties'  => [
+    'defaults' => [],
+    'properties' => [
         [
-            'key'         => 'var_name',
-            'type'        => 'text',
-            'label'       => 'Variablenname (Prefix)',
+            'key' => 'var_name',
+            'type' => 'text',
+            'label' => 'Loop Variable Name',
             'placeholder' => 'loop',
-            'required'    => true,
+            'help' => 'The variable name to use for this loop. Access with {varname.index}, {varname.count}, {varname.item}.',
+            'required' => false,
         ],
         [
-            'key'      => 'mode',
-            'type'     => 'select',
-            'label'    => 'Modus',
-            'options'  => ['count', 'foreach'],
-            'required' => true,
+            'key' => 'mode',
+            'type' => 'select',
+            'label' => 'Loop Mode',
+            'help' => 'Run the loop a fixed number of times, or iterate over a list.',
+            'options' => [
+                [
+                    'value' => 'count',
+                    'label' => 'Count – repeat N times',
+                ],
+                [
+                    'value' => 'foreach',
+                    'label' => 'For Each – iterate over a list',
+                ],
+            ],
         ],
         [
-            'key'         => 'count',
-            'type'        => 'text',
-            'label'       => 'Anzahl (count-Modus, max. 50)',
+            'key' => 'count',
+            'type' => 'number',
+            'label' => 'Count',
             'placeholder' => '3',
-            'required'    => false,
+            'help' => 'Number of times to repeat the loop body.',
+            'min' => 1,
+            'max' => 50,
         ],
         [
-            'key'         => 'list_var',
-            'type'        => 'text',
-            'label'       => 'Listen-Variable (foreach) – JSON-Array oder kommagetrennt',
-            'placeholder' => 'meineVariable',
-            'required'    => false,
+            'key' => 'list_var',
+            'type' => 'text',
+            'label' => 'List Variable',
+            'placeholder' => 'my_list',
+            'help' => 'Variable name holding a JSON array or comma-separated values to iterate over.',
         ],
     ],
 ];

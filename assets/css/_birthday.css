@@ -3,87 +3,18 @@
 .bday-wrap { padding: 4px 0; }
 
 /* Section labels */
-.bday-section-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: #6366f1;
-    margin-bottom: 2px;
-}
-.bday-section-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #e2e8f0;
-    margin-bottom: 12px;
-}
 
 /* Flash */
-.bday-flash {
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 16px;
-    display: none;
-}
-.bday-flash--ok  { background: rgba(34,197,94,.12);  color: #4ade80; border: 1px solid rgba(34,197,94,.25); }
-.bday-flash--err { background: rgba(239,68,68,.12);  color: #f87171; border: 1px solid rgba(239,68,68,.25); }
 
 /* Card */
-.bday-card {
-    background: #111827;
-    border: 1px solid #1e2a3a;
-    border-radius: 10px;
-    margin-bottom: 16px;
-    overflow: hidden;
-}
-.bday-card-title {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: #4f5f80;
-    padding: 14px 18px 0;
-    margin-bottom: 2px;
-}
 
 /* Field row */
-.bday-field {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 24px;
-    padding: 14px 18px;
-    border-bottom: 1px solid #1a2332;
-}
-.bday-field:last-child { border-bottom: none; }
-.bday-field-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #e2e8f0;
-    margin-bottom: 3px;
-}
-.bday-field-desc {
-    font-size: 11px;
-    color: #4f5f80;
-    line-height: 1.5;
-}
+
+.bh-field:last-child { border-bottom: none; }
+
 .bday-field-right { flex-shrink: 0; min-width: 200px; }
 
 /* Input */
-.bday-input {
-    width: 100%;
-    background: #0d1320;
-    border: 1px solid #2e3850;
-    border-radius: 7px;
-    padding: 8px 12px;
-    font-size: 13px;
-    color: #e2e8f0;
-    outline: none;
-    box-sizing: border-box;
-}
-.bday-input:focus { border-color: #6366f1; }
 
 /* Tags box (channel picker) */
 .bday-tags-box {
@@ -98,65 +29,12 @@
     min-height: 42px;
     min-width: 200px;
 }
-.bday-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    background: rgba(34,197,94,.12);
-    color: #4ade80;
-    border-radius: 6px;
-    font-size: 11px;
-    padding: 3px 8px;
-    font-weight: 600;
-}
-.bday-tag-rm {
-    background: none;
-    border: none;
-    color: #6b7fad;
-    cursor: pointer;
-    font-size: 13px;
-    padding: 0;
-    line-height: 1;
-}
+
 .bday-tag-rm:hover { color: #f87171; }
-.bday-add-btn {
-    background: none;
-    border: 1px dashed #3d4f6e;
-    border-radius: 6px;
-    color: #4f5f80;
-    font-size: 20px;
-    line-height: 1;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: border-color .15s, color .15s;
-}
-.bday-add-btn:hover { border-color: #6366f1; color: #a5b4fc; }
 
 /* Command grid */
-.bday-cmd-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
-}
-@media (max-width: 640px) { .bday-cmd-grid { grid-template-columns: 1fr; } }
 
-.bday-cmd-card {
-    background: #111827;
-    border: 1px solid #1e2a3a;
-    border-radius: 10px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-.bday-cmd-name { font-size: 13px; font-weight: 700; color: #e2e8f0; margin-bottom: 3px; }
-.bday-cmd-desc { font-size: 11px; color: #4f5f80; line-height: 1.45; }
+@media (max-width: 640px) {  }
 
 /* Birthday list table */
 .bday-table { width: 100%; border-collapse: collapse; }
@@ -202,30 +80,4 @@
     align-items: center;
     gap: 12px;
 }
-.bday-save-btn {
-    background: #6366f1;
-    color: #fff;
-    border: none;
-    border-radius: 7px;
-    padding: 9px 28px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background .15s;
-}
-.bday-save-btn:hover { background: #4f46e5; }
-.bday-save-btn:disabled { opacity: .5; cursor: default; }
 
-/* Delete btn */
-.bday-del-btn {
-    background: rgba(239,68,68,.15);
-    color: #f87171;
-    border: none;
-    border-radius: 6px;
-    padding: 4px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background .15s;
-}
-.bday-del-btn:hover { background: rgba(239,68,68,.28); }

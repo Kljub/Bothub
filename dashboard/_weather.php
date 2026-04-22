@@ -107,22 +107,22 @@ $cmdEnabled      = bhcmd_is_enabled($pdo, $botId, 'weather');
 <div id="bh-mod-body" <?= $modEnabled ? '' : 'class="bh-mod-body--disabled"' ?>>
 <div class="wx-wrap">
 
-    <div id="wx-flash" class="wx-flash" style="display:none"></div>
+    <div id="bh-alert" class="bh-alert" style="display:none"></div>
 
     <!-- ── API-Einstellungen ──────────────────────────────────────────────── -->
     <div class="mb-1">
         <div class="wx-kicker">Einstellungen</div>
-        <div class="wx-section-title">OpenWeatherMap API</div>
+        <div class="bh-section-title">OpenWeatherMap API</div>
     </div>
 
-    <div class="wx-card">
-        <div class="wx-card-title">API-Konfiguration</div>
+    <div class="bh-card">
+        <div class="bh-card-title">API-Konfiguration</div>
 
         <!-- API Key -->
-        <div class="wx-field">
+        <div class="bh-field">
             <div class="wx-field-left">
-                <div class="wx-field-label">API-Key</div>
-                <div class="wx-field-desc">
+                <div class="bh-label">API-Key</div>
+                <div class="bh-hint">
                     Kostenlos erhältlich auf
                     <a href="https://openweathermap.org/api" target="_blank" rel="noopener" class="wx-link">openweathermap.org</a>
                     (Free-Tier: 60 Anfragen/min).
@@ -130,7 +130,7 @@ $cmdEnabled      = bhcmd_is_enabled($pdo, $botId, 'weather');
             </div>
             <div class="wx-field-right">
                 <div class="wx-key-row">
-                    <input type="password" id="wx-api-key" class="wx-input wx-input--mono"
+                    <input type="password" id="wx-api-key" class="bh-input bh-input--mono"
                         placeholder="Dein OpenWeatherMap API-Key"
                         value="<?= h($apiKey) ?>"
                         autocomplete="off" spellcheck="false">
@@ -145,13 +145,13 @@ $cmdEnabled      = bhcmd_is_enabled($pdo, $botId, 'weather');
         </div>
 
         <!-- Units -->
-        <div class="wx-field">
+        <div class="bh-field">
             <div class="wx-field-left">
-                <div class="wx-field-label">Einheit</div>
-                <div class="wx-field-desc">Temperatur in Celsius oder Fahrenheit anzeigen.</div>
+                <div class="bh-label">Einheit</div>
+                <div class="bh-hint">Temperatur in Celsius oder Fahrenheit anzeigen.</div>
             </div>
             <div class="wx-field-right">
-                <div class="wx-unit-toggle">
+                <div class="bh-toggle">
                     <button type="button" class="wx-unit-btn <?= $units === 'metric' ? 'wx-unit-btn--active' : '' ?>"
                         id="wx-unit-metric" data-unit="metric">°C — Metric</button>
                     <button type="button" class="wx-unit-btn <?= $units === 'imperial' ? 'wx-unit-btn--active' : '' ?>"
@@ -162,16 +162,16 @@ $cmdEnabled      = bhcmd_is_enabled($pdo, $botId, 'weather');
         </div>
 
         <!-- Default location -->
-        <div class="wx-field" style="border-bottom:none">
+        <div class="bh-field" style="border-bottom:none">
             <div class="wx-field-left">
-                <div class="wx-field-label">Standard-Ort <span class="wx-optional">(optional)</span></div>
-                <div class="wx-field-desc">
+                <div class="bh-label">Standard-Ort <span class="wx-optional">(optional)</span></div>
+                <div class="bh-hint">
                     Wird verwendet, wenn der Nutzer <code class="wx-code">/weather</code> ohne Ortsangabe ausführt.
                     Stadtname oder PLZ (z.&thinsp;B. <code class="wx-code">Berlin</code> oder <code class="wx-code">10115</code>).
                 </div>
             </div>
             <div class="wx-field-right">
-                <input type="text" id="wx-default-location" class="wx-input"
+                <input type="text" id="wx-default-location" class="bh-input"
                     placeholder="z.B. Berlin oder 10115"
                     value="<?= h($defaultLocation) ?>" maxlength="128">
             </div>
@@ -181,10 +181,10 @@ $cmdEnabled      = bhcmd_is_enabled($pdo, $botId, 'weather');
     <!-- ── Command-Info ───────────────────────────────────────────────────── -->
     <div class="mb-1 mt-2">
         <div class="wx-kicker">Command</div>
-        <div class="wx-section-title">Slash-Command</div>
+        <div class="bh-section-title">Slash-Command</div>
     </div>
 
-    <div class="wx-cmd-card">
+    <div class="bh-cmd-card">
         <div class="wx-cmd-header">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
@@ -194,15 +194,15 @@ $cmdEnabled      = bhcmd_is_enabled($pdo, $botId, 'weather');
                 <div class="wx-cmd-kicker">Slash Command</div>
                 <div class="wx-cmd-title">Wetterbefehl</div>
             </div>
-            <label class="wx-toggle" style="margin-left:auto">
-                <input type="checkbox" id="wx-cmd-toggle" <?= $cmdEnabled ? 'checked' : '' ?>>
-                <span class="wx-toggle-track"></span>
+            <label class="bh-toggle" style="margin-left:auto">
+                <input class="bh-toggle-input" type="checkbox" id="wx-cmd-toggle" <?= $cmdEnabled ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
         <div class="wx-cmd-list">
             <div class="wx-cmd-row">
-                <code class="wx-cmd-name">/weather [ort]</code>
-                <span class="wx-cmd-desc">
+                <code class="bh-cmd-name">/weather [ort]</code>
+                <span class="bh-cmd-desc">
                     Zeigt aktuelles Wetter an. <code class="wx-code">ort</code> ist optional —
                     Stadtname (<code class="wx-code">Berlin</code>) oder PLZ (<code class="wx-code">10115</code>).
                 </span>
@@ -343,9 +343,9 @@ $cmdEnabled      = bhcmd_is_enabled($pdo, $botId, 'weather');
     });
 
     function showFlash(type, msg) {
-        var el = document.getElementById('wx-flash');
+        var el = document.getElementById('bh-alert');
         if (!el) return;
-        el.className = 'wx-flash wx-flash--' + type;
+        el.className = 'bh-alert bh-alert--' + type;
         el.textContent = msg;
         el.style.display = 'block';
         clearTimeout(el._t);

@@ -199,21 +199,21 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
     <div id="bh-mod-body">
 
     <!-- ── Guild-ID Hinweis ────────────────────────────────────────────── -->
-    <div class="lv-card" style="margin-bottom:16px">
-        <div class="lv-field" style="border-bottom:none">
-            <label class="lv-label" for="vfy-guild-id">Server (Guild) ID <span style="color:#e05252">*</span></label>
-            <input type="text" id="vfy-guild-id" class="lv-input" placeholder="z.B. 123456789012345678"
+    <div class="bh-card" style="margin-bottom:16px">
+        <div class="bh-field" style="border-bottom:none">
+            <label class="bh-label" for="vfy-guild-id">Server (Guild) ID <span style="color:#e05252">*</span></label>
+            <input type="text" id="vfy-guild-id" class="bh-input" placeholder="z.B. 123456789012345678"
                    value="<?= vfy_h($guildIdForForm) ?>" maxlength="20">
-            <div class="lv-hint">Die Discord-Server-ID für die diese Einstellungen gelten. Zu finden unter Server-Einstellungen → Widget oder per Rechtsklick auf den Server.</div>
+            <div class="bh-hint">Die Discord-Server-ID für die diese Einstellungen gelten. Zu finden unter Server-Einstellungen → Widget oder per Rechtsklick auf den Server.</div>
         </div>
     </div>
 
     <!-- ── Grundeinstellungen ───────────────────────────────────────────── -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="vfy-basic-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="vfy-basic-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Einstellungen</div>
-                <div class="lv-card__title">Grundeinstellungen</div>
+                <div class="bh-card-title">Grundeinstellungen</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -222,40 +222,40 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
         <div class="lv-card__body" id="vfy-basic-body">
 
             <!-- Verification Type -->
-            <div class="lv-field">
-                <label class="lv-label" for="vfy-type">Verification Type</label>
-                <select id="vfy-type" class="lv-select">
+            <div class="bh-field">
+                <label class="bh-label" for="vfy-type">Verification Type</label>
+                <select id="vfy-type" class="bh-select">
                     <option value="button"  <?= $vType === 'button'  ? 'selected' : '' ?>>Nur Button — Klick auf Button vergibt direkt die Rolle</option>
                     <option value="captcha" <?= $vType === 'captcha' ? 'selected' : '' ?>>Captcha Text Input — User muss Code aus Modal eingeben</option>
                 </select>
-                <div class="lv-hint">Bei <strong>Nur Button</strong> reicht ein Klick. Bei <strong>Captcha</strong> öffnet sich ein Modal mit einem 6-stelligen Code den der User abtippen muss.</div>
+                <div class="bh-hint">Bei <strong>Nur Button</strong> reicht ein Klick. Bei <strong>Captcha</strong> öffnet sich ein Modal mit einem 6-stelligen Code den der User abtippen muss.</div>
             </div>
 
             <!-- Default Channel -->
-            <div class="lv-field">
-                <label class="lv-label" for="vfy-channel-id">Default Channel ID</label>
-                <input type="text" id="vfy-channel-id" class="lv-input" placeholder="Channel-ID eingeben"
+            <div class="bh-field">
+                <label class="bh-label" for="vfy-channel-id">Default Channel ID</label>
+                <input type="text" id="vfy-channel-id" class="bh-input" placeholder="Channel-ID eingeben"
                        value="<?= vfy_h($channelId) ?>" maxlength="20">
-                <div class="lv-hint">In diesen Channel sendet <code>/verification setup</code> das Embed. Rechtsklick auf Channel → ID kopieren.</div>
+                <div class="bh-hint">In diesen Channel sendet <code>/verification setup</code> das Embed. Rechtsklick auf Channel → ID kopieren.</div>
             </div>
 
             <!-- Verified Role -->
-            <div class="lv-field" style="border-bottom:none">
-                <label class="lv-label" for="vfy-role-id">Verified Role ID</label>
-                <input type="text" id="vfy-role-id" class="lv-input" placeholder="Rollen-ID eingeben"
+            <div class="bh-field" style="border-bottom:none">
+                <label class="bh-label" for="vfy-role-id">Verified Role ID</label>
+                <input type="text" id="vfy-role-id" class="bh-input" placeholder="Rollen-ID eingeben"
                        value="<?= vfy_h($verifiedRole) ?>" maxlength="20">
-                <div class="lv-hint">Diese Rolle wird nach erfolgreicher Verifikation vergeben. Servereinstellungen → Rollen → Rolle anklicken → ID kopieren.</div>
+                <div class="bh-hint">Diese Rolle wird nach erfolgreicher Verifikation vergeben. Servereinstellungen → Rollen → Rolle anklicken → ID kopieren.</div>
             </div>
 
         </div>
     </div>
 
     <!-- ── Verification Menu ────────────────────────────────────────────── -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="vfy-embed-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="vfy-embed-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Embed</div>
-                <div class="lv-card__title">Verification Menu</div>
+                <div class="bh-card-title">Verification Menu</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -264,65 +264,65 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
         <div class="lv-card__body" id="vfy-embed-body">
 
             <!-- Author + Title -->
-            <div class="lv-field">
+            <div class="bh-field">
                 <div class="lv-grid2">
                     <div>
-                        <label class="lv-label" for="vfy-embed-author">Author</label>
-                        <input type="text" id="vfy-embed-author" class="lv-input" placeholder="z.B. Verification System"
+                        <label class="bh-label" for="vfy-embed-author">Author</label>
+                        <input type="text" id="vfy-embed-author" class="bh-input" placeholder="z.B. Verification System"
                                value="<?= vfy_h($embedAuthor) ?>" maxlength="256">
                     </div>
                     <div>
-                        <label class="lv-label" for="vfy-embed-title">Title</label>
-                        <input type="text" id="vfy-embed-title" class="lv-input" placeholder="z.B. Server Verification"
+                        <label class="bh-label" for="vfy-embed-title">Title</label>
+                        <input type="text" id="vfy-embed-title" class="bh-input" placeholder="z.B. Server Verification"
                                value="<?= vfy_h($embedTitle) ?>" maxlength="256">
                     </div>
                 </div>
             </div>
 
             <!-- Body -->
-            <div class="lv-field">
-                <label class="lv-label" for="vfy-embed-body-text">Body (Beschreibung)</label>
-                <textarea id="vfy-embed-body-text" class="lv-input" rows="4"
+            <div class="bh-field">
+                <label class="bh-label" for="vfy-embed-body-text">Body (Beschreibung)</label>
+                <textarea id="vfy-embed-body-text" class="bh-input" rows="4"
                           placeholder="z.B. Klicke auf den Button unten um dich zu verifizieren und Zugang zum Server zu erhalten."
                           style="resize:vertical"><?= vfy_h($embedBody) ?></textarea>
-                <div class="lv-hint">Unterstützt Discord-Markdown: **fett**, *kursiv*, `code`, > Zitat</div>
+                <div class="bh-hint">Unterstützt Discord-Markdown: **fett**, *kursiv*, `code`, > Zitat</div>
             </div>
 
             <!-- Image URL + Embed URL -->
-            <div class="lv-field">
+            <div class="bh-field">
                 <div class="lv-grid2">
                     <div>
-                        <label class="lv-label" for="vfy-embed-image">Image URL</label>
-                        <input type="url" id="vfy-embed-image" class="lv-input" placeholder="https://..."
+                        <label class="bh-label" for="vfy-embed-image">Image URL</label>
+                        <input type="url" id="vfy-embed-image" class="bh-input" placeholder="https://..."
                                value="<?= vfy_h($embedImage) ?>" maxlength="512">
-                        <div class="lv-hint">Großes Bild im Embed (optional)</div>
+                        <div class="bh-hint">Großes Bild im Embed (optional)</div>
                     </div>
                     <div>
-                        <label class="lv-label" for="vfy-embed-url">Embed URL</label>
-                        <input type="url" id="vfy-embed-url" class="lv-input" placeholder="https://..."
+                        <label class="bh-label" for="vfy-embed-url">Embed URL</label>
+                        <input type="url" id="vfy-embed-url" class="bh-input" placeholder="https://..."
                                value="<?= vfy_h($embedUrl) ?>" maxlength="512">
-                        <div class="lv-hint">Macht den Titel klickbar (optional)</div>
+                        <div class="bh-hint">Macht den Titel klickbar (optional)</div>
                     </div>
                 </div>
             </div>
 
             <!-- Footer + Color -->
-            <div class="lv-field">
+            <div class="bh-field">
                 <div class="lv-grid2">
                     <div>
-                        <label class="lv-label" for="vfy-embed-footer">Footer</label>
-                        <input type="text" id="vfy-embed-footer" class="lv-input" placeholder="z.B. Dein Server-Name"
+                        <label class="bh-label" for="vfy-embed-footer">Footer</label>
+                        <input type="text" id="vfy-embed-footer" class="bh-input" placeholder="z.B. Dein Server-Name"
                                value="<?= vfy_h($embedFooter) ?>" maxlength="256">
                     </div>
                     <div>
-                        <label class="lv-label" for="vfy-embed-color-hex">Embed Color</label>
+                        <label class="bh-label" for="vfy-embed-color-hex">Embed Color</label>
                         <div class="lv-color-row">
                             <div class="lv-color-swatch" id="vfy-color-swatch"
                                  style="background:<?= vfy_h($embedColor) ?>"></div>
                             <input type="color" id="vfy-embed-color-picker"
                                    value="<?= vfy_h($embedColor) ?>"
                                    style="position:absolute;opacity:0;pointer-events:none;width:0;height:0">
-                            <input type="text" id="vfy-embed-color-hex" class="lv-input"
+                            <input type="text" id="vfy-embed-color-hex" class="bh-input"
                                    value="<?= vfy_h($embedColor) ?>" maxlength="7" placeholder="#5ba9e4"
                                    style="font-family:monospace">
                         </div>
@@ -331,19 +331,19 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
             </div>
 
             <!-- Button Name + Log Channel -->
-            <div class="lv-field" style="border-bottom:none">
+            <div class="bh-field" style="border-bottom:none">
                 <div class="lv-grid2">
                     <div>
-                        <label class="lv-label" for="vfy-button-name">Button Name</label>
-                        <input type="text" id="vfy-button-name" class="lv-input" placeholder="Start Verification"
+                        <label class="bh-label" for="vfy-button-name">Button Name</label>
+                        <input type="text" id="vfy-button-name" class="bh-input" placeholder="Start Verification"
                                value="<?= vfy_h($buttonName) ?>" maxlength="80">
-                        <div class="lv-hint">Beschriftung des Buttons im Embed</div>
+                        <div class="bh-hint">Beschriftung des Buttons im Embed</div>
                     </div>
                     <div>
-                        <label class="lv-label" for="vfy-log-channel">Logging Channel ID</label>
-                        <input type="text" id="vfy-log-channel" class="lv-input" placeholder="Channel-ID"
+                        <label class="bh-label" for="vfy-log-channel">Logging Channel ID</label>
+                        <input type="text" id="vfy-log-channel" class="bh-input" placeholder="Channel-ID"
                                value="<?= vfy_h($logChannelId) ?>" maxlength="20">
-                        <div class="lv-hint">Für erfolgreiche/fehlgeschlagene Verifikationen (optional)</div>
+                        <div class="bh-hint">Für erfolgreiche/fehlgeschlagene Verifikationen (optional)</div>
                     </div>
                 </div>
             </div>
@@ -352,11 +352,11 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
     </div>
 
     <!-- ── Extra Einstellungen ──────────────────────────────────────────── -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="vfy-extra-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="vfy-extra-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Erweitert</div>
-                <div class="lv-card__title">Extra Einstellungen</div>
+                <div class="bh-card-title">Extra Einstellungen</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -365,30 +365,30 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
         <div class="lv-card__body" id="vfy-extra-body">
 
             <!-- Success Message -->
-            <div class="lv-field">
-                <label class="lv-label" for="vfy-success-msg">Success Message</label>
-                <textarea id="vfy-success-msg" class="lv-input" rows="3"
+            <div class="bh-field">
+                <label class="bh-label" for="vfy-success-msg">Success Message</label>
+                <textarea id="vfy-success-msg" class="bh-input" rows="3"
                           placeholder="✅ Du wurdest erfolgreich verifiziert!"
                           style="resize:vertical"><?= vfy_h($successMsg) ?></textarea>
-                <div class="lv-hint">Ephemeral-Nachricht die der User nach erfolgreicher Verifikation sieht. Leer lassen für Standard.</div>
+                <div class="bh-hint">Ephemeral-Nachricht die der User nach erfolgreicher Verifikation sieht. Leer lassen für Standard.</div>
             </div>
 
             <!-- Max Attempts + Time Limit -->
-            <div class="lv-field">
+            <div class="bh-field">
                 <div class="lv-grid2">
                     <div>
-                        <label class="lv-label" for="vfy-max-attempts">Allowed Attempts</label>
-                        <input type="number" id="vfy-max-attempts" class="lv-input" min="0" max="99"
+                        <label class="bh-label" for="vfy-max-attempts">Allowed Attempts</label>
+                        <input type="number" id="vfy-max-attempts" class="bh-input" min="0" max="99"
                                placeholder="0 = deaktiviert"
                                value="<?= $maxAttempts ?>">
-                        <div class="lv-hint">Max. Fehlversuche vor Auto-Kick. 0 = kein Auto-Kick bei Fehlversuchen. (Nur bei Captcha relevant)</div>
+                        <div class="bh-hint">Max. Fehlversuche vor Auto-Kick. 0 = kein Auto-Kick bei Fehlversuchen. (Nur bei Captcha relevant)</div>
                     </div>
                     <div>
-                        <label class="lv-label" for="vfy-time-limit">Time Limit (Sekunden)</label>
-                        <input type="number" id="vfy-time-limit" class="lv-input" min="0"
+                        <label class="bh-label" for="vfy-time-limit">Time Limit (Sekunden)</label>
+                        <input type="number" id="vfy-time-limit" class="bh-input" min="0"
                                placeholder="0 = deaktiviert"
                                value="<?= $timeLimitSec ?>">
-                        <div class="lv-hint">Sekunden nach Join ohne Verifikation → Auto-Kick. 0 = deaktiviert.</div>
+                        <div class="bh-hint">Sekunden nach Join ohne Verifikation → Auto-Kick. 0 = deaktiviert.</div>
                     </div>
                 </div>
             </div>
@@ -400,9 +400,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
                     <div class="lv-feature__desc">Mitglieder die sich nicht innerhalb des Zeitlimits verifizieren werden automatisch gekickt. Nur aktiv wenn Time Limit > 0.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="vfy-autokick-toggle" <?= $timeLimitSec > 0 ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="vfy-autokick-toggle" <?= $timeLimitSec > 0 ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
@@ -413,7 +413,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
     <!-- ── Speichern ────────────────────────────────────────────────────── -->
     <div style="padding: 4px 0 20px">
         <div class="lv-btn-row" style="padding-left:0">
-            <button class="lv-btn" id="vfy-save-btn" onclick="vfySaveSettings()">Einstellungen speichern</button>
+            <button class="bh-btn bh-btn--primary" id="vfy-save-btn" onclick="vfySaveSettings()">Einstellungen speichern</button>
             <span id="vfy-save-msg" class="lv-save-msg" style="display:none"></span>
         </div>
     </div>
@@ -424,18 +424,18 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
         <div class="lv-title" style="font-size:20px;margin-bottom:12px">Commands</div>
     </div>
 
-    <div class="lv-cmds-grid">
+    <div class="bh-cmd-grid">
         <?php foreach ($vfyCommands as $cmd):
             $on = $cmdMap[$cmd['key']] ?? true;
         ?>
-        <div class="lv-cmd-card">
+        <div class="bh-cmd-card">
             <div>
-                <div class="lv-cmd__name"><?= vfy_h($cmd['name']) ?></div>
-                <div class="lv-cmd__desc"><?= vfy_h($cmd['desc']) ?></div>
+                <div class="bh-cmd-name"><?= vfy_h($cmd['name']) ?></div>
+                <div class="bh-cmd-desc"><?= vfy_h($cmd['desc']) ?></div>
             </div>
-            <label class="lv-toggle">
-                <input type="checkbox" class="vfyCmdToggle" data-key="<?= vfy_h($cmd['key']) ?>" <?= $on ? 'checked' : '' ?>>
-                <span class="lv-toggle__track"></span>
+            <label class="bh-toggle">
+                <input type="checkbox" class="vfyCmdToggle bh-toggle-input" data-key="<?= vfy_h($cmd['key']) ?>" <?= $on ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
         <?php endforeach; ?>

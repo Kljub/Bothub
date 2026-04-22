@@ -12,12 +12,9 @@
 .lv-stat__lbl { font-size: 11px; color: var(--bh-text-muted,#8b949e); margin-top: 3px; letter-spacing: .04em; text-transform: uppercase; }
 
 /* ── Cards ───────────────────────────────────────────────────────────────── */
-.lv-card { background: var(--bh-card-bg,#1e2433); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
-.lv-card__hdr { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--bh-border,#2d3346); }
+
 .lv-card__hdr-left { display: flex; flex-direction: column; gap: 1px; }
 .lv-card__kicker { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--bh-accent,#6c63ff); }
-.lv-card__title { font-size: 15px; font-weight: 600; color: var(--bh-text,#e6edf3); }
-.lv-card__body { padding: 0; }
 
 /* ── Feature rows ────────────────────────────────────────────────────────── */
 .lv-feature { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 20px; border-bottom: 1px solid var(--bh-border,#2d3346); }
@@ -28,25 +25,10 @@
 .lv-feature__right { flex-shrink: 0; }
 
 /* ── Fields ──────────────────────────────────────────────────────────────── */
-.lv-field { padding: 16px 20px; border-bottom: 1px solid var(--bh-border,#2d3346); }
-.lv-field:last-child { border-bottom: none; }
-.lv-label { display: block; font-size: 12px; font-weight: 600; color: var(--bh-text,#e6edf3); margin-bottom: 6px; }
-.lv-hint { font-size: 11px; color: var(--bh-text-muted,#8b949e); margin-top: 5px; line-height: 1.45; }
-.lv-input { width: 100%; background: var(--bh-input-bg,#161b27); border: 1px solid var(--bh-border,#2d3346); border-radius: 7px; padding: 8px 12px; font-size: 13px; color: var(--bh-text,#e6edf3); outline: none; box-sizing: border-box; transition: border-color .15s; }
-.lv-input:focus { border-color: var(--bh-accent,#6c63ff); }
 
-/* ── Toggle ──────────────────────────────────────────────────────────────── */
-.lv-toggle { position: relative; display: inline-flex; align-items: center; cursor: pointer; }
-.lv-toggle input[type=checkbox] { position: absolute; opacity: 0; width: 0; height: 0; }
-.lv-toggle__track { display: block; width: 42px; height: 24px; border-radius: 12px; background: var(--bh-border,#2d3346); transition: background .2s; position: relative; }
-.lv-toggle__track::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
-.lv-toggle input[type=checkbox]:checked ~ .lv-toggle__track { background: var(--bh-accent,#6c63ff); }
-.lv-toggle input[type=checkbox]:checked ~ .lv-toggle__track::after { transform: translateX(18px); }
+.bh-field:last-child { border-bottom: none; }
 
 /* ── Button ──────────────────────────────────────────────────────────────── */
-.lv-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: var(--bh-accent,#6c63ff); color: #fff; transition: opacity .15s; }
-.lv-btn:hover:not(:disabled) { opacity: .85; }
-.lv-btn:disabled { opacity: .5; cursor: not-allowed; }
 .lv-btn-row { padding: 16px 20px; display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--bh-border,#2d3346); }
 .lv-save-msg { font-size: 12px; font-weight: 500; }
 
@@ -88,21 +70,20 @@
     transition: background .1s;
 }
 .tv-var:hover { background: rgba(108,99,255,.2); }
-.tv-var-label { font-size: 10px; color: var(--bh-text-muted,#8b949e); font-family: sans-serif; }
 
 /* ── Grid 2 cols ─────────────────────────────────────────────────────────── */
 .tv-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-.tv-grid2 .lv-field { border-right: 1px solid var(--bh-border,#2d3346); }
-.tv-grid2 .lv-field:last-child { border-right: none; }
+.tv-grid2 
+.tv-grid2 .bh-field:last-child { border-right: none; }
 @media (max-width: 540px) {
     .tv-grid2 { grid-template-columns: 1fr; }
-    .tv-grid2 .lv-field { border-right: none; }
+    .tv-grid2 
 }
 
 /* ── Channel picker ──────────────────────────────────────────────────────── */
 .tv-ch-wrap { position: relative; }
 .tv-ch-row { display: flex; gap: 6px; align-items: center; }
-.tv-ch-row .lv-input { flex: 1; min-width: 0; font-family: monospace; font-size: 12px; }
+.tv-ch-row 
 .tv-pick-btn {
     flex-shrink: 0; display: inline-flex; align-items: center; gap: 5px;
     padding: 0 12px; height: 36px; border-radius: 7px; font-size: 12px; font-weight: 600;

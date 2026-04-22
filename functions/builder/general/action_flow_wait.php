@@ -1,40 +1,33 @@
 <?php
 declare(strict_types=1);
+# PFAD: /functions/builder/general/action_flow_wait.php
 
 return [
-    'type'        => 'action.flow.wait',
-    'category'    => 'action',
-    'title'       => 'Wait',
+    'type' => 'action.flow.wait',
+    'category' => 'action',
+    'title' => 'Wait',
     'description' => 'Wartet eine bestimmte Zeit, bevor die naechste Aktion ausgefuehrt wird.',
-    'icon'        => 'clock',
-    'color'       => 'gray',
-    'ports'       => [
+    'icon' => 'clock',
+    'color' => 'gray',
+    'ports' => [
         'inputs' => [
-            [
-                'key'             => 'in',
-                'label'           => 'In',
-                'kind'            => 'flow',
-                'max_connections' => 1,
-            ],
+            'in',
         ],
         'outputs' => [
-            [
-                'key'             => 'next',
-                'label'           => 'Next',
-                'kind'            => 'flow',
-                'max_connections' => 1,
-            ],
+            ' ',
         ],
     ],
+    'defaults' => [],
     'properties' => [
         [
-            'key'     => 'duration',
-            'type'    => 'number',
-            'label'   => 'Wartezeit (Sekunden)',
-            'help'    => 'Wie viele Sekunden soll gewartet werden?',
-            'default' => 5,
-            'min'     => 1,
-            'max'     => 600,
+            'key' => 'duration',
+            'type' => 'number',
+            'label' => 'Duration (ms)',
+            'placeholder' => '1000',
+            'help' => 'How many milliseconds to wait before continuing (max 14000).',
+            'min' => 100,
+            'max' => 14000,
+            'required' => true,
         ],
     ],
 ];

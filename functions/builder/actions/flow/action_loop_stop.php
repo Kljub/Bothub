@@ -11,7 +11,7 @@ return [
     'color'       => 'orange',
     'ports'       => [
         'inputs'  => [
-            ['key' => 'in', 'label' => 'Input', 'kind' => 'flow', 'max_connections' => 1],
+            'in',
         ],
         'outputs' => [],
     ],

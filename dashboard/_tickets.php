@@ -118,28 +118,28 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
     <div id="tk-banner" class="tk-banner"></div>
 
     <!-- ── Configuration ────────────────────────────────────────── -->
-    <div class="tk-card">
-        <div class="tk-card-header">
+    <div class="bh-card">
+        <div class="bh-card-hdr">
             <div>
-                <p class="tk-card-title">Configuration</p>
+                <p class="bh-card-title">Configuration</p>
                 <p class="tk-card-desc">Set the support role, ticket category and log channel.</p>
             </div>
         </div>
-        <div class="tk-card-body">
+        <div class="bh-card-body">
             <div class="tk-grid">
-                <div class="tk-field">
-                    <label class="tk-label" for="tk-support-role">Support Role ID</label>
-                    <input type="text" id="tk-support-role" class="tk-input" maxlength="32"
+                <div class="bh-field">
+                    <label class="bh-label" for="tk-support-role">Support Role ID</label>
+                    <input type="text" id="tk-support-role" class="bh-input" maxlength="32"
                         placeholder="Role ID" value="<?= tk_h($s['support_role_id']) ?>">
                 </div>
-                <div class="tk-field">
-                    <label class="tk-label" for="tk-category">Ticket Category ID</label>
-                    <input type="text" id="tk-category" class="tk-input" maxlength="32"
+                <div class="bh-field">
+                    <label class="bh-label" for="tk-category">Ticket Category ID</label>
+                    <input type="text" id="tk-category" class="bh-input" maxlength="32"
                         placeholder="Category ID" value="<?= tk_h($s['category_id']) ?>">
                 </div>
-                <div class="tk-field">
-                    <label class="tk-label" for="tk-log-channel">Log Channel ID</label>
-                    <input type="text" id="tk-log-channel" class="tk-input" maxlength="32"
+                <div class="bh-field">
+                    <label class="bh-label" for="tk-log-channel">Log Channel ID</label>
+                    <input type="text" id="tk-log-channel" class="bh-input" maxlength="32"
                         placeholder="Log Channel ID (optional)" value="<?= tk_h($s['log_channel_id']) ?>">
                 </div>
             </div>
@@ -147,23 +147,23 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
     </div>
 
     <!-- ── Messages ─────────────────────────────────────────────── -->
-    <div class="tk-card">
-        <div class="tk-card-header">
+    <div class="bh-card">
+        <div class="bh-card-hdr">
             <div>
-                <p class="tk-card-title">Messages</p>
+                <p class="bh-card-title">Messages</p>
                 <p class="tk-card-desc">Customize the messages shown when a ticket is opened or closed.</p>
             </div>
         </div>
-        <div class="tk-card-body">
+        <div class="bh-card-body">
             <div class="tk-grid">
-                <div class="tk-field tk-field-full">
-                    <label class="tk-label" for="tk-open-msg">Open ticket message</label>
-                    <textarea id="tk-open-msg" class="tk-input" maxlength="2000"
+                <div class="bh-field tk-field-full">
+                    <label class="bh-label" for="tk-open-msg">Open ticket message</label>
+                    <textarea id="tk-open-msg" class="bh-input" maxlength="2000"
                         placeholder="Message shown inside the ticket channel when created…"><?= tk_h($s['open_message']) ?></textarea>
                 </div>
-                <div class="tk-field tk-field-full">
-                    <label class="tk-label" for="tk-dm-msg">DM close message</label>
-                    <textarea id="tk-dm-msg" class="tk-input" maxlength="2000"
+                <div class="bh-field tk-field-full">
+                    <label class="bh-label" for="tk-dm-msg">DM close message</label>
+                    <textarea id="tk-dm-msg" class="bh-input" maxlength="2000"
                         placeholder="Message sent to the ticket creator via DM when ticket is closed…"><?= tk_h($s['dm_message']) ?></textarea>
                 </div>
             </div>
@@ -236,15 +236,15 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
     </div>
 
     <!-- ── Active Tickets ────────────────────────────────────────── -->
-    <div class="tk-card" style="margin-top:32px">
-        <div class="tk-card-header">
+    <div class="bh-card" style="margin-top:32px">
+        <div class="bh-card-hdr">
             <div>
-                <p class="tk-card-title">Ticket Overview</p>
+                <p class="bh-card-title">Ticket Overview</p>
                 <p class="tk-card-desc">Last 100 tickets across all servers for this bot.</p>
             </div>
             <span style="font-size:12px;color:#94a3b8"><?= count($tickets) ?> total</span>
         </div>
-        <div class="tk-card-body" style="padding:0">
+        <div class="bh-card-body" style="padding:0">
             <?php if (empty($tickets)): ?>
                 <div class="tk-empty">No tickets yet. Users can create tickets with <code>/ticket create</code> or the panel button.</div>
             <?php else: ?>

@@ -257,22 +257,22 @@ foreach ($_musicCmdKeyMap as $fieldKey => $cmdKey) {
     </div>
 
     <?php if ($saveAlert): ?>
-        <div class="bh-music-alert bh-music-alert--<?= $saveAlert[0] === 'ok' ? 'ok' : 'err' ?>">
+        <div class="bh-alert bh-alert--<?= $saveAlert[0] === 'ok' ? 'ok' : 'err' ?>" style="margin-bottom:20px">
             <?= htmlspecialchars($saveAlert[1]) ?>
         </div>
     <?php endif; ?>
 
     <!-- ─── SOURCES ─── -->
-    <div class="bh-music-card">
-        <div class="bh-music-card__header">
+    <div class="bh-card" style="padding:0;margin-bottom:20px">
+        <div class="bh-card-hdr">
             <div class="bh-music-card__icon bh-music-card__icon--indigo">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/>
                 </svg>
             </div>
-            <div class="bh-music-card__header-text">
+            <div>
                 <div class="bh-music-card__sec-kicker">Quellen</div>
-                <h2 class="bh-music-card__title">Musik-Quellen</h2>
+                <div class="bh-card-title" style="margin:0">Musik-Quellen</div>
             </div>
         </div>
 
@@ -287,11 +287,11 @@ foreach ($_musicCmdKeyMap as $fieldKey => $cmdKey) {
                         <div class="bh-music-source__name"><?= htmlspecialchars($src['name']) ?></div>
                         <div class="bh-music-source__desc"><?= htmlspecialchars($src['desc']) ?></div>
                     </div>
-                    <label class="bh-music-toggle">
-                        <input type="checkbox" <?= $checked ? 'checked' : '' ?>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" <?= $checked ? 'checked' : '' ?>
                             data-field="<?= $src['key'] ?>"
                             onchange="bhMusicToggle(this)">
-                        <span class="bh-music-toggle__track"></span>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
 
@@ -315,161 +315,126 @@ foreach ($_musicCmdKeyMap as $fieldKey => $cmdKey) {
     </div>
 
     <!-- ─── SETTINGS ─── -->
-    <div class="bh-music-card">
-        <div class="bh-music-card__header">
+    <div class="bh-card" style="padding:0;margin-bottom:20px">
+        <div class="bh-card-hdr">
             <div class="bh-music-card__icon bh-music-card__icon--violet">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="3"/>
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
                 </svg>
             </div>
-            <div class="bh-music-card__header-text">
+            <div>
                 <div class="bh-music-card__sec-kicker">Konfiguration</div>
-                <h2 class="bh-music-card__title">Einstellungen</h2>
+                <div class="bh-card-title" style="margin:0">Einstellungen</div>
             </div>
         </div>
 
         <form id="bh-music-settings-form" method="post">
             <input type="hidden" name="save_settings" value="1">
+            <div class="bh-card-body">
 
-            <div class="bh-music-settings">
-
-                <!-- Enable / disable module -->
-                <div class="bh-music-field">
-                    <div class="bh-music-field__left">
-                        <div class="bh-music-field__label">Musik-Modul aktiviert</div>
-                        <div class="bh-music-field__hint">Alle Musikbefehle ein- oder ausschalten</div>
-                    </div>
-                    <div class="bh-music-field__right">
-                        <label class="bh-music-toggle">
-                            <input type="checkbox" <?= (int)$g('enabled') ? 'checked' : '' ?>
-                                data-field="enabled" onchange="bhMusicToggle(this)">
-                            <span class="bh-music-toggle__track"></span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Default volume -->
-                <div class="bh-music-field">
-                    <div class="bh-music-field__left">
-                        <div class="bh-music-field__label">Standard-Lautstärke</div>
-                        <div class="bh-music-field__hint">Startlautstärke für jede neue Session</div>
-                    </div>
-                    <div class="bh-music-field__right">
-                        <div class="bh-music-volume-row">
+                <!-- Input fields -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+                    <div>
+                        <label class="bh-label">Standard-Lautstärke</label>
+                        <div class="bh-music-volume-row" style="margin-top:8px">
                             <input type="range" class="bh-music-range" name="default_volume"
                                 min="0" max="100" step="1"
                                 value="<?= (int)$g('default_volume', 50) ?>"
                                 oninput="document.getElementById('bh-music-vol-val').textContent=this.value">
                             <span class="bh-music-range-val" id="bh-music-vol-val"><?= (int)$g('default_volume', 50) ?></span>
                         </div>
+                        <p class="bh-hint">Startlautstärke für jede neue Session</p>
                     </div>
-                </div>
-
-                <!-- Queue limit -->
-                <div class="bh-music-field">
-                    <div class="bh-music-field__left">
-                        <div class="bh-music-field__label">Queue-Limit</div>
-                        <div class="bh-music-field__hint">Max. Anzahl Songs in der Warteschlange (1–500)</div>
-                    </div>
-                    <div class="bh-music-field__right">
-                        <input type="number" class="bh-music-input bh-music-input--sm"
+                    <div>
+                        <label class="bh-label">Queue-Limit</label>
+                        <input type="number" class="bh-input" style="max-width:110px;margin-top:4px"
                             name="queue_limit" min="1" max="500"
                             value="<?= (int)$g('queue_limit', 100) ?>">
+                        <p class="bh-hint">Max. Songs in der Warteschlange (1–500)</p>
                     </div>
-                </div>
-
-                <!-- DJ Role -->
-                <div class="bh-music-field">
-                    <div class="bh-music-field__left">
-                        <div class="bh-music-field__label">DJ-Rolle (optional)</div>
-                        <div class="bh-music-field__hint">Nur diese Rolle darf skip/stop etc. nutzen. Leer = jeder.</div>
-                    </div>
-                    <div class="bh-music-field__right">
-                        <input type="text" class="bh-music-input" name="dj_role_id"
-                            placeholder="Rollen-ID"
+                    <div>
+                        <label class="bh-label">DJ-Rolle <span style="font-weight:400;color:#4f5f80">(optional)</span></label>
+                        <input type="text" class="bh-input" style="margin-top:4px"
+                            name="dj_role_id" placeholder="Rollen-ID"
                             value="<?= htmlspecialchars((string)($ms['dj_role_id'] ?? '')) ?>">
+                        <p class="bh-hint">Nur diese Rolle darf skip/stop etc. nutzen. Leer = jeder.</p>
                     </div>
-                </div>
-
-                <!-- Music channel -->
-                <div class="bh-music-field">
-                    <div class="bh-music-field__left">
-                        <div class="bh-music-field__label">Musik-Textkanal (optional)</div>
-                        <div class="bh-music-field__hint">Musikbefehle nur in diesem Kanal erlauben. Leer = überall.</div>
-                    </div>
-                    <div class="bh-music-field__right">
-                        <input type="text" class="bh-music-input" name="music_channel_id"
-                            placeholder="Kanal-ID"
+                    <div>
+                        <label class="bh-label">Musik-Textkanal <span style="font-weight:400;color:#4f5f80">(optional)</span></label>
+                        <input type="text" class="bh-input" style="margin-top:4px"
+                            name="music_channel_id" placeholder="Kanal-ID"
                             value="<?= htmlspecialchars((string)($ms['music_channel_id'] ?? '')) ?>">
+                        <p class="bh-hint">Musikbefehle nur in diesem Kanal erlauben. Leer = überall.</p>
                     </div>
                 </div>
 
-                <!-- Leave on empty -->
-                <div class="bh-music-field">
-                    <div class="bh-music-field__left">
-                        <div class="bh-music-field__label">Voice verlassen wenn leer</div>
-                        <div class="bh-music-field__hint">Bot verlässt den Channel wenn niemand mehr zuhört</div>
+                <!-- Toggle rows -->
+                <div class="bh-music-settings">
+                    <div class="bh-music-field">
+                        <div class="bh-music-field__left">
+                            <div class="bh-music-field__label">Musik-Modul aktiviert</div>
+                            <div class="bh-music-field__hint">Alle Musikbefehle ein- oder ausschalten</div>
+                        </div>
+                        <label class="bh-toggle">
+                            <input class="bh-toggle-input" type="checkbox" <?= (int)$g('enabled') ? 'checked' : '' ?>
+                                data-field="enabled" onchange="bhMusicToggle(this)">
+                            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
+                        </label>
                     </div>
-                    <div class="bh-music-field__right">
-                        <label class="bh-music-toggle">
-                            <input type="checkbox" <?= (int)$g('leave_on_empty') ? 'checked' : '' ?>
+                    <div class="bh-music-field">
+                        <div class="bh-music-field__left">
+                            <div class="bh-music-field__label">Voice verlassen wenn leer</div>
+                            <div class="bh-music-field__hint">Bot verlässt den Channel wenn niemand mehr zuhört</div>
+                        </div>
+                        <label class="bh-toggle">
+                            <input class="bh-toggle-input" type="checkbox" <?= (int)$g('leave_on_empty') ? 'checked' : '' ?>
                                 data-field="leave_on_empty" onchange="bhMusicToggle(this)">
-                            <span class="bh-music-toggle__track"></span>
+                            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                         </label>
                     </div>
-                </div>
-
-                <!-- Leave on finish -->
-                <div class="bh-music-field">
-                    <div class="bh-music-field__left">
-                        <div class="bh-music-field__label">Voice verlassen wenn Queue leer</div>
-                        <div class="bh-music-field__hint">Bot verlässt den Channel nach dem letzten Song</div>
-                    </div>
-                    <div class="bh-music-field__right">
-                        <label class="bh-music-toggle">
-                            <input type="checkbox" <?= (int)$g('leave_on_finish') ? 'checked' : '' ?>
+                    <div class="bh-music-field">
+                        <div class="bh-music-field__left">
+                            <div class="bh-music-field__label">Voice verlassen wenn Queue leer</div>
+                            <div class="bh-music-field__hint">Bot verlässt den Channel nach dem letzten Song</div>
+                        </div>
+                        <label class="bh-toggle">
+                            <input class="bh-toggle-input" type="checkbox" <?= (int)$g('leave_on_finish') ? 'checked' : '' ?>
                                 data-field="leave_on_finish" onchange="bhMusicToggle(this)">
-                            <span class="bh-music-toggle__track"></span>
+                            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                         </label>
                     </div>
-                </div>
-
-                <!-- Announce songs -->
-                <div class="bh-music-field">
-                    <div class="bh-music-field__left">
-                        <div class="bh-music-field__label">Song-Ankündigung</div>
-                        <div class="bh-music-field__hint">Embed im Textkanal wenn ein neuer Song startet</div>
-                    </div>
-                    <div class="bh-music-field__right">
-                        <label class="bh-music-toggle">
-                            <input type="checkbox" <?= (int)$g('announce_songs') ? 'checked' : '' ?>
+                    <div class="bh-music-field">
+                        <div class="bh-music-field__left">
+                            <div class="bh-music-field__label">Song-Ankündigung</div>
+                            <div class="bh-music-field__hint">Embed im Textkanal wenn ein neuer Song startet</div>
+                        </div>
+                        <label class="bh-toggle">
+                            <input class="bh-toggle-input" type="checkbox" <?= (int)$g('announce_songs') ? 'checked' : '' ?>
                                 data-field="announce_songs" onchange="bhMusicToggle(this)">
-                            <span class="bh-music-toggle__track"></span>
+                            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                         </label>
                     </div>
                 </div>
 
             </div>
-
             <div class="bh-music-save-bar">
-                <span class="bh-music-save-hint" id="bh-music-save-hint"></span>
-                <button type="submit" class="bh-music-btn">Speichern</button>
+                <button type="submit" class="bh-btn bh-btn--primary">Speichern</button>
             </div>
         </form>
     </div>
 
     <!-- ─── COMMANDS ─── -->
-    <div class="bh-music-card">
-        <div class="bh-music-card__header">
+    <div class="bh-card" style="padding:0;margin-bottom:20px">
+        <div class="bh-card-hdr">
             <div class="bh-music-card__icon bh-music-card__icon--emerald">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
                 </svg>
             </div>
-            <div class="bh-music-card__header-text">
+            <div>
                 <div class="bh-music-card__sec-kicker">Slash Commands</div>
-                <h2 class="bh-music-card__title">Musikbefehle</h2>
+                <div class="bh-card-title" style="margin:0">Musikbefehle</div>
             </div>
         </div>
 
@@ -480,10 +445,10 @@ foreach ($_musicCmdKeyMap as $fieldKey => $cmdKey) {
                         <div class="bh-music-cmd-row__name"><?= htmlspecialchars($cmd['name']) ?></div>
                         <div class="bh-music-cmd-row__desc"><?= htmlspecialchars($cmd['desc']) ?></div>
                     </div>
-                    <label class="bh-music-toggle">
-                        <input type="checkbox" <?= ($musicCmdEnabled[$cmd['key']] ?? 1) ? 'checked' : '' ?>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" <?= ($musicCmdEnabled[$cmd['key']] ?? 1) ? 'checked' : '' ?>
                             data-field="<?= $cmd['key'] ?>" onchange="bhMusicToggle(this)">
-                        <span class="bh-music-toggle__track"></span>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             <?php endforeach; ?>

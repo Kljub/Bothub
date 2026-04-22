@@ -73,12 +73,16 @@ function applyStatus(client, type, text, streamUrl = '', presenceStatus = 'onlin
         }
     }
 
-    client.user.setPresence({
-        activities: [activity],
-        status: presence,
-    });
+    try {
+        client.user.setPresence({
+            activities: [activity],
+            status: presence,
+        });
+    } catch (e) {
+        console.warn(`[status-service] setPresence failed (shard not ready?): ${e.message}`);
+        return;
+    }
 
-    console.log(`[status-service] Applied: ${type} "${statusText}" (presence: ${presence})`);
 }
 
 const _rotatingTimers = new Map(); // botId → intervalId
@@ -120,8 +124,12 @@ async function initStatus(client, botId) {
 
         const interval = Math.max(10, Number(settings.rotating_interval || 60)) * 1000;
         const timer = setInterval(() => {
-            idx = (idx + 1) % rotations.length;
-            applyRotation(rotations[idx]);
+            try {
+                idx = (idx + 1) % rotations.length;
+                applyRotation(rotations[idx]);
+            } catch (e) {
+                console.warn(`[status-service] Rotation tick failed:`, e.message);
+            }
         }, interval);
         _rotatingTimers.set(botId, timer);
         return;

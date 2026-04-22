@@ -137,14 +137,14 @@ $SCOPE_LABELS = [
                     <div>
                         <label for="ds-input-name" class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Name</label>
                         <p class="text-xs text-gray-400 dark:text-gray-500 mb-2">A descriptive name for this variable.</p>
-                        <input type="text" id="ds-input-name" maxlength="100" placeholder="My Variable" class="ds-input">
+                        <input type="text" id="ds-input-name" maxlength="100" placeholder="My Variable" class="bh-input">
                     </div>
 
                     <!-- Reference -->
                     <div>
                         <label for="ds-input-reference" class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Reference</label>
                         <p class="text-xs text-gray-400 dark:text-gray-500 mb-2">The variable tag used to reference this variable in your bot. This is generated from the name. You can use this variable in custom commands.</p>
-                        <input type="text" id="ds-input-reference" maxlength="100" readonly placeholder="{bhvar_}" class="ds-input">
+                        <input type="text" id="ds-input-reference" maxlength="100" readonly placeholder="{bhvar_}" class="bh-input">
                     </div>
 
                     <hr class="border-gray-100 dark:border-gray-700/60">
@@ -153,7 +153,7 @@ $SCOPE_LABELS = [
                     <div>
                         <label for="ds-input-type" class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Variable Type</label>
                         <p class="text-xs text-gray-400 dark:text-gray-500 mb-2">The type of data to store in this variable. If a User variable is selected, variable data will be assigned to each user. If a Channel variable is selected, variable data will be assigned to each channel.</p>
-                        <select id="ds-input-type" class="ds-input">
+                        <select id="ds-input-type" class="bh-input">
                             <?php foreach ($VAR_TYPE_LABELS as $val => $lbl): ?>
                                 <option value="<?= $val ?>"><?= htmlspecialchars($lbl, ENT_QUOTES, 'UTF-8') ?></option>
                             <?php endforeach; ?>
@@ -166,7 +166,7 @@ $SCOPE_LABELS = [
                     <div>
                         <label for="ds-input-default" class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Default Value</label>
                         <p class="text-xs text-gray-400 dark:text-gray-500 mb-2">The starting value of this variable before being set.</p>
-                        <input type="text" id="ds-input-default" maxlength="1000" placeholder="" class="ds-input">
+                        <input type="text" id="ds-input-default" maxlength="1000" placeholder="" class="bh-input">
                     </div>
 
                     <hr class="border-gray-100 dark:border-gray-700/60">
@@ -175,7 +175,7 @@ $SCOPE_LABELS = [
                     <div>
                         <label for="ds-input-scope" class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Scope</label>
                         <p class="text-xs text-gray-400 dark:text-gray-500 mb-2">Whether this variable should have different values based on <span style="color:#a78bfa">the server it is used in.</span></p>
-                        <select id="ds-input-scope" class="ds-input">
+                        <select id="ds-input-scope" class="bh-input">
                             <?php foreach ($SCOPE_LABELS as $val => $lbl): ?>
                                 <option value="<?= $val ?>"><?= htmlspecialchars($lbl, ENT_QUOTES, 'UTF-8') ?></option>
                             <?php endforeach; ?>
@@ -240,7 +240,7 @@ $SCOPE_LABELS = [
                             </div>
                         </div>
                         <div class="flex gap-2 shrink-0">
-                            <button type="button" class="ds-btn-edit p-1.5 rounded-lg text-gray-400 hover:text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition" title="Bearbeiten"
+                            <button type="button" class="bh-btn bh-btn--primary bh-btn--sm p-1.5 rounded-lg text-gray-400 hover:text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition" title="Bearbeiten"
                                 data-id="<?= (int)$var['id'] ?>"
                                 data-name="<?= htmlspecialchars($var['name'], ENT_QUOTES, 'UTF-8') ?>"
                                 data-reference="<?= htmlspecialchars($var['reference'], ENT_QUOTES, 'UTF-8') ?>"
@@ -249,7 +249,7 @@ $SCOPE_LABELS = [
                                 data-scope="<?= htmlspecialchars($var['scope'], ENT_QUOTES, 'UTF-8') ?>">
                                 <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm1.414 1.06a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354l-1.086-1.086ZM11.189 6.25 9.75 4.81 3.34 11.22a.25.25 0 0 0-.064.108l-.558 1.953 1.953-.558a.249.249 0 0 0 .108-.064L11.19 6.25Z"/></svg>
                             </button>
-                            <button type="button" class="ds-btn-delete p-1.5 rounded-lg text-gray-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition" title="Löschen"
+                            <button type="button" class="bh-btn bh-btn--danger bh-btn--sm p-1.5 rounded-lg text-gray-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition" title="Löschen"
                                 data-id="<?= (int)$var['id'] ?>">
                                 <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z"/></svg>
                             </button>
@@ -373,7 +373,7 @@ $SCOPE_LABELS = [
                     if (defEl) defEl.textContent = defVal.substring(0, 40);
 
                     // Update data attrs for next edit
-                    var editBtn = row.querySelector('.ds-btn-edit');
+                    var editBtn = row.querySelector('.bh-btn bh-btn--primary bh-btn--sm');
                     editBtn.dataset.name    = name;
                     editBtn.dataset.type    = varType;
                     editBtn.dataset.default = defVal;
@@ -425,12 +425,12 @@ $SCOPE_LABELS = [
             +   '</div>'
             + '</div>'
             + '<div class="flex gap-2 shrink-0">'
-            +   '<button type="button" class="ds-btn-edit p-1.5 rounded-lg text-gray-400 hover:text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition" title="Bearbeiten"'
+            +   '<button type="button" class="bh-btn bh-btn--primary bh-btn--sm p-1.5 rounded-lg text-gray-400 hover:text-violet-500 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition" title="Bearbeiten"'
             +     ' data-id="' + id + '" data-name="' + escAttr(name) + '" data-reference="' + escAttr(reference) + '"'
             +     ' data-type="' + escAttr(varType) + '" data-default="' + escAttr(defVal) + '" data-scope="' + escAttr(scope) + '">'
             +     '<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm1.414 1.06a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354l-1.086-1.086ZM11.189 6.25 9.75 4.81 3.34 11.22a.25.25 0 0 0-.064.108l-.558 1.953 1.953-.558a.249.249 0 0 0 .108-.064L11.19 6.25Z"/></svg>'
             +   '</button>'
-            +   '<button type="button" class="ds-btn-delete p-1.5 rounded-lg text-gray-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition" title="Löschen" data-id="' + id + '">'
+            +   '<button type="button" class="bh-btn bh-btn--danger bh-btn--sm p-1.5 rounded-lg text-gray-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition" title="Löschen" data-id="' + id + '">'
             +     '<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z"/></svg>'
             +   '</button>'
             + '</div>';
@@ -480,8 +480,8 @@ $SCOPE_LABELS = [
 
     // ── Attach events to existing rows ────────────────────────────────────
     function attachRowEvents(row) {
-        var editBtn   = row.querySelector('.ds-btn-edit');
-        var deleteBtn = row.querySelector('.ds-btn-delete');
+        var editBtn   = row.querySelector('.bh-btn bh-btn--primary bh-btn--sm');
+        var deleteBtn = row.querySelector('.bh-btn bh-btn--danger bh-btn--sm');
         if (editBtn)   editBtn.addEventListener('click',   function () { handleEdit(editBtn); });
         if (deleteBtn) deleteBtn.addEventListener('click', function () { handleDelete(deleteBtn); });
     }

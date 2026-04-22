@@ -1,8 +1,23 @@
-.dark .yn-row { --yn-sep: #374151; }
-.yn-row { --yn-sep: #f3f4f6; }
-.yn-row:last-child { border-bottom: none !important; }
-#yn-flash { border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 500; margin-bottom: 16px; }
-#yn-flash.yn-flash--ok  { background: #d1fae5; color: #065f46; }
-#yn-flash.yn-flash--err { background: #fee2e2; color: #991b1b; }
-.dark #yn-flash.yn-flash--ok  { background: #064e3b; color: #a7f3d0; }
-.dark #yn-flash.yn-flash--err { background: #450a0a; color: #fca5a5; }
+.yn-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #2e3850;
+    gap: 12px;
+}
+.yn-row:last-child { border-bottom: none; }
+.yn-del-btn {
+    background: rgba(239,68,68,.15);
+    color: #f87171;
+    border: none;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: background .15s;
+}
+.yn-del-btn:hover { background: rgba(239,68,68,.28); }
+#bh-alert.bh-alert--ok  { background: rgba(16,185,129,.12); color: #6ee7b7; border: 1px solid rgba(16,185,129,.2); }
+#bh-alert.bh-alert--err { background: rgba(239,68,68,.12);  color: #fca5a5; border: 1px solid rgba(239,68,68,.2); }

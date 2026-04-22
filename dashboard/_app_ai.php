@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 if (!isset($currentBotId) || $currentBotId <= 0) {
-    echo '<div class="lv-alert lv-alert--err">Kein Bot ausgewählt.</div>';
+    echo '<div class="bh-alert bh-alert--err">Kein Bot ausgewählt.</div>';
     return;
 }
 
@@ -278,56 +278,56 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
     <div id="bh-mod-body">
 
     <!-- General Settings Card -->
-    <div class="lv-card" style="margin-bottom:16px">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="ai-general-body">
+    <div class="bh-card" style="margin-bottom:16px">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="ai-general-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Konfiguration</div>
-                <div class="lv-card__title">Allgemeine Einstellungen</div>
+                <div class="bh-card-title">Allgemeine Einstellungen</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
             </svg>
         </div>
         <div class="lv-card__body" id="ai-general-body">
-            <div class="lv-field">
-                <label class="lv-label" for="ai-active-provider">Aktiver Anbieter</label>
-                <select id="ai-active-provider" class="lv-select" style="max-width:320px">
+            <div class="bh-field">
+                <label class="bh-label" for="ai-active-provider">Aktiver Anbieter</label>
+                <select id="ai-active-provider" class="bh-select" style="max-width:320px">
                     <?php foreach ($providerDefs as $key => $def): ?>
                     <option value="<?= $key ?>" <?= $activeProvider === $key ? 'selected' : '' ?>><?= htmlspecialchars($def['label']) ?></option>
                     <?php endforeach; ?>
                 </select>
-                <div class="lv-hint">Dieser Anbieter wird für den <code>/ask</code>-Command verwendet.</div>
+                <div class="bh-hint">Dieser Anbieter wird für den <code>/ask</code>-Command verwendet.</div>
             </div>
-            <div class="lv-field">
-                <label class="lv-label" for="ai-system-prompt">System-Prompt <span style="color:var(--bh-text-muted)">(optional)</span></label>
-                <textarea id="ai-system-prompt" class="lv-input" rows="3" style="resize:vertical" placeholder="Du bist ein hilfreicher Assistent auf dem Discord-Server {servername}."><?= htmlspecialchars((string)($settings['system_prompt'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
-                <div class="lv-hint">Gibt der KI eine Rolle oder einen Kontext vor. Leer lassen für Standardverhalten.</div>
+            <div class="bh-field">
+                <label class="bh-label" for="ai-system-prompt">System-Prompt <span style="color:var(--bh-text-muted)">(optional)</span></label>
+                <textarea id="ai-system-prompt" class="bh-input" rows="3" style="resize:vertical" placeholder="Du bist ein hilfreicher Assistent auf dem Discord-Server {servername}."><?= htmlspecialchars((string)($settings['system_prompt'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
+                <div class="bh-hint">Gibt der KI eine Rolle oder einen Kontext vor. Leer lassen für Standardverhalten.</div>
             </div>
-            <div class="lv-field">
+            <div class="bh-field">
                 <div class="lv-grid2">
                     <div>
-                        <label class="lv-label" for="ai-max-tokens">Max. Tokens</label>
-                        <input type="number" id="ai-max-tokens" class="lv-input" value="<?= (int)($settings['max_tokens'] ?? 1000) ?>" min="1" max="8000">
-                        <div class="lv-hint">Maximale Länge der Antwort (1–8000).</div>
+                        <label class="bh-label" for="ai-max-tokens">Max. Tokens</label>
+                        <input type="number" id="ai-max-tokens" class="bh-input" value="<?= (int)($settings['max_tokens'] ?? 1000) ?>" min="1" max="8000">
+                        <div class="bh-hint">Maximale Länge der Antwort (1–8000).</div>
                     </div>
                     <div>
-                        <label class="lv-label" for="ai-temperature">Temperature</label>
-                        <input type="number" id="ai-temperature" class="lv-input" value="<?= number_format((float)($settings['temperature'] ?? 0.7), 2) ?>" min="0" max="2" step="0.05">
-                        <div class="lv-hint">Kreativität (0 = deterministisch, 2 = sehr kreativ).</div>
+                        <label class="bh-label" for="ai-temperature">Temperature</label>
+                        <input type="number" id="ai-temperature" class="bh-input" value="<?= number_format((float)($settings['temperature'] ?? 0.7), 2) ?>" min="0" max="2" step="0.05">
+                        <div class="bh-hint">Kreativität (0 = deterministisch, 2 = sehr kreativ).</div>
                     </div>
                 </div>
             </div>
-            <div class="lv-field">
+            <div class="bh-field">
                 <div class="lv-grid2">
                     <div>
-                        <label class="lv-label" for="ai-history-length">Verlauf (Nachrichten)</label>
-                        <input type="number" id="ai-history-length" class="lv-input" value="<?= (int)($settings['history_length'] ?? 10) ?>" min="1" max="50">
-                        <div class="lv-hint">Wie viele Nachrichten die KI sich pro User merkt (1–50).</div>
+                        <label class="bh-label" for="ai-history-length">Verlauf (Nachrichten)</label>
+                        <input type="number" id="ai-history-length" class="bh-input" value="<?= (int)($settings['history_length'] ?? 10) ?>" min="1" max="50">
+                        <div class="bh-hint">Wie viele Nachrichten die KI sich pro User merkt (1–50).</div>
                     </div>
                     <div>
-                        <label class="lv-label" for="ai-session-timeout">Session-Timeout (Minuten)</label>
-                        <input type="number" id="ai-session-timeout" class="lv-input" value="<?= (int)($settings['session_timeout_min'] ?? 30) ?>" min="1" max="1440">
-                        <div class="lv-hint">Nach dieser Inaktivität wird der Verlauf automatisch gelöscht.</div>
+                        <label class="bh-label" for="ai-session-timeout">Session-Timeout (Minuten)</label>
+                        <input type="number" id="ai-session-timeout" class="bh-input" value="<?= (int)($settings['session_timeout_min'] ?? 30) ?>" min="1" max="1440">
+                        <div class="bh-hint">Nach dieser Inaktivität wird der Verlauf automatisch gelöscht.</div>
                     </div>
                 </div>
             </div>
@@ -337,9 +337,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
                     <div class="lv-feature__desc">Erlaubt Websuche beim <code>/ask frage web:True</code>-Command und per <code>web:</code>-Prefix bei @Mentions.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="ai-web-enabled" <?= !empty($settings['web_search_enabled']) ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="ai-web-enabled" <?= !empty($settings['web_search_enabled']) ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
@@ -349,40 +349,40 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
                     <div class="lv-feature__desc">Bei jeder Anfrage automatisch suchen — kein <code>web:</code>-Prefix nötig.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="ai-web-always" <?= !empty($settings['web_search_always']) ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="ai-web-always" <?= !empty($settings['web_search_always']) ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
-            <div class="lv-field" id="ai-web-fields" <?= empty($settings['web_search_enabled']) ? 'style="display:none"' : '' ?>>
-                <label class="lv-label">Such-Anbieter & API Keys <span style="color:var(--bh-text-muted)">(optional — ohne Key wird DuckDuckGo verwendet)</span></label>
+            <div class="bh-field" id="ai-web-fields" <?= empty($settings['web_search_enabled']) ? 'style="display:none"' : '' ?>>
+                <label class="bh-label">Such-Anbieter & API Keys <span style="color:var(--bh-text-muted)">(optional — ohne Key wird DuckDuckGo verwendet)</span></label>
                 <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
                     <div>
-                        <label class="lv-label" for="ai-brave-key" style="font-size:11px">Brave Search API Key</label>
-                        <input type="password" id="ai-brave-key" class="lv-input" placeholder="BSA..." value="<?= htmlspecialchars((string)($settings['brave_api_key'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
-                        <div class="lv-hint">Bestes Ergebnis. Kostenloser Key unter search.brave.com/api</div>
+                        <label class="bh-label" for="ai-brave-key" style="font-size:11px">Brave Search API Key</label>
+                        <input type="password" id="ai-brave-key" class="bh-input" placeholder="BSA..." value="<?= htmlspecialchars((string)($settings['brave_api_key'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                        <div class="bh-hint">Bestes Ergebnis. Kostenloser Key unter search.brave.com/api</div>
                     </div>
                     <div>
-                        <label class="lv-label" for="ai-searxng-url" style="font-size:11px">SearXNG Instance URL <span style="color:var(--bh-text-muted)">(optional)</span></label>
-                        <input type="text" id="ai-searxng-url" class="lv-input" placeholder="https://searxng.example.com" value="<?= htmlspecialchars((string)($settings['searxng_url'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
-                        <div class="lv-hint">Eigene oder öffentliche SearXNG-Instanz. Wird vor DuckDuckGo bevorzugt (wenn kein Brave Key).</div>
+                        <label class="bh-label" for="ai-searxng-url" style="font-size:11px">SearXNG Instance URL <span style="color:var(--bh-text-muted)">(optional)</span></label>
+                        <input type="text" id="ai-searxng-url" class="bh-input" placeholder="https://searxng.example.com" value="<?= htmlspecialchars((string)($settings['searxng_url'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                        <div class="bh-hint">Eigene oder öffentliche SearXNG-Instanz. Wird vor DuckDuckGo bevorzugt (wenn kein Brave Key).</div>
                     </div>
                 </div>
             </div>
             <div class="lv-btn-row">
-                <button class="lv-btn" id="ai-save-general">Speichern</button>
+                <button class="bh-btn bh-btn--primary" id="ai-save-general">Speichern</button>
                 <span class="lv-save-msg" id="ai-general-msg"></span>
             </div>
         </div>
     </div>
 
     <!-- Provider Cards -->
-    <div class="lv-card" style="margin-bottom:16px">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="ai-providers-body">
+    <div class="bh-card" style="margin-bottom:16px">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="ai-providers-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Zugangsdaten</div>
-                <div class="lv-card__title">Anbieter konfigurieren</div>
+                <div class="bh-card-title">Anbieter konfigurieren</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -390,10 +390,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
         </div>
         <div class="lv-card__body" id="ai-providers-body">
             <?php foreach ($providerDefs as $key => $def): ?>
-            <div class="lv-field ai-provider-block" id="ai-prov-<?= $key ?>" <?= $activeProvider !== $key ? 'style="display:none"' : '' ?>>
+            <div class="bh-field ai-provider-block" id="ai-prov-<?= $key ?>" <?= $activeProvider !== $key ? 'style="display:none"' : '' ?>>
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
                     <div>
-                        <div class="lv-label" style="margin-bottom:0;font-size:14px"><?= htmlspecialchars($def['label']) ?></div>
+                        <div class="bh-label" style="margin-bottom:0;font-size:14px"><?= htmlspecialchars($def['label']) ?></div>
                         <?php if ($activeProvider === $key): ?>
                         <span class="badge badge--active" style="margin-top:4px;display:inline-block">Aktiv</span>
                         <?php endif; ?>
@@ -402,8 +402,8 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
 
                 <?php if ($def['needs_key']): ?>
                 <div style="margin-bottom:10px">
-                    <label class="lv-label" for="ai-key-<?= $key ?>">API Key</label>
-                    <input type="password" id="ai-key-<?= $key ?>" class="lv-input ai-api-key"
+                    <label class="bh-label" for="ai-key-<?= $key ?>">API Key</label>
+                    <input type="password" id="ai-key-<?= $key ?>" class="bh-input ai-api-key"
                         data-provider="<?= $key ?>"
                         value="<?= prov($providers, $key, 'api_key') ?>"
                         placeholder="sk-...">
@@ -412,8 +412,8 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
 
                 <?php if ($def['has_url']): ?>
                 <div style="margin-bottom:10px">
-                    <label class="lv-label" for="ai-url-<?= $key ?>">Base URL</label>
-                    <input type="text" id="ai-url-<?= $key ?>" class="lv-input ai-base-url"
+                    <label class="bh-label" for="ai-url-<?= $key ?>">Base URL</label>
+                    <input type="text" id="ai-url-<?= $key ?>" class="bh-input ai-base-url"
                         data-provider="<?= $key ?>"
                         value="<?= prov($providers, $key, 'base_url', $def['default_url']) ?>"
                         placeholder="<?= htmlspecialchars($def['default_url']) ?>">
@@ -421,28 +421,28 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
                 <?php endif; ?>
 
                 <div style="margin-bottom:10px">
-                    <label class="lv-label" for="ai-model-<?= $key ?>">Modell</label>
+                    <label class="bh-label" for="ai-model-<?= $key ?>">Modell</label>
                     <div style="display:flex;gap:8px">
-                        <input type="text" id="ai-model-<?= $key ?>" class="lv-input ai-model"
+                        <input type="text" id="ai-model-<?= $key ?>" class="bh-input ai-model"
                             data-provider="<?= $key ?>"
                             value="<?= prov($providers, $key, 'selected_model', $def['default_model']) ?>"
                             placeholder="<?= htmlspecialchars($def['default_model']) ?>"
                             style="flex:1">
                         <?php if ($def['has_ollama']): ?>
-                        <button class="lv-btn lv-btn--sm ai-ollama-fetch" data-provider="<?= $key ?>" type="button" style="white-space:nowrap">
+                        <button class="bh-btn bh-btn--primary bh-btn bh-btn--sm ai-ollama-fetch" data-provider="<?= $key ?>" type="button" style="white-space:nowrap">
                             Models laden
                         </button>
                         <?php endif; ?>
                     </div>
                     <?php if ($def['has_ollama']): ?>
-                    <select id="ai-ollama-list-<?= $key ?>" class="lv-select ai-ollama-select" data-provider="<?= $key ?>" style="display:none;margin-top:8px">
+                    <select id="ai-ollama-list-<?= $key ?>" class="bh-select ai-ollama-select" data-provider="<?= $key ?>" style="display:none;margin-top:8px">
                         <option value="">-- Modell wählen --</option>
                     </select>
-                    <div class="lv-hint ai-ollama-status-<?= $key ?>"></div>
+                    <div class="bh-hint ai-ollama-status-<?= $key ?>"></div>
                     <?php endif; ?>
                 </div>
 
-                <button class="lv-btn lv-btn--sm ai-save-provider" data-provider="<?= $key ?>" type="button">Speichern</button>
+                <button class="bh-btn bh-btn--primary bh-btn bh-btn--sm ai-save-provider" data-provider="<?= $key ?>" type="button">Speichern</button>
                 <span class="lv-save-msg ai-prov-msg-<?= $key ?>" style="margin-left:10px;font-size:12px"></span>
             </div>
             <?php endforeach; ?>
@@ -450,11 +450,11 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
     </div>
 
     <!-- Mention Card -->
-    <div class="lv-card" style="margin-bottom:16px">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="ai-mention-body">
+    <div class="bh-card" style="margin-bottom:16px">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="ai-mention-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Nachrichten</div>
-                <div class="lv-card__title">@Mention Antworten</div>
+                <div class="bh-card-title">@Mention Antworten</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -467,59 +467,59 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
                     <div class="lv-feature__desc">Bot reagiert wenn er per @Mention in einem erlaubten Channel angesprochen wird.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="ai-mention-enabled" <?= !empty($settings['mention_enabled']) ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="ai-mention-enabled" <?= !empty($settings['mention_enabled']) ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
-            <div class="lv-field">
-                <label class="lv-label" for="ai-mention-context">Channel-Kontext (Nachrichten)</label>
-                <input type="number" id="ai-mention-context" class="lv-input" style="max-width:160px"
+            <div class="bh-field">
+                <label class="bh-label" for="ai-mention-context">Channel-Kontext (Nachrichten)</label>
+                <input type="number" id="ai-mention-context" class="bh-input" style="max-width:160px"
                     value="<?= (int)($settings['mention_context_messages'] ?? 10) ?>" min="0" max="50">
-                <div class="lv-hint">Wie viele vorherige Channel-Nachrichten die KI als Kontext einliest (0 = deaktiviert).</div>
+                <div class="bh-hint">Wie viele vorherige Channel-Nachrichten die KI als Kontext einliest (0 = deaktiviert).</div>
             </div>
-            <div class="lv-field">
-                <label class="lv-label" for="ai-allowed-channels">Erlaubte Channels <span style="color:var(--bh-text-muted)">(Channel-IDs, kommagetrennt)</span></label>
-                <input type="text" id="ai-allowed-channels" class="lv-input"
+            <div class="bh-field">
+                <label class="bh-label" for="ai-allowed-channels">Erlaubte Channels <span style="color:var(--bh-text-muted)">(Channel-IDs, kommagetrennt)</span></label>
+                <input type="text" id="ai-allowed-channels" class="bh-input"
                     value="<?= htmlspecialchars($allowedChannels, ENT_QUOTES, 'UTF-8') ?>"
                     placeholder="123456789012345678, 987654321098765432">
-                <div class="lv-hint">Nur in diesen Channels reagiert der Bot auf @Mentions. Leer lassen = alle Channels erlaubt.</div>
+                <div class="bh-hint">Nur in diesen Channels reagiert der Bot auf @Mentions. Leer lassen = alle Channels erlaubt.</div>
             </div>
             <div class="lv-btn-row">
-                <button class="lv-btn" id="ai-save-mention">Speichern</button>
+                <button class="bh-btn bh-btn--primary" id="ai-save-mention">Speichern</button>
                 <span class="lv-save-msg" id="ai-mention-msg"></span>
             </div>
         </div>
     </div>
 
     <!-- Commands Card -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="ai-cmd-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="ai-cmd-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Commands</div>
-                <div class="lv-card__title">Slash-Commands</div>
+                <div class="bh-card-title">Slash-Commands</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
             </svg>
         </div>
         <div class="lv-card__body" id="ai-cmd-body">
-            <div class="lv-cmds-grid" style="padding:16px 20px">
+            <div class="bh-cmd-grid" style="padding:16px 20px">
                 <?php
                 $cmds = [
                     ['key' => 'ai', 'name' => '/ask', 'desc' => 'Stellt der KI eine Frage und postet die Antwort im Channel.'],
                 ];
                 foreach ($cmds as $cmd): ?>
-                <div class="lv-cmd-card">
+                <div class="bh-cmd-card">
                     <div>
-                        <div class="lv-cmd__name"><?= htmlspecialchars($cmd['name']) ?></div>
-                        <div class="lv-cmd__desc"><?= htmlspecialchars($cmd['desc']) ?></div>
+                        <div class="bh-cmd-name"><?= htmlspecialchars($cmd['name']) ?></div>
+                        <div class="bh-cmd-desc"><?= htmlspecialchars($cmd['desc']) ?></div>
                     </div>
-                    <label class="lv-toggle">
-                        <input type="checkbox" class="ai-cmd-toggle" data-key="<?= $cmd['key'] ?>"
+                    <label class="bh-toggle">
+                        <input type="checkbox" class="ai-cmd-toggle bh-toggle-input" data-key="<?= $cmd['key'] ?>"
                             <?= ($cmdMap[$cmd['key']] ?? true) ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
                 <?php endforeach; ?>

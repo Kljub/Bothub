@@ -12,16 +12,6 @@ min-height:42px;
 align-items:center;
 }
 
-.role-tag{
-background:#374151;
-padding:4px 8px;
-border-radius:6px;
-font-size:13px;
-display:flex;
-align-items:center;
-gap:6px;
-}
-
 .role-remove{
 cursor:pointer;
 opacity:.7;

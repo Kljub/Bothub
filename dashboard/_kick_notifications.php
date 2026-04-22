@@ -115,86 +115,102 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:kick');
 ?>
 
 <?= bh_mod_render($modEnabled, $botId, 'module:kick', 'Kick Notifications', 'Kick-Benachrichtigungen für diesen Bot ein- oder ausschalten.') ?>
+<style>
+.bh-info-tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:rgba(99,102,241,.18);color:#818cf8;font-size:10px;font-weight:700;cursor:default;flex-shrink:0;vertical-align:middle;margin-left:6px;line-height:1}
+.bh-info-tip:hover{background:rgba(99,102,241,.32)}
+.bh-info-float-tip{position:fixed;transform:translate(-50%,calc(-100% - 8px));background:#1e293b;color:#e2e8f0;font-size:11px;font-weight:400;white-space:nowrap;padding:6px 10px;border-radius:7px;border:1px solid #374461;box-shadow:0 4px 12px rgba(0,0,0,.4);pointer-events:none;opacity:0;transition:opacity .15s;z-index:9999}
+.bh-info-float-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#374461}
+</style>
+<script>
+(function(){
+  var float = document.createElement('div');
+  float.className = 'bh-info-float-tip';
+  float.textContent = 'Kick Notifications nutzt die öffentliche Kick API — keine App-Credentials erforderlich.';
+  document.body.appendChild(float);
+
+  var icon = document.createElement('span');
+  icon.className = 'bh-info-tip';
+  icon.textContent = 'i';
+
+  icon.addEventListener('mouseenter', function(){
+    var r = icon.getBoundingClientRect();
+    float.style.left = (r.left + r.width / 2) + 'px';
+    float.style.top  = (r.top + window.scrollY) + 'px';
+    float.style.opacity = '1';
+  });
+  icon.addEventListener('mouseleave', function(){ float.style.opacity = '0'; });
+
+  var title = document.querySelector('.bh-mod-feature__title');
+  if(title) title.appendChild(icon);
+})();
+</script>
 <div id="bh-mod-body">
 
 <div id="kn-flash" style="display:none"></div>
 
-<!-- ── Hinweis ───────────────────────────────────────────────────────────────── -->
-<div class="rounded-xl border border-emerald-200 dark:border-emerald-700/60 bg-emerald-50 dark:bg-emerald-500/10 px-4 py-3 flex items-start gap-3 mb-6">
-    <svg class="mt-0.5 shrink-0 text-emerald-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-    </svg>
-    <div class="text-sm text-emerald-700 dark:text-emerald-300">
-        Kick Notifications nutzt die öffentliche Kick API — keine App-Credentials erforderlich.
-    </div>
-</div>
-
 <!-- ── Streamer hinzufügen ───────────────────────────────────────────────────── -->
-<div class="bg-white dark:bg-gray-800 shadow-xs rounded-xl" style="margin-bottom:24px">
-    <div class="p-5 border-b border-gray-100 dark:border-gray-700/60">
-        <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Streamer hinzufügen</h2>
+<div class="bh-card" style="padding:0;margin-bottom:20px">
+    <div class="bh-card-hdr">
+        <div class="bh-card-title" style="margin:0">Streamer hinzufügen</div>
     </div>
-    <div class="p-5">
+    <div class="bh-card-body">
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
             <div>
-                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Kick Benutzername</label>
-                <input type="text" id="kn-slug"
-                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                <label class="bh-label" for="kn-slug">Kick Benutzername</label>
+                <input type="text" id="kn-slug" class="bh-input"
                     placeholder="streamer_name" maxlength="60">
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Discord Kanal</label>
-                <select id="kn-channel-select"
-                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <label class="bh-label" for="kn-channel-select">Discord Kanal</label>
+                <select id="kn-channel-select" class="bh-select">
                     <option value="">— Kanäle werden geladen… —</option>
                 </select>
                 <div id="kn-channel-error" style="display:none;font-size:11px;color:#f87171;margin-top:3px"></div>
             </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
             <div>
-                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Ping-Rolle <span class="font-normal text-gray-400">(optional)</span>
+                <label class="bh-label" for="kn-role-select">
+                    Ping-Rolle <span style="font-weight:400;color:#4f5f80">(optional)</span>
                 </label>
-                <select id="kn-role-select"
-                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <select id="kn-role-select" class="bh-select">
                     <option value="">— Keine Rolle —</option>
                 </select>
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Custom Message <span class="font-normal text-gray-400">(optional)</span>
+                <label class="bh-label" for="kn-custom-message">
+                    Custom Message <span style="font-weight:400;color:#4f5f80">(optional)</span>
                 </label>
-                <input type="text" id="kn-custom-message"
-                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                <input type="text" id="kn-custom-message" class="bh-input"
                     placeholder="{streamer} ist jetzt live! 🎮" maxlength="300">
             </div>
         </div>
 
-        <div style="margin-bottom:4px;font-size:11px;color:#6b7280">
-            Variablen: <code style="color:#a5b4fc">{streamer}</code> · <code style="color:#a5b4fc">{title}</code> · <code style="color:#a5b4fc">{category}</code> · <code style="color:#a5b4fc">{url}</code>
+        <div class="bh-vars">
+            <div class="bh-vars-title">Verfügbare Variablen — klicken zum Kopieren</div>
+            <div class="bh-vars-list">
+                <span class="bh-var-chip" onclick="knCopyVar(this,'{streamer}')">{streamer}</span>
+                <span class="bh-var-chip" onclick="knCopyVar(this,'{title}')">{title}</span>
+                <span class="bh-var-chip" onclick="knCopyVar(this,'{category}')">{category}</span>
+                <span class="bh-var-chip" onclick="knCopyVar(this,'{url}')">{url}</span>
+            </div>
         </div>
 
-        <div style="margin-top:16px">
-            <button onclick="knAdd()" id="kn-add-btn"
-                class="inline-flex items-center gap-1.5 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold px-4 py-2 transition-colors">
-                Streamer hinzufügen
-            </button>
-        </div>
+        <button onclick="knAdd()" id="kn-add-btn" class="bh-btn bh-btn--primary">
+            Streamer hinzufügen
+        </button>
     </div>
 </div>
 
 <!-- ── Streamer-Liste ────────────────────────────────────────────────────────── -->
-<div class="bg-white dark:bg-gray-800 shadow-xs rounded-xl">
-    <div class="p-5 border-b border-gray-100 dark:border-gray-700/60">
-        <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100">
-            Konfigurierte Streamer
-            <span class="ml-2 text-xs font-normal text-gray-400">(<?= count($notifications) ?>)</span>
-        </h2>
+<div class="bh-card" style="padding:0">
+    <div class="bh-card-hdr">
+        <div class="bh-card-title" style="margin:0">Konfigurierte Streamer</div>
+        <span class="bh-tag"><?= count($notifications) ?></span>
     </div>
-    <div class="p-5">
+    <div class="bh-card-body">
         <div id="kn-list">
         <?php if (empty($notifications)): ?>
             <div id="kn-empty" class="text-sm text-gray-400 dark:text-gray-500 text-center py-6">
@@ -240,10 +256,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:kick');
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:12px">
                     <label class="bh-toggle" title="Aktivieren / Deaktivieren">
-                        <input type="checkbox" <?= $isEnabled ? 'checked' : '' ?>
+                        <input class="bh-toggle-input" type="checkbox" <?= $isEnabled ? 'checked' : '' ?>
                             onchange="knToggle(<?= (int)$n['id'] ?>, this.checked)">
-                        <span class="bh-toggle__track"></span>
-                        <span class="bh-toggle__thumb"></span>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                     <button onclick="knDelete(<?= (int)$n['id'] ?>)" class="kn-del-btn">Löschen</button>
                 </div>
@@ -261,6 +276,21 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:kick');
 (function () {
     const BOT_ID = <?= (int)$botId ?>;
     let loadedGuildId = '';
+
+    // ── Copy variable chip ────────────────────────────────────────────────────
+    window.knCopyVar = function (el, v) {
+        const orig = el.textContent;
+        const done = () => {
+            el.classList.add('is-copied');
+            el.textContent = '✓ Kopiert';
+            setTimeout(() => { el.classList.remove('is-copied'); el.textContent = orig; }, 1200);
+        };
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(v).then(done).catch(() => { const t = document.createElement('textarea'); t.value = v; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); done(); });
+        } else {
+            const t = document.createElement('textarea'); t.value = v; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); done();
+        }
+    };
 
     // ── Flash ─────────────────────────────────────────────────────────────────
     function flash(msg, ok) {
@@ -394,9 +424,8 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:kick');
             </div>
             <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:12px">
                 <label class="bh-toggle" title="Aktivieren / Deaktivieren">
-                    <input type="checkbox" checked onchange="knToggle(${id}, this.checked)">
-                    <span class="bh-toggle__track"></span>
-                    <span class="bh-toggle__thumb"></span>
+                    <input class="bh-toggle-input" type="checkbox" checked onchange="knToggle(${id}, this.checked)">
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
                 <button onclick="knDelete(${id})" class="kn-del-btn">Löschen</button>
             </div>`;

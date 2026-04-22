@@ -346,10 +346,10 @@ foreach ($ecoCommandGroups as $cmds) {
     </div>
 
     <?php foreach ($flash as $msg): ?>
-        <div class="bh-eco-alert bh-eco-alert--ok"><?= $esc($msg) ?></div>
+        <div class="bh-alert bh-alert--ok"><?= $esc($msg) ?></div>
     <?php endforeach; ?>
     <?php foreach ($errors as $err): ?>
-        <div class="bh-eco-alert bh-eco-alert--err"><?= $esc($err) ?></div>
+        <div class="bh-alert bh-alert--err"><?= $esc($err) ?></div>
     <?php endforeach; ?>
 
     <!-- ── Commands ──────────────────────────────────────────────────────────── -->
@@ -383,10 +383,10 @@ foreach ($ecoCommandGroups as $cmds) {
                                         <div class="bh-eco-feature__desc"><?= $esc($cmd['desc']) ?></div>
                                     </div>
                                     <div class="bh-eco-feature__right">
-                                        <label class="bh-eco-toggle">
-                                            <input type="hidden" name="enabled[<?= $esc($key) ?>]" value="0">
-                                            <input type="checkbox" name="enabled[<?= $esc($key) ?>]" value="1" <?= $enabled ? 'checked' : '' ?>>
-                                            <span class="bh-eco-toggle__track"></span>
+                                        <label class="bh-toggle">
+                                            <input class="bh-toggle-input" type="hidden" name="enabled[<?= $esc($key) ?>]" value="0">
+                                            <input class="bh-toggle-input" type="checkbox" name="enabled[<?= $esc($key) ?>]" value="1" <?= $enabled ? 'checked' : '' ?>>
+                                            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                                         </label>
                                         <svg class="bh-eco-cmd-chevron" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                             <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/>
@@ -406,7 +406,7 @@ foreach ($ecoCommandGroups as $cmds) {
                                             <label class="bh-eco-cd-label" for="cd_<?= $esc($key) ?>">⏳ Cooldown</label>
                                             <input type="number"
                                                    id="cd_<?= $esc($key) ?>"
-                                                   class="bh-eco-input bh-eco-cd-input"
+                                                   class="bh-input bh-eco-cd-input"
                                                    data-cmd-key="<?= $esc($key) ?>"
                                                    value="<?= $cdVal ?>"
                                                    min="0" max="604800" step="1"
@@ -509,18 +509,18 @@ foreach ($ecoCommandGroups as $cmds) {
                 <div class="bh-eco-add-grid" style="grid-template-columns:1fr 2fr 1fr;max-width:520px;">
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Symbol / Emoji</label>
-                        <input type="text" name="currency_symbol" class="bh-eco-input" maxlength="16" value="🪙" placeholder="🪙">
+                        <input type="text" name="currency_symbol" class="bh-input" maxlength="16" value="🪙" placeholder="🪙">
                     </div>
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Name *</label>
-                        <input type="text" name="currency_name" class="bh-eco-input" maxlength="50" placeholder="Coins" required>
+                        <input type="text" name="currency_name" class="bh-input" maxlength="50" placeholder="Coins" required>
                     </div>
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Standard?</label>
-                        <label class="bh-eco-toggle" style="margin-top:4px;">
-                            <input type="hidden" name="currency_default" value="0">
-                            <input type="checkbox" name="currency_default" value="1">
-                            <span class="bh-eco-toggle__track"></span>
+                        <label class="bh-toggle" style="margin-top:4px;">
+                            <input class="bh-toggle-input" type="hidden" name="currency_default" value="0">
+                            <input class="bh-toggle-input" type="checkbox" name="currency_default" value="1">
+                            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                         </label>
                     </div>
                 </div>
@@ -544,32 +544,32 @@ foreach ($ecoCommandGroups as $cmds) {
             <div class="bh-eco-settings-grid">
                 <div class="bh-eco-field">
                     <label class="bh-eco-field__label">Währungssymbol</label>
-                    <input type="text" name="currency_symbol" class="bh-eco-input"
+                    <input type="text" name="currency_symbol" class="bh-input"
                            value="<?= $esc((string)$ecoSettings['currency_symbol']) ?>" maxlength="8" placeholder="🪙">
                 </div>
                 <div class="bh-eco-field">
                     <label class="bh-eco-field__label">Währungsname</label>
-                    <input type="text" name="currency_name" class="bh-eco-input"
+                    <input type="text" name="currency_name" class="bh-input"
                            value="<?= $esc((string)$ecoSettings['currency_name']) ?>" maxlength="30" placeholder="Coins">
                 </div>
                 <div class="bh-eco-field">
                     <label class="bh-eco-field__label">Daily Bonus</label>
-                    <input type="number" name="daily_amount" class="bh-eco-input"
+                    <input type="number" name="daily_amount" class="bh-input"
                            value="<?= (int)$ecoSettings['daily_amount'] ?>" min="1" max="99999">
                 </div>
                 <div class="bh-eco-field">
                     <label class="bh-eco-field__label">Work Min</label>
-                    <input type="number" name="work_min" class="bh-eco-input"
+                    <input type="number" name="work_min" class="bh-input"
                            value="<?= (int)$ecoSettings['work_min'] ?>" min="1" max="99999">
                 </div>
                 <div class="bh-eco-field">
                     <label class="bh-eco-field__label">Work Max</label>
-                    <input type="number" name="work_max" class="bh-eco-input"
+                    <input type="number" name="work_max" class="bh-input"
                            value="<?= (int)$ecoSettings['work_max'] ?>" min="1" max="99999">
                 </div>
                 <div class="bh-eco-field">
                     <label class="bh-eco-field__label">Bank Zinsen (%)</label>
-                    <input type="number" name="bank_interest_rate" class="bh-eco-input"
+                    <input type="number" name="bank_interest_rate" class="bh-input"
                            value="<?= number_format((float)$ecoSettings['bank_interest_rate'], 2) ?>"
                            min="0" max="100" step="0.01">
                     <span class="bh-eco-field__hint">0 = deaktiviert</span>
@@ -630,23 +630,23 @@ foreach ($ecoCommandGroups as $cmds) {
                 <div class="bh-eco-add-grid">
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Name *</label>
-                        <input type="text" name="item_name" class="bh-eco-input" maxlength="80" placeholder="VIP Rolle" required>
+                        <input type="text" name="item_name" class="bh-input" maxlength="80" placeholder="VIP Rolle" required>
                     </div>
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Beschreibung</label>
-                        <input type="text" name="item_description" class="bh-eco-input" maxlength="255" placeholder="Optional">
+                        <input type="text" name="item_description" class="bh-input" maxlength="255" placeholder="Optional">
                     </div>
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Preis</label>
-                        <input type="number" name="item_price" class="bh-eco-input" min="1" value="100">
+                        <input type="number" name="item_price" class="bh-input" min="1" value="100">
                     </div>
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Emoji</label>
-                        <input type="text" name="item_emoji" class="bh-eco-input" maxlength="16" value="🎁">
+                        <input type="text" name="item_emoji" class="bh-input" maxlength="16" value="🎁">
                     </div>
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Bestand (-1=∞)</label>
-                        <input type="number" name="item_stock" class="bh-eco-input" value="-1">
+                        <input type="number" name="item_stock" class="bh-input" value="-1">
                     </div>
                 </div>
                 <div style="display:flex;justify-content:flex-end;margin-top:12px;">
@@ -706,27 +706,27 @@ foreach ($ecoCommandGroups as $cmds) {
                 <div class="bh-eco-add-grid bh-eco-add-grid--jobs">
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Name *</label>
-                        <input type="text" name="job_name" class="bh-eco-input" maxlength="80" placeholder="Programmierer" required>
+                        <input type="text" name="job_name" class="bh-input" maxlength="80" placeholder="Programmierer" required>
                     </div>
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Beschreibung</label>
-                        <input type="text" name="job_description" class="bh-eco-input" maxlength="255" placeholder="Optional">
+                        <input type="text" name="job_description" class="bh-input" maxlength="255" placeholder="Optional">
                     </div>
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Min. Lohn</label>
-                        <input type="number" name="job_min_wage" class="bh-eco-input" min="1" value="100">
+                        <input type="number" name="job_min_wage" class="bh-input" min="1" value="100">
                     </div>
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Max. Lohn</label>
-                        <input type="number" name="job_max_wage" class="bh-eco-input" min="1" value="200">
+                        <input type="number" name="job_max_wage" class="bh-input" min="1" value="200">
                     </div>
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Cooldown (s)</label>
-                        <input type="number" name="job_cooldown" class="bh-eco-input" min="60" value="3600">
+                        <input type="number" name="job_cooldown" class="bh-input" min="60" value="3600">
                     </div>
                     <div class="bh-eco-add-field">
                         <label class="bh-eco-add-field__label">Emoji</label>
-                        <input type="text" name="job_emoji" class="bh-eco-input" maxlength="16" value="💼">
+                        <input type="text" name="job_emoji" class="bh-input" maxlength="16" value="💼">
                     </div>
                 </div>
                 <div style="display:flex;justify-content:flex-end;margin-top:12px;">
@@ -787,7 +787,7 @@ foreach ($ecoCommandGroups as $cmds) {
                     <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
                         <div class="bh-eco-add-field" style="flex:1;min-width:200px;">
                             <label class="bh-eco-add-field__label">Wort (wird automatisch in Großbuchstaben umgewandelt) *</label>
-                            <input type="text" name="hangman_word" class="bh-eco-input"
+                            <input type="text" name="hangman_word" class="bh-input"
                                    maxlength="64" placeholder="z.B. REGENBOGEN" required
                                    pattern="[A-Za-zÄÖÜäöü\-]+" title="Nur Buchstaben und Bindestriche erlaubt">
                         </div>
@@ -828,7 +828,7 @@ window.BhCmdData = <?= json_encode($jsCmdData, JSON_HEX_TAG | JSON_HEX_AMP | JSO
         if (!header || !panel) return;
 
         header.addEventListener('click', function (e) {
-            if (e.target.closest('.bh-eco-toggle')) return;
+            if (e.target.closest('.bh-toggle')) return;
             var isOpen = acc.classList.contains('is-open');
             document.querySelectorAll('.bh-eco-cmd-accordion.is-open').forEach(function (o) {
                 if (o !== acc) o.classList.remove('is-open');

@@ -221,13 +221,13 @@ $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');
             <div class="text-sm font-semibold text-gray-800 dark:text-gray-100">Slash Command</div>
             <div class="text-xs text-gray-400" style="margin-top:1px">Command in Discord aktivieren oder deaktivieren</div>
         </div>
-        <label class="fg-toggle">
-            <input type="checkbox" id="fg-cmd-toggle" class="fg-toggle-input" <?= $cmdEnabled ? 'checked' : '' ?>>
-            <span class="fg-toggle-track"><span class="fg-toggle-thumb"></span></span>
+        <label class="bh-toggle">
+            <input type="checkbox" id="fg-cmd-toggle" class="bh-toggle-input" <?= $cmdEnabled ? 'checked' : '' ?>>
+            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
         </label>
     </div>
     <div class="p-5" style="display:flex;flex-direction:column;gap:10px">
-        <div style="display:flex;align-items:start;gap:12px;padding:12px;border-radius:8px" class="bg-gray-600 dark:bg-gray-900/50">
+        <div style="display:flex;align-items:start;gap:12px;padding:12px;border-radius:8px" class="bg-gray-100 dark:bg-gray-900/50">
             <code class="text-sm font-semibold text-violet-600 dark:text-violet-400 shrink-0">/free-games</code>
             <span class="text-xs text-gray-500 dark:text-gray-400">
                 Zeigt die aktuell kostenlosen Spiele der aktivierten Plattformen direkt im Discord-Channel an.
@@ -239,7 +239,7 @@ $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');
     </div>
 </div>
 
-<div id="fg-flash" style="display:none"></div>
+<div id="bh-alert" style="display:none"></div>
 
 <!-- Header card -->
 <div class="bg-white dark:bg-gray-800 shadow-xs rounded-xl" style="margin-bottom:24px">
@@ -274,9 +274,9 @@ $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');
                 <div class="text-sm font-medium text-gray-700 dark:text-gray-200">Modul aktiv</div>
                 <div class="text-xs text-gray-400" style="margin-top:2px">Benachrichtigungen senden</div>
             </div>
-            <label class="fg-toggle">
-                <input type="checkbox" id="fg-is-enabled" class="fg-toggle-input" <?= $fgEnabled ? 'checked' : '' ?>>
-                <span class="fg-toggle-track"><span class="fg-toggle-thumb"></span></span>
+            <label class="bh-toggle">
+                <input type="checkbox" id="fg-is-enabled" class="bh-toggle-input" <?= $fgEnabled ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
 
@@ -312,9 +312,9 @@ $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');
                     <div class="text-sm font-medium text-gray-700 dark:text-gray-200">Geplante Ausgabe</div>
                     <div class="text-xs text-gray-400" style="margin-top:2px">Free Games automatisch zu einer Uhrzeit posten <span class="text-gray-400">(optional)</span></div>
                 </div>
-                <label class="fg-toggle">
-                    <input type="checkbox" id="fg-sched-enabled" class="fg-toggle-input" <?= $fgSchedEnabled ? 'checked' : '' ?>>
-                    <span class="fg-toggle-track"><span class="fg-toggle-thumb"></span></span>
+                <label class="bh-toggle">
+                    <input type="checkbox" id="fg-sched-enabled" class="bh-toggle-input" <?= $fgSchedEnabled ? 'checked' : '' ?>>
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
             </div>
 
@@ -353,7 +353,7 @@ $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');
         <div>
             <div class="text-xs font-medium text-gray-700 dark:text-gray-200" style="margin-bottom:10px">Plattformen</div>
             <div style="display:flex;flex-direction:column;gap:8px">
-                <div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;border:1px solid #e5e7eb" class="dark:border-gray-700/60">
+                <div class="flex items-center gap-2.5 p-2.5 rounded-lg border border-gray-200 dark:border-gray-700/60">
                     <div style="width:28px;height:28px;border-radius:6px;background:#0078f2;display:flex;align-items:center;justify-content:center;flex-shrink:0">
                         <svg style="width:14px;height:14px;color:#fff" viewBox="0 0 24 24" fill="currentColor"><path d="M11.94 2C6.47 2 2 6.47 2 11.94c0 5.48 4.47 9.95 9.94 9.95 5.48 0 9.95-4.47 9.95-9.95C21.89 6.47 17.42 2 11.94 2zm.06 3.69l4.39 2.53v5.07l-4.39 2.53-4.39-2.53V8.22l4.39-2.53z"/></svg>
                     </div>
@@ -361,12 +361,12 @@ $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');
                         <div class="text-sm font-medium text-gray-700 dark:text-gray-200">Epic Games</div>
                         <div class="text-xs text-gray-400">Wöchentliche Free Games</div>
                     </div>
-                    <label class="fg-toggle">
-                        <input type="checkbox" id="fg-epic-enabled" class="fg-toggle-input" <?= $fgEpic ? 'checked' : '' ?>>
-                        <span class="fg-toggle-track"><span class="fg-toggle-thumb"></span></span>
+                    <label class="bh-toggle">
+                        <input type="checkbox" id="fg-epic-enabled" class="bh-toggle-input" <?= $fgEpic ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
-                <div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;border:1px solid #e5e7eb" class="dark:border-gray-700/60">
+                <div class="flex items-center gap-2.5 p-2.5 rounded-lg border border-gray-200 dark:border-gray-700/60">
                     <div style="width:28px;height:28px;border-radius:6px;background:#1b2838;display:flex;align-items:center;justify-content:center;flex-shrink:0">
                         <svg style="width:14px;height:14px;color:#fff" viewBox="0 0 24 24" fill="currentColor"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.606 0 11.979 0z"/></svg>
                     </div>
@@ -374,9 +374,9 @@ $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');
                         <div class="text-sm font-medium text-gray-700 dark:text-gray-200">Steam</div>
                         <div class="text-xs text-gray-400">Aktuelle Steam-Giveaways</div>
                     </div>
-                    <label class="fg-toggle">
-                        <input type="checkbox" id="fg-steam-enabled" class="fg-toggle-input" <?= $fgSteam ? 'checked' : '' ?>>
-                        <span class="fg-toggle-track"><span class="fg-toggle-thumb"></span></span>
+                    <label class="bh-toggle">
+                        <input type="checkbox" id="fg-steam-enabled" class="bh-toggle-input" <?= $fgSteam ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
@@ -455,8 +455,8 @@ $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');
     }
 
     function flash(msg, ok) {
-        const el = document.getElementById('fg-flash');
-        el.className = ok ? 'fg-flash--ok' : 'fg-flash--err';
+        const el = document.getElementById('bh-alert');
+        el.className = ok ? 'bh-alert--ok' : 'bh-alert--err';
         el.textContent = msg;
         el.style.display = '';
         clearTimeout(el._t);
@@ -480,10 +480,10 @@ $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');
         Array.from(box.children).forEach(ch => { if (ch !== btn) ch.remove(); });
         if (item) {
             const tag = document.createElement('span');
-            tag.className = 'fg-picker-tag' + (isChannel ? ' fg-picker-tag--channel' : '');
+            tag.className = 'bh-tag' + (isChannel ? ' bh-tag bh-tag--channel' : '');
             tag.innerHTML = esc(item.name || item.id)
-                + '<button type="button" class="fg-picker-tag-rm" title="Entfernen">×</button>';
-            tag.querySelector('.fg-picker-tag-rm').addEventListener('click', () => {
+                + '<button type="button" class="bh-tag-rm" title="Entfernen">×</button>';
+            tag.querySelector('.bh-tag-rm').addEventListener('click', () => {
                 if (isChannel) { state.channel  = null; renderPicker(boxId, pickBtnId, null, true); }
                 else            { state.pingRole = null; renderPicker(boxId, pickBtnId, null, false); }
             });

@@ -74,48 +74,48 @@ function am_h(string $v): string {
     <div id="am-banner" class="am-banner"></div>
 
     <!-- ── Anti-Invite ─────────────────────────────────────────── -->
-    <div class="am-card">
-        <div class="am-card-header">
-            <div class="am-card-header-left">
-                <p class="am-card-title">Anti-Invite</p>
-                <p class="am-card-desc">Automatically delete Discord invite links (discord.gg, discord.com/invite).</p>
+    <div class="bh-card">
+        <div class="bh-card-hdr">
+            <div class="bh-card-hdr-left">
+                <p class="bh-card-title">Anti-Invite</p>
+                <p class="bh-card-desc">Automatically delete Discord invite links (discord.gg, discord.com/invite).</p>
             </div>
-            <label class="am-toggle">
-                <input type="checkbox" id="am-anti-invite" <?= $s['anti_invite'] ? 'checked' : '' ?>>
-                <span class="am-toggle-track"></span>
+            <label class="bh-toggle">
+                <input class="bh-toggle-input" type="checkbox" id="am-anti-invite" <?= $s['anti_invite'] ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
     </div>
 
     <!-- ── Anti-Links ──────────────────────────────────────────── -->
-    <div class="am-card">
-        <div class="am-card-header">
-            <div class="am-card-header-left">
-                <p class="am-card-title">Anti-Links</p>
-                <p class="am-card-desc">Automatically delete all URLs and links. Link Channels are exempt.</p>
+    <div class="bh-card">
+        <div class="bh-card-hdr">
+            <div class="bh-card-hdr-left">
+                <p class="bh-card-title">Anti-Links</p>
+                <p class="bh-card-desc">Automatically delete all URLs and links. Link Channels are exempt.</p>
             </div>
-            <label class="am-toggle">
-                <input type="checkbox" id="am-anti-links" <?= $s['anti_links'] ? 'checked' : '' ?>>
-                <span class="am-toggle-track"></span>
+            <label class="bh-toggle">
+                <input class="bh-toggle-input" type="checkbox" id="am-anti-links" <?= $s['anti_links'] ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
     </div>
 
     <!-- ── Anti-Spam ───────────────────────────────────────────── -->
-    <div class="am-card">
-        <div class="am-card-header">
-            <div class="am-card-header-left">
-                <p class="am-card-title">Anti-Spam</p>
-                <p class="am-card-desc">Detect and punish users who send too many messages in a short time.</p>
+    <div class="bh-card">
+        <div class="bh-card-hdr">
+            <div class="bh-card-hdr-left">
+                <p class="bh-card-title">Anti-Spam</p>
+                <p class="bh-card-desc">Detect and punish users who send too many messages in a short time.</p>
             </div>
-            <label class="am-toggle">
-                <input type="checkbox" id="am-anti-spam" <?= $s['anti_spam'] ? 'checked' : '' ?>>
-                <span class="am-toggle-track"></span>
+            <label class="bh-toggle">
+                <input class="bh-toggle-input" type="checkbox" id="am-anti-spam" <?= $s['anti_spam'] ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
-        <div class="am-card-body <?= $s['anti_spam'] ? '' : 'is-hidden' ?>" id="am-spam-body">
+        <div class="bh-card-body <?= $s['anti_spam'] ? '' : 'is-hidden' ?>" id="am-spam-body">
             <div class="am-field">
-                <span class="am-field-label">Max messages</span>
+                <span class="bh-label">Max messages</span>
                 <input type="number" id="am-spam-max" class="am-input am-input-sm" min="2" max="50"
                     value="<?= (int)$s['spam_max_msg'] ?>">
                 <span style="font-size:12px;color:#94a3b8">messages per</span>
@@ -124,7 +124,7 @@ function am_h(string $v): string {
                 <span style="font-size:12px;color:#94a3b8">seconds</span>
             </div>
             <div class="am-field">
-                <span class="am-field-label">Action on trigger</span>
+                <span class="bh-label">Action on trigger</span>
                 <select id="am-spam-action" class="am-input am-input-md">
                     <?php foreach (['delete' => 'Delete message only', 'warn' => 'Warn user', 'kick' => 'Kick user', 'ban' => 'Ban user'] as $v => $l): ?>
                         <option value="<?= $v ?>" <?= $s['spam_action'] === $v ? 'selected' : '' ?>><?= am_h($l) ?></option>
@@ -135,62 +135,62 @@ function am_h(string $v): string {
     </div>
 
     <!-- ── Link Channels ───────────────────────────────────────── -->
-    <div class="am-card">
-        <div class="am-card-header">
-            <div class="am-card-header-left">
-                <p class="am-card-title">Link Channels</p>
-                <p class="am-card-desc">Channels where links are allowed even if Anti-Links is active.</p>
+    <div class="bh-card">
+        <div class="bh-card-hdr">
+            <div class="bh-card-hdr-left">
+                <p class="bh-card-title">Link Channels</p>
+                <p class="bh-card-desc">Channels where links are allowed even if Anti-Links is active.</p>
             </div>
         </div>
-        <div class="am-card-body">
-            <div class="am-tag-row" id="am-lc-tags">
+        <div class="bh-card-body">
+            <div class="bh-tag-row" id="am-lc-tags">
                 <?php foreach ($linkChannels as $ch): ?>
-                <span class="am-tag" data-value="<?= am_h((string)$ch) ?>">
+                <span class="bh-tag" data-value="<?= am_h((string)$ch) ?>">
                     #<?= am_h((string)$ch) ?>
-                    <button type="button" class="am-tag-rm" title="Remove" data-list="lc">×</button>
+                    <button type="button" class="bh-tag-rm" title="Remove" data-list="lc">×</button>
                 </span>
                 <?php endforeach; ?>
             </div>
             <div class="am-add-row">
                 <input type="text" id="am-lc-input" class="am-add-input" placeholder="Channel ID eingeben…" maxlength="32">
-                <button type="button" class="am-add-btn" id="am-lc-add">+ Add</button>
+                <button type="button" class="bh-btn bh-btn--primary" id="am-lc-add">+ Add</button>
             </div>
         </div>
     </div>
 
     <!-- ── Blacklisted Words ────────────────────────────────────── -->
-    <div class="am-card">
-        <div class="am-card-header">
-            <div class="am-card-header-left">
-                <p class="am-card-title">Blacklisted Words</p>
-                <p class="am-card-desc">Messages containing these words will be automatically deleted.</p>
+    <div class="bh-card">
+        <div class="bh-card-hdr">
+            <div class="bh-card-hdr-left">
+                <p class="bh-card-title">Blacklisted Words</p>
+                <p class="bh-card-desc">Messages containing these words will be automatically deleted.</p>
             </div>
         </div>
-        <div class="am-card-body">
-            <div class="am-tag-row" id="am-bl-tags">
+        <div class="bh-card-body">
+            <div class="bh-tag-row" id="am-bl-tags">
                 <?php foreach ($blacklist as $word): ?>
-                <span class="am-tag" data-value="<?= am_h((string)$word) ?>">
+                <span class="bh-tag" data-value="<?= am_h((string)$word) ?>">
                     <?= am_h((string)$word) ?>
-                    <button type="button" class="am-tag-rm" title="Remove" data-list="bl">×</button>
+                    <button type="button" class="bh-tag-rm" title="Remove" data-list="bl">×</button>
                 </span>
                 <?php endforeach; ?>
             </div>
             <div class="am-add-row">
                 <input type="text" id="am-bl-input" class="am-add-input" placeholder="Wort oder Phrase eingeben…" maxlength="100">
-                <button type="button" class="am-add-btn" id="am-bl-add">+ Add</button>
+                <button type="button" class="bh-btn bh-btn--primary" id="am-bl-add">+ Add</button>
             </div>
         </div>
     </div>
 
     <!-- ── Log Channel ─────────────────────────────────────────── -->
-    <div class="am-card">
-        <div class="am-card-header">
-            <div class="am-card-header-left">
-                <p class="am-card-title">Log Channel</p>
-                <p class="am-card-desc">Optional: Channel ID where automod actions are logged.</p>
+    <div class="bh-card">
+        <div class="bh-card-hdr">
+            <div class="bh-card-hdr-left">
+                <p class="bh-card-title">Log Channel</p>
+                <p class="bh-card-desc">Optional: Channel ID where automod actions are logged.</p>
             </div>
         </div>
-        <div class="am-card-body">
+        <div class="bh-card-body">
             <input type="text" id="am-log-channel" class="am-input am-input-full" maxlength="32"
                 placeholder="Channel ID (optional)"
                 value="<?= am_h($s['log_channel_id']) ?>">
@@ -198,7 +198,7 @@ function am_h(string $v): string {
     </div>
 
     <!-- Save -->
-    <button type="button" id="am-save-btn" class="am-save-btn">Save Settings</button>
+    <button type="button" id="bh-btn bh-btn--primary" class="bh-btn bh-btn--primary">Save Settings</button>
 
 </div>
 
@@ -215,7 +215,7 @@ function am_h(string $v): string {
 
     // ── Tag lists ─────────────────────────────────────────────────
     function getList(containerId) {
-        var tags = document.getElementById(containerId).querySelectorAll('.am-tag');
+        var tags = document.getElementById(containerId).querySelectorAll('.bh-tag');
         var values = [];
         tags.forEach(function (t) { values.push(t.dataset.value); });
         return values;
@@ -232,22 +232,22 @@ function am_h(string $v): string {
         var label   = containerId === 'am-lc-tags' ? '#' + value : value;
 
         var span = document.createElement('span');
-        span.className  = 'am-tag';
+        span.className  = 'bh-tag';
         span.dataset.value = value;
         span.innerHTML = esc(label)
-            + '<button type="button" class="am-tag-rm" title="Remove" data-list="' + listKey + '">×</button>';
-        span.querySelector('.am-tag-rm').addEventListener('click', handleRemove);
+            + '<button type="button" class="bh-tag-rm" title="Remove" data-list="' + listKey + '">×</button>';
+        span.querySelector('.bh-tag-rm').addEventListener('click', handleRemove);
 
         document.getElementById(containerId).appendChild(span);
         return true;
     }
 
     function handleRemove(e) {
-        e.currentTarget.closest('.am-tag').remove();
+        e.currentTarget.closest('.bh-tag').remove();
     }
 
     // Attach remove to existing tags
-    document.querySelectorAll('.am-tag-rm').forEach(function (btn) {
+    document.querySelectorAll('.bh-tag-rm').forEach(function (btn) {
         btn.addEventListener('click', handleRemove);
     });
 
@@ -280,7 +280,7 @@ function am_h(string $v): string {
     }
 
     // ── Save ──────────────────────────────────────────────────────
-    document.getElementById('am-save-btn').addEventListener('click', function () {
+    document.getElementById('bh-btn bh-btn--primary').addEventListener('click', function () {
         var btn = this;
         btn.disabled = true;
 

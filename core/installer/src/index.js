@@ -21,6 +21,7 @@ const { getDbPool, dbQuery } = require('./db');
 const sbService = require('./services/soundboard-service');
 const { initStatus } = require('./services/status-service');
 const { BotManager } = require('./bot-manager');
+const { clearSettingsCache } = require('./services/temp-voice-service');
 const { JobPoller } = require('./job-poller');
 const { loadCommands } = require('./command-loader');
 const { syncSlashCommands } = require('./slash-sync');
@@ -135,6 +136,7 @@ function sendUnauthorized(res) {
 
 async function handleReloadAll(res, botManager) {
     try {
+        clearSettingsCache();
         const result = await botManager.reloadAllBots();
 
         sendJson(res, 200, {
@@ -152,6 +154,7 @@ async function handleReloadAll(res, botManager) {
 
 async function handleReloadBot(res, botManager, botId) {
     try {
+        clearSettingsCache(botId);
         const result = await botManager.reloadBotById(botId);
 
         sendJson(res, 200, {

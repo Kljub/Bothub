@@ -156,13 +156,13 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:invite-tracker');
         <h1 class="it-title">Invite Tracker</h1>
     </div>
 
-    <div id="it-flash" class="it-flash"></div>
+    <div id="bh-alert" class="bh-alert"></div>
 
     <!-- ── Saved configurations overview ── -->
     <?php if (!empty($allSettings)): ?>
-    <div class="it-card">
-        <div class="it-card__title">Gespeicherte Konfigurationen</div>
-        <div class="it-card__desc">Klicke auf „Bearbeiten" um eine Konfiguration zu laden.</div>
+    <div class="bh-card">
+        <div class="bh-card-title">Gespeicherte Konfigurationen</div>
+        <div class="bh-card-desc">Klicke auf „Bearbeiten" um eine Konfiguration zu laden.</div>
         <table class="it-lb-table">
             <thead>
                 <tr>
@@ -201,15 +201,15 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:invite-tracker');
     <?php endif; ?>
 
     <!-- ── Settings Card ── -->
-    <div class="it-card" id="it-settings-card">
-        <div class="it-card__title">Settings</div>
-        <div class="it-card__desc">
+    <div class="bh-card" id="it-settings-card">
+        <div class="bh-card-title">Settings</div>
+        <div class="bh-card-desc">
             Configure the invite tracker. The bot will detect which invite code a user used when joining and send a notification.
             Requires the <strong>Manage Server</strong> permission.
         </div>
 
-        <div class="it-field">
-            <div class="it-label">Server</div>
+        <div class="bh-field">
+            <div class="bh-label">Server</div>
             <div class="it-sublabel">Wähle den Discord-Server oder gib die ID manuell ein.</div>
             <input type="hidden" id="it-guild-id" value="<?= htmlspecialchars(array_key_first($allSettings) ?? '', ENT_QUOTES, 'UTF-8') ?>">
             <div class="it-picker-row" id="it-guild-box">
@@ -218,19 +218,19 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:invite-tracker');
         </div>
 
         <!-- Enable toggle -->
-        <div class="it-toggle-row">
-            <div class="it-toggle-row__info">
-                <div class="it-toggle-row__title">Invite Tracker aktiv</div>
-                <div class="it-toggle-row__desc">Wenn aktiviert, werden Joins verfolgt und Nachrichten gesendet.</div>
+        <div class="bh-toggle-row">
+            <div class="bh-toggle-row__info">
+                <div class="bh-toggle-row__title">Invite Tracker aktiv</div>
+                <div class="bh-toggle-row__desc">Wenn aktiviert, werden Joins verfolgt und Nachrichten gesendet.</div>
             </div>
-            <label class="it-toggle">
-                <input type="checkbox" id="it-enabled" checked>
-                <span class="it-toggle__track"></span>
+            <label class="bh-toggle">
+                <input class="bh-toggle-input" type="checkbox" id="it-enabled" checked>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
 
-        <div class="it-field">
-            <div class="it-label">Notification Channel</div>
+        <div class="bh-field">
+            <div class="bh-label">Notification Channel</div>
             <div class="it-sublabel">Channel where join notifications are sent.</div>
             <input type="hidden" id="it-channel-val" value="">
             <div class="it-picker-row" id="it-channel-box">
@@ -238,8 +238,8 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:invite-tracker');
             </div>
         </div>
 
-        <div class="it-field">
-            <div class="it-label">Join Message</div>
+        <div class="bh-field">
+            <div class="bh-label">Join Message</div>
             <div class="it-hint">
                 Variables:
                 <code>{user_name}</code>
@@ -260,9 +260,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:invite-tracker');
     </div>
 
     <!-- ── Leaderboard Card ── -->
-    <div class="it-card">
-        <div class="it-card__title">Invite Leaderboard</div>
-        <div class="it-card__desc">Top inviters based on tracked invite uses for this bot.</div>
+    <div class="bh-card">
+        <div class="bh-card-title">Invite Leaderboard</div>
+        <div class="bh-card-desc">Top inviters based on tracked invite uses for this bot.</div>
 
         <div id="it-lb-wrap">
             <div class="it-lb-loading">Leaderboard wird geladen…</div>
@@ -283,8 +283,8 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:invite-tracker');
     }
 
     function flash(msg, ok) {
-        var el = document.getElementById('it-flash');
-        el.className = 'it-flash ' + (ok ? 'it-flash--ok' : 'it-flash--err');
+        var el = document.getElementById('bh-alert');
+        el.className = 'bh-alert ' + (ok ? 'bh-alert--ok' : 'bh-alert--err');
         el.textContent = msg;
         el.style.display = 'block';
         clearTimeout(el._t);

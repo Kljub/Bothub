@@ -175,13 +175,13 @@ endif;
                     <div class="te-row flex items-center gap-4 px-5 py-4" data-event-id="<?= $evtId ?>">
 
                         <!-- Enable toggle -->
-                        <label class="te-toggle flex-shrink-0" title="<?= $isEnabled ? 'Deaktivieren' : 'Aktivieren' ?>">
+                        <label class="bh-toggle flex-shrink-0" title="<?= $isEnabled ? 'Deaktivieren' : 'Aktivieren' ?>">
                             <input type="checkbox"
-                                   class="te-toggle-input"
+                                   class="bh-toggle-input"
                                    <?= $isEnabled ? 'checked' : '' ?>
                                    data-event-id="<?= $evtId ?>">
-                            <span class="te-toggle-track">
-                                <span class="te-toggle-thumb"></span>
+                            <span class="bh-toggle-track">
+                                <span class="bh-toggle-thumb"></span>
                             </span>
                         </label>
 
@@ -267,7 +267,7 @@ endif;
     }
 
     // ── Toggle enable/disable ─────────────────────────────────────────────────
-    document.querySelectorAll('.te-toggle-input').forEach((input) => {
+    document.querySelectorAll('.bh-toggle-input').forEach((input) => {
         input.addEventListener('change', async function () {
             const eventId = parseInt(this.dataset.eventId, 10);
             const enabled = this.checked;

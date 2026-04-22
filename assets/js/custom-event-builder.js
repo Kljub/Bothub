@@ -649,8 +649,7 @@
                 + ' data-port-type="output" data-port-direction="output"'
                 + ' data-port-name="' + escHtml(portDef.name) + '"'
                 + ' style="left:calc(' + spacing + '% - 6px);"'
-                + ' title="' + escHtml(portDef.name) + '">'
-                + '<span class="cc-port-label">' + escHtml(portDef.name) + '</span>'
+                + ' title="' + escHtml(portDef.label || portDef.name) + '">'
                 + '</button>';
         });
 
@@ -675,6 +674,26 @@
                 startPendingConnection(node.id, portName, portColor, evt);
             });
         });
+
+        const inputPortEl = el.querySelector('.cc-port--input');
+        if (inputPortEl) {
+            inputPortEl.addEventListener('mousedown', (evt) => {
+                if (evt.button !== 0) return;
+                evt.stopPropagation();
+                const portName = inputPortEl.getAttribute('data-port-name') || 'in';
+                const pos = getPortCenter(inputPortEl);
+                state.pendingConnection = {
+                    isDragging: true,
+                    startedFromInput: true,
+                    toNodeId: node.id,
+                    toPort: portName,
+                    color: '#4f8cff',
+                    startX: pos.x, startY: pos.y,
+                    mouseX: pos.x, mouseY: pos.y,
+                };
+                evt.preventDefault();
+            });
+        }
 
         // ── Node drag / select ────────────────────────────────────────────────
         el.addEventListener('mousedown', (evt) => {
@@ -709,12 +728,7 @@
         portEl.setAttribute('data-port-direction', direction);
         portEl.title = portDef.label || portDef.name;
 
-        const label = document.createElement('span');
-        label.className = 'cc-port-label';
-        label.textContent = portDef.label || portDef.name;
-
         if (direction === 'output') {
-            wrap.appendChild(label);
             wrap.appendChild(portEl);
             portEl.addEventListener('mousedown', (evt) => {
                 evt.stopPropagation();
@@ -722,7 +736,6 @@
             });
         } else {
             wrap.appendChild(portEl);
-            wrap.appendChild(label);
         }
 
         return wrap;
@@ -746,7 +759,11 @@
         // Pending connection ghost line
         if (state.pendingConnection?.isDragging) {
             const { startX, startY, mouseX, mouseY, color } = state.pendingConnection;
-            drawEdge('__pending__', { x: startX, y: startY }, { x: mouseX, y: mouseY }, color || '#4f8cff', true);
+            if (state.pendingConnection.startedFromInput) {
+                drawEdge('__pending__', { x: mouseX, y: mouseY }, { x: startX, y: startY }, color || '#4f8cff', true);
+            } else {
+                drawEdge('__pending__', { x: startX, y: startY }, { x: mouseX, y: mouseY }, color || '#4f8cff', true);
+            }
         }
     }
 
@@ -1869,17 +1886,31 @@
             }
 
             if (state.pendingConnection?.isDragging) {
-                let targetPort = null;
                 const hit = document.elementFromPoint(evt.clientX, evt.clientY);
-                targetPort = hit instanceof HTMLElement ? hit.closest('.cc-port--input') : null;
-                if (targetPort instanceof HTMLElement) {
-                    connectPendingTo(
-                        targetPort.getAttribute('data-node-id') || '',
-                        targetPort.getAttribute('data-port-name') || '',
-                    );
+                if (state.pendingConnection.startedFromInput) {
+                    const targetPort = hit instanceof HTMLElement ? hit.closest('.cc-port--output') : null;
+                    if (targetPort instanceof HTMLElement) {
+                        const fromNodeId = targetPort.getAttribute('data-node-id') || '';
+                        const fromPort   = targetPort.getAttribute('data-port-name') || '';
+                        const toNodeId   = state.pendingConnection.toNodeId;
+                        const toPort     = state.pendingConnection.toPort;
+                        state.pendingConnection = { isDragging: true, fromNodeId, fromPort, startedFromInput: false };
+                        connectPendingTo(toNodeId, toPort);
+                    } else {
+                        state.pendingConnection = null;
+                        renderEdges();
+                    }
                 } else {
-                    state.pendingConnection = null;
-                    renderEdges();
+                    const targetPort = hit instanceof HTMLElement ? hit.closest('.cc-port--input') : null;
+                    if (targetPort instanceof HTMLElement) {
+                        connectPendingTo(
+                            targetPort.getAttribute('data-node-id') || '',
+                            targetPort.getAttribute('data-port-name') || '',
+                        );
+                    } else {
+                        state.pendingConnection = null;
+                        renderEdges();
+                    }
                 }
                 return;
             }

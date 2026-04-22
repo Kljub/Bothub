@@ -12,20 +12,10 @@ return [
     'color' => 'yellow',
     'ports' => [
         'inputs' => [
-            [
-                'key' => 'options',
-                'label' => 'Options',
-                'kind' => 'option',
-                'max_connections' => 25,
-            ],
+            'options',
         ],
         'outputs' => [
-            [
-                'key' => 'next',
-                'label' => 'Next',
-                'kind' => 'flow',
-                'max_connections' => 1,
-            ],
+            ' ',
         ],
     ],
     'defaults' => [
@@ -42,29 +32,9 @@ return [
         'cooldown_seconds'      => 10,
     ],
     'properties' => [
-        [
-            'key' => 'display_name',
-            'type' => 'text',
-            'label' => 'Anzeigename',
-            'required' => true,
-            'max_length' => 120,
-        ],
-        [
-            'key' => 'name',
-            'type' => 'text',
-            'label' => 'Slash Command',
-            'required' => true,
-            'max_length' => 32,
-            'pattern' => '^[a-z0-9_-]{1,32}$',
-            'help' => 'Nur Kleinbuchstaben, Zahlen, Unterstriche und Bindestriche.',
-        ],
-        [
-            'key' => 'description',
-            'type' => 'textarea',
-            'label' => 'Beschreibung',
-            'required' => false,
-            'max_length' => 255,
-        ],
+        'display_name',
+        'name',
+        'description',
         [
             'key'     => 'ephemeral',
             'type'    => 'select',
@@ -86,20 +56,7 @@ return [
                 ['value' => 'server', 'label' => 'Server-Cooldown'],
             ],
         ],
-        [
-            'key'       => 'cooldown_seconds',
-            'type'      => 'number',
-            'label'     => 'Cooldown (Sekunden)',
-            'min'       => 1,
-            'max'       => 86400,
-            'help'      => 'Dauer des Cooldowns in Sekunden.',
-            'show_if'   => ['cooldown_type', ['user', 'server']],
-        ],
-        [
-            'key'   => 'required_permissions',
-            'type'  => 'permissions_select',
-            'label' => 'Benötigte Berechtigungen',
-            'help'  => 'Command wird in Discord nur für Mitglieder mit mindestens einer dieser Berechtigungen angezeigt. Admins können immer zugreifen. Leer = sichtbar für alle.',
-        ],
+        'cooldown_seconds',
+        'required_permissions',
     ],
 ];

@@ -112,9 +112,11 @@ $hdr_coreDotClass = 'bg-yellow-500'; // unknown until first ping
                 <button
                     id="darkModeToggle"
                     type="button"
-                    class="btn-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-700 dark:text-gray-200"
+                    class="btn-sm bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600"
+                    title="Theme wechseln"
                 >
-                    Dark Mode
+                    <img src="/assets/img/header/DarkMode.png"   alt="Dark Mode"  class="block dark:hidden w-4 h-4 object-contain">
+                    <img src="/assets/img/header/lightmode.png"  alt="Light Mode" class="hidden dark:block w-4 h-4 object-contain">
                 </button>
 
                 <a

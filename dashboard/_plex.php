@@ -130,15 +130,15 @@ $plexCommandDefinitions = [
     </div>
 
     <?php if ($plexFlashSuccess !== ''): ?>
-        <div class="plex-alert plex-alert--success"><?= htmlspecialchars($plexFlashSuccess, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></div>
+        <div class="bh-alert bh-alert--ok"><?= htmlspecialchars($plexFlashSuccess, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></div>
     <?php endif; ?>
 
     <?php if ($plexFlashError !== ''): ?>
-        <div class="plex-alert plex-alert--error"><?= htmlspecialchars($plexFlashError, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></div>
+        <div class="bh-alert bh-alert--err"><?= htmlspecialchars($plexFlashError, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></div>
     <?php endif; ?>
 
     <?php if ($plexLoadError !== null): ?>
-        <div class="plex-alert plex-alert--error"><?= htmlspecialchars($plexLoadError, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></div>
+        <div class="bh-alert bh-alert--err"><?= htmlspecialchars($plexLoadError, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></div>
     <?php endif; ?>
 
     <div class="plex-grid">

@@ -60,37 +60,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $sbIsAjax) {
     exit;
 }
 ?>
-<div class="sb-page">
+<link rel="stylesheet" href="/assets/css/_music.css?v=1">
+<div class="bh-music-page">
 
-    <!-- Header -->
-    <div class="sb-header">
-        <div class="sb-header-left">
-            <h1 class="sb-title">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-                </svg>
-                Soundboard
-            </h1>
-            <p class="sb-subtitle">Spiele Sounds ab wenn der Bot in einem Voice Channel ist.</p>
+    <!-- Head -->
+    <div class="bh-music-head" style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px">
+        <div>
+            <div class="bh-music-kicker">Bot Feature</div>
+            <h1 class="bh-music-title">Soundboard</h1>
+            <p class="bh-music-subtitle">Spiele Sounds ab wenn der Bot in einem Voice Channel ist.</p>
         </div>
-        <button type="button" class="sb-btn-primary" id="sb-upload-btn">
+        <button type="button" class="bh-btn bh-btn--primary" id="sb-upload-btn">
             <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M8 1a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 1Z"/></svg>
             Sound hochladen
         </button>
     </div>
 
     <!-- Commands -->
-    <div class="sb-cmd-card">
-        <div class="sb-cmd-header">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+    <div class="bh-card" style="padding:0;margin-bottom:20px">
+        <div class="bh-card-hdr">
+            <div class="bh-music-card__icon bh-music-card__icon--violet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            </div>
             <div>
-                <div class="sb-cmd-kicker">Slash Commands</div>
-                <div class="sb-cmd-title">Soundboard-Befehle</div>
+                <div class="bh-music-card__sec-kicker">Slash Commands</div>
+                <div class="bh-card-title" style="margin:0">Soundboard-Befehle</div>
             </div>
         </div>
-        <div class="sb-cmd-list">
+        <div class="bh-music-cmd-grid">
             <?php
             $sbCmdDefs = [
                 ['key' => 'soundboard-play', 'name' => '/soundboard-play', 'desc' => 'Sound nach Namen suchen & abspielen (mit Autocomplete)'],
@@ -98,16 +95,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $sbIsAjax) {
                 ['key' => 'soundboard-stop', 'name' => '/soundboard-stop', 'desc' => 'Aktuelle Wiedergabe stoppen'],
             ];
             foreach ($sbCmdDefs as $sbCmd): ?>
-            <div class="sb-cmd-row">
-                <div class="sb-cmd-row-info">
-                    <span class="sb-cmd-row-name"><?= htmlspecialchars($sbCmd['name']) ?></span>
-                    <span class="sb-cmd-row-desc"><?= htmlspecialchars($sbCmd['desc']) ?></span>
+            <div class="bh-music-cmd-row">
+                <div class="bh-music-cmd-row__info">
+                    <div class="bh-music-cmd-row__name"><?= htmlspecialchars($sbCmd['name']) ?></div>
+                    <div class="bh-music-cmd-row__desc"><?= htmlspecialchars($sbCmd['desc']) ?></div>
                 </div>
-                <label class="sb-toggle">
-                    <input type="checkbox" <?= ($sbCmdEnabled[$sbCmd['key']] ?? 1) ? 'checked' : '' ?>
+                <label class="bh-toggle">
+                    <input class="bh-toggle-input" type="checkbox" <?= ($sbCmdEnabled[$sbCmd['key']] ?? 1) ? 'checked' : '' ?>
                         data-field="<?= htmlspecialchars($sbCmd['key']) ?>"
                         onchange="sbToggleCmd(this)">
-                    <span class="sb-toggle-track"></span>
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
             </div>
             <?php endforeach; ?>
@@ -126,8 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $sbIsAjax) {
         <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707Z"/><path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706Z"/><path d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707ZM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06Z"/></svg>
         <span id="sb-vc-label">Nicht verbunden</span>
         <div class="sb-vc-actions" id="sb-vc-actions">
-            <select class="sb-select" id="sb-guild-select"><option value="">Server wählen…</option></select>
-            <select class="sb-select" id="sb-vc-select" disabled><option value="">Voice Channel…</option></select>
+            <select class="bh-select" id="sb-guild-select"><option value="">Server wählen…</option></select>
+            <select class="bh-select" id="sb-vc-select" disabled><option value="">Voice Channel…</option></select>
             <button type="button" class="sb-btn-sm" id="sb-join-btn">Beitreten</button>
             <button type="button" class="sb-btn-sm sb-btn-danger" id="sb-leave-btn" style="display:none">Verlassen</button>
         </div>
@@ -138,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $sbIsAjax) {
         <div class="sb-empty" id="sb-empty">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
             <p>Noch keine Sounds hochgeladen.</p>
-            <button type="button" class="sb-btn-primary" id="sb-empty-upload-btn">Ersten Sound hochladen</button>
+            <button type="button" class="bh-btn bh-btn--primary" id="sb-empty-upload-btn">Ersten Sound hochladen</button>
         </div>
     </div>
 
@@ -161,15 +158,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $sbIsAjax) {
                     <div class="sb-selected-file" id="sb-selected-file" style="display:none"></div>
                 </div>
                 <div class="sb-form-row">
-                    <label>Anzeigename</label>
-                    <input type="text" id="sb-sound-name" placeholder="z.B. Airhorn" maxlength="64">
+                    <label class="bh-label">Anzeigename</label>
+                    <input type="text" class="bh-input" id="sb-sound-name" placeholder="z.B. Airhorn" maxlength="64">
                 </div>
                 <div class="sb-form-row">
-                    <label>Emoji (optional)</label>
-                    <input type="text" id="sb-sound-emoji" placeholder="🎺" maxlength="8">
+                    <label class="bh-label">Emoji (optional)</label>
+                    <input type="text" class="bh-input" id="sb-sound-emoji" placeholder="🎺" maxlength="8">
                 </div>
                 <div class="sb-form-row">
-                    <label>Lautstärke</label>
+                    <label class="bh-label">Lautstärke</label>
                     <div class="sb-volume-row">
                         <input type="range" id="sb-sound-volume" min="1" max="200" value="100">
                         <span id="sb-volume-display">100%</span>
@@ -178,8 +175,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $sbIsAjax) {
                 <div id="sb-upload-error" class="sb-error" style="display:none"></div>
             </div>
             <div class="sb-modal-footer">
-                <button type="button" class="sb-btn-secondary" id="sb-modal-cancel">Abbrechen</button>
-                <button type="button" class="sb-btn-primary" id="sb-modal-save">
+                <button type="button" class="bh-btn" style="background:#2e3850;color:#c8d0e0" id="sb-modal-cancel">Abbrechen</button>
+                <button type="button" class="bh-btn bh-btn--primary" id="sb-modal-save">
                     <span id="sb-modal-save-text">Hochladen</span>
                 </button>
             </div>
@@ -361,13 +358,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $sbIsAjax) {
 
     // ── Sound grid ──────────────────────────────────────────────────
     function renderGrid() {
-        grid.querySelectorAll('.sb-card').forEach(c => c.remove());
+        grid.querySelectorAll('.bh-card').forEach(c => c.remove());
         document.getElementById('sb-count-total').textContent = sounds.length;
         empty.style.display = sounds.length === 0 ? '' : 'none';
 
         sounds.forEach(s => {
             const card = document.createElement('div');
-            card.className = 'sb-card';
+            card.className = 'bh-card';
             card.dataset.id = s.id;
             card.innerHTML = `
                 <div class="sb-card-emoji">${s.emoji || '🔊'}</div>

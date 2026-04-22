@@ -66,31 +66,31 @@ $checkWords   = $parseList($s['check_words']    ?? '');
 $evtHandler   = (int)($s['evt_handler'] ?? 1);
 ?>
 
-<div class="arc-section-label">AUTO-REACT</div>
-<div class="arc-section-title">Basic Setup</div>
+<div class="bh-section-label">AUTO-REACT</div>
+<div class="bh-section-title">Basic Setup</div>
 
-<div id="arc-flash" style="display:none"></div>
+<div id="bh-alert" style="display:none"></div>
 
 <!-- Basic Setup -->
-<div class="arc-card">
-    <div class="arc-card-title">Basic Setup</div>
+<div class="bh-card">
+    <div class="bh-card-title">Basic Setup</div>
 
     <!-- Enabled Channels -->
-    <div class="arc-field">
-        <div class="arc-field-label">Enabled Channels</div>
-        <div class="arc-field-desc">The channels where reactions will be added to new messages.</div>
+    <div class="bh-field">
+        <div class="bh-label">Enabled Channels</div>
+        <div class="bh-hint">The channels where reactions will be added to new messages.</div>
         <div class="arc-tags-box" id="arc-ch-box">
             <button type="button" class="arc-add-btn" id="arc-ch-add-btn">+</button>
         </div>
     </div>
 
     <!-- Reaction Emojis -->
-    <div class="arc-field">
-        <div class="arc-field-label">Reaction Emojis</div>
-        <div class="arc-field-desc">Choose up to <strong style="color:#f1f5f9">10</strong> <span style="color:#ef4444">default unicode</span> or <span style="color:#ef4444">custom</span> emojis the bot should react to new messages with!</div>
+    <div class="bh-field">
+        <div class="bh-label">Reaction Emojis</div>
+        <div class="bh-hint">Choose up to <strong style="color:#f1f5f9">10</strong> <span style="color:#ef4444">default unicode</span> or <span style="color:#ef4444">custom</span> emojis the bot should react to new messages with!</div>
         <div class="arc-tags-box" id="arc-emoji-box" style="min-height:48px">
             <?php foreach ($reactionEmjs as $e): ?>
-            <span class="arc-emoji-chip">
+            <span class="bh-tag">
                 <?= htmlspecialchars((string)$e, ENT_QUOTES, 'UTF-8') ?>
                 <button class="arc-emoji-rm" onclick="arcRemoveEmoji(this,'<?= htmlspecialchars(addslashes((string)$e), ENT_QUOTES, 'UTF-8') ?>')">×</button>
             </span>
@@ -101,33 +101,32 @@ $evtHandler   = (int)($s['evt_handler'] ?? 1);
 </div>
 
 <!-- Condition Setup -->
-<div class="arc-section-label" style="margin-top:28px">AUTO-ROLE CREATE</div>
-<div class="arc-section-title">Condition Setup</div>
+<div class="bh-section-label" style="margin-top:28px">AUTO-ROLE CREATE</div>
+<div class="bh-section-title">Condition Setup</div>
 
-<div class="arc-card">
+<div class="bh-card">
     <!-- Ignore Embeds -->
-    <div class="arc-toggle-row">
+    <div class="bh-toggle-row">
         <div>
-            <div class="arc-toggle-label">Ignore Embeds</div>
-            <div class="arc-toggle-desc">When enabled, reactions will not be added to messages without a text content.</div>
+            <div class="bh-toggle-row__title">Ignore Embeds</div>
+            <div class="bh-toggle-row__desc">When enabled, reactions will not be added to messages without a text content.</div>
         </div>
         <label class="bh-toggle" style="margin-left:16px">
-            <input type="checkbox" id="arc-ignore-embeds" <?= $ignoreEmb ? 'checked' : '' ?>>
-            <span class="bh-toggle__track"></span>
-            <span class="bh-toggle__thumb"></span>
+            <input class="bh-toggle-input" type="checkbox" id="arc-ignore-embeds" <?= $ignoreEmb ? 'checked' : '' ?>>
+            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
         </label>
     </div>
 
     <!-- Allowed Roles -->
-    <div class="arc-field" style="padding-top:16px">
-        <div class="arc-field-label">Allowed Roles</div>
-        <div class="arc-field-desc">When you add at least one role, only messages whose author has a specified role will get the reactions added.</div>
+    <div class="bh-field" style="padding-top:16px">
+        <div class="bh-label">Allowed Roles</div>
+        <div class="bh-hint">When you add at least one role, only messages whose author has a specified role will get the reactions added.</div>
         <div class="arc-tags-box" id="arc-role-box">
             <?php foreach ($allowedRoles as $role):
                 if (!is_array($role) || !isset($role['id'])) continue; ?>
-            <span class="arc-tag" data-id="<?= htmlspecialchars($role['id'], ENT_QUOTES, 'UTF-8') ?>">
+            <span class="bh-tag" data-id="<?= htmlspecialchars($role['id'], ENT_QUOTES, 'UTF-8') ?>">
                 <?= htmlspecialchars($role['name'] ?? $role['id'], ENT_QUOTES, 'UTF-8') ?>
-                <button class="arc-tag-rm" onclick="this.closest('.arc-tag').remove()">×</button>
+                <button class="bh-tag-rm" onclick="this.closest('.bh-tag').remove()">×</button>
             </span>
             <?php endforeach; ?>
             <button type="button" class="arc-add-btn" id="arc-role-add-btn">+</button>
@@ -135,14 +134,14 @@ $evtHandler   = (int)($s['evt_handler'] ?? 1);
     </div>
 
     <!-- Check for Words -->
-    <div class="arc-field">
-        <div class="arc-field-label">Check for Words</div>
-        <div class="arc-field-desc">When you add at least one word, reactions will only be added to messages that contain a specified word.</div>
+    <div class="bh-field">
+        <div class="bh-label">Check for Words</div>
+        <div class="bh-hint">When you add at least one word, reactions will only be added to messages that contain a specified word.</div>
         <div class="arc-tags-box" id="arc-words-box">
             <?php foreach ($checkWords as $w): ?>
-            <span class="arc-tag" style="background:rgba(251,191,36,.12);color:#fbbf24">
+            <span class="bh-tag" style="background:rgba(251,191,36,.12);color:#fbbf24">
                 <?= htmlspecialchars((string)$w, ENT_QUOTES, 'UTF-8') ?>
-                <button class="arc-tag-rm" onclick="this.closest('.arc-tag').remove()">×</button>
+                <button class="bh-tag-rm" onclick="this.closest('.bh-tag').remove()">×</button>
             </span>
             <?php endforeach; ?>
             <button type="button" class="arc-add-btn" id="arc-word-add-btn" onclick="arcAddWord()">+</button>
@@ -151,40 +150,39 @@ $evtHandler   = (int)($s['evt_handler'] ?? 1);
 </div>
 
 <div class="arc-save-bar">
-    <button class="arc-save-btn" id="arc-save-btn" onclick="arcSave()">Save Changes</button>
+    <button class="bh-btn bh-btn--primary" id="bh-btn bh-btn--primary" onclick="arcSave()">Save Changes</button>
 </div>
 
 <!-- Commands -->
 <div style="margin-top:32px">
-    <div class="arc-module-label">MODULE</div>
+    <div class="bh-section-label">MODULE</div>
     <div class="arc-module-title">Commands</div>
-    <div class="arc-cmd-grid">
-        <div class="arc-cmd-card">
-            <div><div class="arc-cmd-name">Add Command</div><div class="arc-cmd-desc">This command will have access to all the variables and settings of this module.</div></div>
-            <button class="arc-cmd-add-btn">Add</button>
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
+            <div><div class="bh-cmd-name">Add Command</div><div class="bh-cmd-desc">This command will have access to all the variables and settings of this module.</div></div>
+            <button class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 </div>
 
 <!-- Events -->
 <div style="margin-top:28px;margin-bottom:32px">
-    <div class="arc-module-label">MODULE</div>
+    <div class="bh-section-label">MODULE</div>
     <div class="arc-module-title">Events</div>
-    <div class="arc-cmd-grid">
-        <div class="arc-cmd-card">
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
             <div>
-                <div class="arc-cmd-name">Auto-React</div>
-                <div class="arc-cmd-desc">When a new message is sent</div>
+                <div class="bh-cmd-name">Auto-React</div>
+                <div class="bh-cmd-desc">When a new message is sent</div>
             </div>
             <label class="bh-toggle" style="margin-left:16px">
-                <input type="checkbox" id="arc-evt-handler" <?= $evtHandler ? 'checked' : '' ?>>
-                <span class="bh-toggle__track"></span>
-                <span class="bh-toggle__thumb"></span>
+                <input class="bh-toggle-input" type="checkbox" id="arc-evt-handler" <?= $evtHandler ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
-        <div class="arc-cmd-card">
-            <div><div class="arc-cmd-name">Add Event</div><div class="arc-cmd-desc">This event will have access to all the variables and settings of this module.</div></div>
-            <button class="arc-cmd-add-btn">Add</button>
+        <div class="bh-cmd-card">
+            <div><div class="bh-cmd-name">Add Event</div><div class="bh-cmd-desc">This event will have access to all the variables and settings of this module.</div></div>
+            <button class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 </div>
@@ -201,29 +199,29 @@ $evtHandler   = (int)($s['evt_handler'] ?? 1);
 
     function renderChTags() {
         const box = document.getElementById('arc-ch-box');
-        box.querySelectorAll('.arc-tag').forEach(t => t.remove());
+        box.querySelectorAll('.bh-tag').forEach(t => t.remove());
         const btn = document.getElementById('arc-ch-add-btn');
         for (const item of chItems) {
             const tag = document.createElement('span');
-            tag.className = 'arc-tag arc-tag--channel';
+            tag.className = 'bh-tag arc-tag--channel';
             tag.dataset.id = item.id;
-            tag.innerHTML = `${esc(item.name||item.id)}<button class="arc-tag-rm">×</button>`;
-            tag.querySelector('.arc-tag-rm').onclick = () => { chItems = chItems.filter(i=>i.id!==item.id); renderChTags(); };
+            tag.innerHTML = `${esc(item.name||item.id)}<button class="bh-tag-rm">×</button>`;
+            tag.querySelector('.bh-tag-rm').onclick = () => { chItems = chItems.filter(i=>i.id!==item.id); renderChTags(); };
             box.insertBefore(tag, btn);
         }
     }
 
     function renderRoleTags() {
         const box = document.getElementById('arc-role-box');
-        box.querySelectorAll('.arc-tag').forEach(t => t.remove());
+        box.querySelectorAll('.bh-tag').forEach(t => t.remove());
         const btn = document.getElementById('arc-role-add-btn');
         for (const item of roleItems) {
             if (!item || !item.id) continue;
             const tag = document.createElement('span');
-            tag.className = 'arc-tag';
+            tag.className = 'bh-tag';
             tag.dataset.id = item.id;
-            tag.innerHTML = `${esc(item.name||item.id)}<button class="arc-tag-rm">×</button>`;
-            tag.querySelector('.arc-tag-rm').onclick = () => { roleItems = roleItems.filter(i=>i.id!==item.id); renderRoleTags(); };
+            tag.innerHTML = `${esc(item.name||item.id)}<button class="bh-tag-rm">×</button>`;
+            tag.querySelector('.bh-tag-rm').onclick = () => { roleItems = roleItems.filter(i=>i.id!==item.id); renderRoleTags(); };
             box.insertBefore(tag, btn);
         }
     }
@@ -243,16 +241,16 @@ $evtHandler   = (int)($s['evt_handler'] ?? 1);
     });
 
     window.arcRemoveEmoji = function (btn, emoji) {
-        btn.closest('.arc-emoji-chip')?.remove();
+        btn.closest('.bh-tag')?.remove();
     };
 
     window.arcAddEmoji = function () {
         const box = document.getElementById('arc-emoji-box');
-        if (box.querySelectorAll('.arc-emoji-chip').length >= 10) { flash('Max 10 emojis.', false); return; }
+        if (box.querySelectorAll('.bh-tag').length >= 10) { flash('Max 10 emojis.', false); return; }
         const emoji = prompt('Enter emoji (unicode or custom emoji name):');
         if (!emoji?.trim()) return;
         const chip = document.createElement('span');
-        chip.className = 'arc-emoji-chip';
+        chip.className = 'bh-tag';
         chip.innerHTML = `${esc(emoji.trim())}<button class="arc-emoji-rm" onclick="arcRemoveEmoji(this,'')">×</button>`;
         box.insertBefore(chip, document.getElementById('arc-emoji-add-btn'));
     };
@@ -262,24 +260,24 @@ $evtHandler   = (int)($s['evt_handler'] ?? 1);
         const word = prompt('Enter word to check for:');
         if (!word?.trim()) return;
         const tag = document.createElement('span');
-        tag.className = 'arc-tag';
+        tag.className = 'bh-tag';
         tag.style.cssText = 'background:rgba(251,191,36,.12);color:#fbbf24';
-        tag.innerHTML = `${esc(word.trim())}<button class="arc-tag-rm" onclick="this.closest('.arc-tag').remove()">×</button>`;
+        tag.innerHTML = `${esc(word.trim())}<button class="bh-tag-rm" onclick="this.closest('.bh-tag').remove()">×</button>`;
         box.insertBefore(tag, document.getElementById('arc-word-add-btn'));
     };
 
     function collectEmojis() {
-        return [...document.getElementById('arc-emoji-box').querySelectorAll('.arc-emoji-chip')]
+        return [...document.getElementById('arc-emoji-box').querySelectorAll('.bh-tag')]
             .map(c => c.childNodes[0]?.textContent?.trim()).filter(Boolean);
     }
 
     function collectWords() {
-        return [...document.getElementById('arc-words-box').querySelectorAll('.arc-tag')]
+        return [...document.getElementById('arc-words-box').querySelectorAll('.bh-tag')]
             .map(t => t.childNodes[0]?.textContent?.trim()).filter(Boolean);
     }
 
     window.arcSave = async function () {
-        const btn = document.getElementById('arc-save-btn');
+        const btn = document.getElementById('bh-btn bh-btn--primary');
         btn.disabled = true;
         try {
             const res = await fetch(location.href, {
@@ -302,8 +300,8 @@ $evtHandler   = (int)($s['evt_handler'] ?? 1);
     };
 
     function flash(msg, ok) {
-        const el = document.getElementById('arc-flash');
-        el.className = 'arc-flash ' + (ok ? 'arc-flash--ok' : 'arc-flash--err');
+        const el = document.getElementById('bh-alert');
+        el.className = 'bh-alert ' + (ok ? 'bh-alert--ok' : 'bh-alert--err');
         el.textContent = msg;
         el.style.display = '';
         clearTimeout(el._t);

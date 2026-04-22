@@ -225,11 +225,11 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
     </div>
 
     <!-- ── Einstellungen ────────────────────────────────────────────────────── -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="cnt-settings-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="cnt-settings-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Konfiguration</div>
-                <div class="lv-card__title">Einstellungen</div>
+                <div class="bh-card-title">Einstellungen</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -238,20 +238,20 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
         <div class="lv-card__body" id="cnt-settings-body">
 
             <!-- Channel ID -->
-            <div class="lv-field">
-                <label class="lv-label" for="cnt-channel-id">Zähl-Channel ID</label>
-                <input type="text" id="cnt-channel-id" class="lv-input" value="<?= cnt_h($channelId) ?>" placeholder="z.B. 1234567890123456789" maxlength="20">
-                <div class="lv-hint">Die Discord Channel-ID des Kanals, in dem gezählt wird. Leer lassen um das Modul zu deaktivieren.</div>
+            <div class="bh-field">
+                <label class="bh-label" for="cnt-channel-id">Zähl-Channel ID</label>
+                <input type="text" id="cnt-channel-id" class="bh-input" value="<?= cnt_h($channelId) ?>" placeholder="z.B. 1234567890123456789" maxlength="20">
+                <div class="bh-hint">Die Discord Channel-ID des Kanals, in dem gezählt wird. Leer lassen um das Modul zu deaktivieren.</div>
             </div>
 
             <!-- Mode -->
-            <div class="lv-field">
-                <label class="lv-label" for="cnt-mode">Modus</label>
-                <select id="cnt-mode" class="lv-select" onchange="cntModeChange()">
+            <div class="bh-field">
+                <label class="bh-label" for="cnt-mode">Modus</label>
+                <select id="cnt-mode" class="bh-select" onchange="cntModeChange()">
                     <option value="normal"  <?= $mode === 'normal'  ? 'selected' : '' ?>>Normal — Bot reagiert mit Emoji</option>
                     <option value="webhook" <?= $mode === 'webhook' ? 'selected' : '' ?>>Webhook — Nachricht löschen & als Bot neu senden</option>
                 </select>
-                <div class="lv-hint">Im Webhook-Modus erscheint die Zahl als Bot-Nachricht mit dem Avatar des Nutzers.</div>
+                <div class="bh-hint">Im Webhook-Modus erscheint die Zahl als Bot-Nachricht mit dem Avatar des Nutzers.</div>
             </div>
 
             <!-- Reactions -->
@@ -261,18 +261,18 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
                     <div class="lv-feature__desc">Bot reagiert bei korrekter Zahl mit einem Emoji auf die Nachricht. (Nur im Normal-Modus sichtbar.)</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="cnt-reactions-enabled" <?= $reactEnabled ? 'checked' : '' ?> onchange="cntReactChange()">
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="cnt-reactions-enabled" <?= $reactEnabled ? 'checked' : '' ?> onchange="cntReactChange()">
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
 
             <!-- Emoji (show if reactions enabled) -->
-            <div class="lv-field" id="cnt-emoji-field" <?= (!$reactEnabled || $mode === 'webhook') ? 'style="display:none"' : '' ?>>
-                <label class="lv-label" for="cnt-reaction-emoji">Reaction Emoji</label>
-                <input type="text" id="cnt-reaction-emoji" class="lv-input" value="<?= cnt_h($reactEmoji) ?>" placeholder="✅" maxlength="100" style="max-width:140px">
-                <div class="lv-hint">Emoji das der Bot bei korrekter Zahl reagiert. Standard: ✅</div>
+            <div class="bh-field" id="cnt-emoji-field" <?= (!$reactEnabled || $mode === 'webhook') ? 'style="display:none"' : '' ?>>
+                <label class="bh-label" for="cnt-reaction-emoji">Reaction Emoji</label>
+                <input type="text" id="cnt-reaction-emoji" class="bh-input" value="<?= cnt_h($reactEmoji) ?>" placeholder="✅" maxlength="100" style="max-width:140px">
+                <div class="bh-hint">Emoji das der Bot bei korrekter Zahl reagiert. Standard: ✅</div>
             </div>
 
             <!-- Allow multiple -->
@@ -282,9 +282,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
                     <div class="lv-feature__desc">Gleicher User darf mehrmals nacheinander zählen. Standardmäßig deaktiviert.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="cnt-allow-multiple" <?= $allowMultiple ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="cnt-allow-multiple" <?= $allowMultiple ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
@@ -296,26 +296,26 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
                     <div class="lv-feature__desc">User müssen 5 Sekunden zwischen ihren Zählversuchen warten.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="cnt-cooldown-enabled" <?= $cooldownEnabled ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="cnt-cooldown-enabled" <?= $cooldownEnabled ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
 
             <div class="lv-btn-row">
-                <button class="lv-btn" id="cnt-save-btn" onclick="cntSaveSettings()">Speichern</button>
+                <button class="bh-btn bh-btn--primary" id="cnt-save-btn" onclick="cntSaveSettings()">Speichern</button>
                 <span id="cnt-save-msg" class="lv-save-msg" style="display:none"></span>
             </div>
         </div>
     </div>
 
     <!-- ── Fehler-Einstellungen ──────────────────────────────────────────────── -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="cnt-errors-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="cnt-errors-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Nachrichten</div>
-                <div class="lv-card__title">Fehler-Einstellungen</div>
+                <div class="bh-card-title">Fehler-Einstellungen</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -330,9 +330,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
                     <div class="lv-feature__desc">Bot antwortet bei Fehlern mit einer Nachricht. Die Antwort wird nach 6 Sekunden automatisch gelöscht.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="cnt-return-errors" <?= $returnErrors ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="cnt-return-errors" <?= $returnErrors ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
@@ -345,39 +345,39 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
             </div>
 
             <!-- Error: wrong count -->
-            <div class="lv-field">
-                <label class="lv-label" for="cnt-error-wrong">Falsche Zahl</label>
-                <textarea id="cnt-error-wrong" class="lv-input" rows="2" placeholder="❌ {user}, you counted wrong! The next number is **{next}**." style="resize:vertical"><?= cnt_h($errorWrong) ?></textarea>
-                <div class="lv-hint">Wird gesendet wenn jemand die falsche Zahl oder kein Integer eingibt. Leer lassen für Standard.</div>
+            <div class="bh-field">
+                <label class="bh-label" for="cnt-error-wrong">Falsche Zahl</label>
+                <textarea id="cnt-error-wrong" class="bh-input" rows="2" placeholder="❌ {user}, you counted wrong! The next number is **{next}**." style="resize:vertical"><?= cnt_h($errorWrong) ?></textarea>
+                <div class="bh-hint">Wird gesendet wenn jemand die falsche Zahl oder kein Integer eingibt. Leer lassen für Standard.</div>
             </div>
 
             <!-- Error: counting twice -->
-            <div class="lv-field">
-                <label class="lv-label" for="cnt-error-twice">Doppelt gezählt</label>
-                <textarea id="cnt-error-twice" class="lv-input" rows="2" placeholder="❌ {user}, you are only allowed to count once in a row!" style="resize:vertical"><?= cnt_h($errorTwice) ?></textarea>
-                <div class="lv-hint">Wird gesendet wenn derselbe User zweimal nacheinander zählt (und "Allow multiple" deaktiviert ist).</div>
+            <div class="bh-field">
+                <label class="bh-label" for="cnt-error-twice">Doppelt gezählt</label>
+                <textarea id="cnt-error-twice" class="bh-input" rows="2" placeholder="❌ {user}, you are only allowed to count once in a row!" style="resize:vertical"><?= cnt_h($errorTwice) ?></textarea>
+                <div class="bh-hint">Wird gesendet wenn derselbe User zweimal nacheinander zählt (und "Allow multiple" deaktiviert ist).</div>
             </div>
 
             <!-- Error: cooldown -->
-            <div class="lv-field">
-                <label class="lv-label" for="cnt-error-cooldown">Cooldown aktiv</label>
-                <textarea id="cnt-error-cooldown" class="lv-input" rows="2" placeholder="❌ {user}, please wait a moment before counting again!" style="resize:vertical"><?= cnt_h($errorCooldown) ?></textarea>
-                <div class="lv-hint">Wird gesendet wenn der User noch im 5s Cooldown ist. Leer lassen für Standard.</div>
+            <div class="bh-field">
+                <label class="bh-label" for="cnt-error-cooldown">Cooldown aktiv</label>
+                <textarea id="cnt-error-cooldown" class="bh-input" rows="2" placeholder="❌ {user}, please wait a moment before counting again!" style="resize:vertical"><?= cnt_h($errorCooldown) ?></textarea>
+                <div class="bh-hint">Wird gesendet wenn der User noch im 5s Cooldown ist. Leer lassen für Standard.</div>
             </div>
 
             <div class="lv-btn-row">
-                <button class="lv-btn" id="cnt-save-err-btn" onclick="cntSaveSettings()">Speichern</button>
+                <button class="bh-btn bh-btn--primary" id="cnt-save-err-btn" onclick="cntSaveSettings()">Speichern</button>
                 <span id="cnt-save-err-msg" class="lv-save-msg" style="display:none"></span>
             </div>
         </div>
     </div>
 
     <!-- ── Danger Zone ───────────────────────────────────────────────────────── -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="cnt-danger-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="cnt-danger-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Danger Zone</div>
-                <div class="lv-card__title">Count zurücksetzen</div>
+                <div class="bh-card-title">Count zurücksetzen</div>
             </div>
             <svg class="lv-chevron" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -390,7 +390,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
                     <div class="lv-feature__desc">Setzt den aktuellen Count sowie den letzten User und Zeitstempel zurück. Diese Aktion kann nicht rückgängig gemacht werden.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <button class="lv-btn lv-btn--danger" id="cnt-reset-btn" onclick="cntResetCount()">Zurücksetzen</button>
+                    <button class="bh-btn bh-btn--primary bh-btn bh-btn--danger" id="cnt-reset-btn" onclick="cntResetCount()">Zurücksetzen</button>
                 </div>
             </div>
         </div>
@@ -402,18 +402,18 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
         <div class="lv-title" style="font-size:20px;margin-bottom:12px">Commands</div>
     </div>
 
-    <div class="lv-cmds-grid">
+    <div class="bh-cmd-grid">
         <?php foreach ($countingCommands as $cmd):
             $on = $cmdMap[$cmd['key']] ?? true;
         ?>
-        <div class="lv-cmd-card">
+        <div class="bh-cmd-card">
             <div>
-                <div class="lv-cmd__name"><?= cnt_h($cmd['name']) ?></div>
-                <div class="lv-cmd__desc"><?= cnt_h($cmd['desc']) ?></div>
+                <div class="bh-cmd-name"><?= cnt_h($cmd['name']) ?></div>
+                <div class="bh-cmd-desc"><?= cnt_h($cmd['desc']) ?></div>
             </div>
-            <label class="lv-toggle">
-                <input type="checkbox" class="cntCmdToggle" data-key="<?= cnt_h($cmd['key']) ?>" <?= $on ? 'checked' : '' ?>>
-                <span class="lv-toggle__track"></span>
+            <label class="bh-toggle">
+                <input type="checkbox" class="cntCmdToggle bh-toggle-input" data-key="<?= cnt_h($cmd['key']) ?>" <?= $on ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
         <?php endforeach; ?>

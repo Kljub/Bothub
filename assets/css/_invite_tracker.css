@@ -6,83 +6,35 @@
 .it-title  { font-size: 1.75rem; font-weight: 700; color: #f1f5f9; }
 
 /* Card */
-.it-card {
-    background: #12171f;
-    border: 1px solid #1e2a3a;
-    border-radius: 14px;
-    padding: 24px;
-    margin-bottom: 20px;
-}
-.it-card__title {
-    font-size: 1rem; font-weight: 600; color: #f1f5f9;
-    margin-bottom: 4px;
-}
+
 .it-card__desc {
     font-size: 0.8125rem; color: #64748b; margin-bottom: 20px;
 }
 
 /* Field */
-.it-field { margin-bottom: 18px; }
-.it-label {
-    font-size: 0.8125rem; font-weight: 600;
-    color: #94a3b8; margin-bottom: 4px;
-}
+
 .it-sublabel {
     font-size: 0.75rem; color: #4b5563; margin-bottom: 6px;
 }
 
 /* Inputs */
-.it-input, .it-textarea {
-    width: 100%; background: #141820; border: 1px solid #2e3547;
-    border-radius: 8px; color: #f1f5f9; font-size: 13px;
-    padding: 8px 12px; outline: none;
-    transition: border-color .15s; box-sizing: border-box;
-    font-family: inherit;
-}
-.it-textarea { resize: vertical; min-height: 80px; }
-.it-input:focus, .it-textarea:focus { border-color: #6366f1; }
-.it-input::placeholder, .it-textarea::placeholder { color: #4b5563; }
 
 /* Toggle row */
-.it-toggle-row {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 12px; padding-bottom: 20px; border-bottom: 1px solid #1e2a3a;
-    margin-bottom: 20px;
-}
-.it-toggle-row__info { flex: 1; }
-.it-toggle-row__title { font-size: 0.9375rem; font-weight: 600; color: #f1f5f9; }
-.it-toggle-row__desc  { font-size: 0.8125rem; color: #64748b; margin-top: 2px; }
 
 /* Toggle */
-.it-toggle { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
-.it-toggle input { opacity: 0; width: 0; height: 0; }
-.it-toggle__track {
-    position: absolute; inset: 0; background: #2e3547;
-    border-radius: 24px; transition: background .2s; cursor: pointer;
-}
-.it-toggle input:checked + .it-toggle__track { background: #6366f1; }
-.it-toggle__track::after {
-    content: ''; position: absolute; left: 3px; top: 3px;
-    width: 18px; height: 18px; background: #fff;
-    border-radius: 50%; transition: transform .2s;
-}
-.it-toggle input:checked + .it-toggle__track::after { transform: translateX(20px); }
+
+.bh-toggle input { opacity: 0; width: 0; height: 0; }
+
+.bh-toggle input:checked + 
+
+.bh-toggle input:checked + 
 
 /* Channel picker row */
 .it-picker-row {
     display: flex; flex-wrap: wrap; gap: 6px;
     align-items: center; min-height: 36px;
 }
-.it-ch-tag {
-    display: inline-flex; align-items: center; gap: 4px;
-    background: rgba(99,102,241,.15); border: 1px solid rgba(99,102,241,.4);
-    border-radius: 6px; padding: 3px 8px;
-    font-size: 0.8125rem; color: #a5b4fc;
-}
-.it-ch-tag-rm {
-    background: none; border: none; color: #a5b4fc;
-    cursor: pointer; padding: 0 2px; font-size: 14px; line-height: 1;
-}
+
 .it-ch-tag-rm:hover { color: #f87171; }
 .it-picker-add {
     background: none; border: 1px dashed #475569; color: #94a3b8;
@@ -102,15 +54,9 @@
 .it-save-btn:hover { opacity: .85; }
 
 /* Flash */
-.it-flash {
-    padding: 10px 16px; border-radius: 8px; font-size: 0.875rem;
-    margin-bottom: 16px; display: none;
-}
-.it-flash--ok  { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.3); color: #86efac; }
-.it-flash--err { background: rgba(239,68,68,.12);  border: 1px solid rgba(239,68,68,.3);  color: #fca5a5; }
 
 /* Hint */
-.it-hint { font-size: 0.75rem; color: #4b5563; margin-bottom: 6px; }
+
 .it-hint code { background: #1e2a3a; border-radius: 4px; padding: 1px 5px; color: #94a3b8; font-size: 0.75rem; }
 
 /* Leaderboard */
@@ -131,3 +77,21 @@
 .it-lb-uses  { font-weight: 700; color: #f1f5f9; }
 .it-lb-empty { text-align: center; color: #4b5563; padding: 24px 0; font-size: 0.875rem; }
 .it-lb-loading { text-align: center; color: #64748b; padding: 24px 0; font-size: 0.875rem; }
+
+/* ── Textarea ── */
+.it-textarea {
+    width: 100%;
+    background: #151b2b;
+    border: 1px solid #2e3850;
+    border-radius: 8px;
+    color: #c8d0e0;
+    font-size: 13px;
+    padding: 10px 12px;
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+    box-sizing: border-box;
+    transition: border-color .15s;
+}
+.it-textarea:focus { border-color: #4338ca; }
+.it-textarea::placeholder { color: #3d4f6e; }

@@ -154,14 +154,14 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
         </div>
     </div>
 
-    <div id="lvAlert" style="display:none" class="lv-alert"></div>
+    <div id="lvAlert" style="display:none" class="bh-alert"></div>
 
     <!-- ══ General Settings ══ -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="lv-general-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="lv-general-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Leveling</div>
-                <div class="lv-card__title">General Settings</div>
+                <div class="bh-card-title">General Settings</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -171,29 +171,29 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
         <div class="lv-card__body" id="lv-general-body">
 
             <!-- Embed Color -->
-            <div class="lv-field">
-                <label class="lv-label">Embeds Color</label>
-                <div class="lv-hint" style="margin-top:0;margin-bottom:8px;">Farbe für Embeds wie das Leaderboard und Rank-Karte.</div>
+            <div class="bh-field">
+                <label class="bh-label">Embeds Color</label>
+                <div class="bh-hint" style="margin-top:0;margin-bottom:8px;">Farbe für Embeds wie das Leaderboard und Rank-Karte.</div>
                 <div class="lv-color-row">
                     <div class="lv-color-swatch">
                         <input type="color" id="lvColorPicker" value="<?= lv_h($embedColor) ?>">
                     </div>
-                    <input type="text" id="lvColorText" class="lv-input lv-color-text" value="<?= lv_h($embedColor) ?>" maxlength="7">
+                    <input type="text" id="lvColorText" class="bh-input lv-color-text" value="<?= lv_h($embedColor) ?>" maxlength="7">
                 </div>
             </div>
 
             <!-- Max Level + XP per Level -->
-            <div class="lv-field">
+            <div class="bh-field">
                 <div class="lv-grid2">
                     <div>
-                        <label class="lv-label">Max Level</label>
-                        <input type="number" id="lv_max_level" class="lv-input" min="0" value="<?= lv_int($settings,'max_level',0) ?>">
-                        <div class="lv-hint">0 = kein Limit</div>
+                        <label class="bh-label">Max Level</label>
+                        <input type="number" id="lv_max_level" class="bh-input" min="0" value="<?= lv_int($settings,'max_level',0) ?>">
+                        <div class="bh-hint">0 = kein Limit</div>
                     </div>
                     <div>
-                        <label class="lv-label">Additional XP per Level</label>
-                        <input type="number" id="lv_xp_per_level" class="lv-input" min="1" value="<?= lv_int($settings,'xp_per_level',50) ?>">
-                        <div class="lv-hint">XP-Anstieg pro Level (entspricht XP für Level 1)</div>
+                        <label class="bh-label">Additional XP per Level</label>
+                        <input type="number" id="lv_xp_per_level" class="bh-input" min="1" value="<?= lv_int($settings,'xp_per_level',50) ?>">
+                        <div class="bh-hint">XP-Anstieg pro Level (entspricht XP für Level 1)</div>
                     </div>
                 </div>
             </div>
@@ -205,17 +205,17 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
                     <div class="lv-feature__desc">Wenn ein Nutzer den Server verlässt, werden seine Leveling-Daten gelöscht.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="lv_clear_on_leave" <?= lv_bool($settings,'clear_on_leave',true) ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="lv_clear_on_leave" <?= lv_bool($settings,'clear_on_leave',true) ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
 
             <!-- Level-up message -->
-            <div class="lv-field">
-                <label class="lv-label">Send a message on level up</label>
-                <select id="lv_levelup_message" class="lv-select">
+            <div class="bh-field">
+                <label class="bh-label">Send a message on level up</label>
+                <select id="lv_levelup_message" class="bh-select">
                     <option value="disabled"        <?= lv_str($settings,'levelup_message','disabled')==='disabled'        ? 'selected' : '' ?>>Disabled</option>
                     <option value="current_channel" <?= lv_str($settings,'levelup_message')==='current_channel' ? 'selected' : '' ?>>Current Channel</option>
                     <option value="dm"              <?= lv_str($settings,'levelup_message')==='dm'              ? 'selected' : '' ?>>DM</option>
@@ -223,18 +223,18 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
             </div>
 
             <div class="lv-btn-row">
-                <button type="button" class="lv-btn" id="lvSaveGeneral">Speichern</button>
+                <button type="button" class="bh-btn bh-btn--primary" id="lvSaveGeneral">Speichern</button>
                 <span class="lv-save-msg" id="lvSaveGeneralMsg"></span>
             </div>
         </div>
     </div>
 
     <!-- ══ Messages XP ══ -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="lv-msg-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="lv-msg-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Leveling</div>
-                <div class="lv-card__title">Messages XP Settings</div>
+                <div class="bh-card-title">Messages XP Settings</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -242,36 +242,36 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
         </div>
 
         <div class="lv-card__body" id="lv-msg-body">
-            <div class="lv-field">
+            <div class="bh-field">
                 <div class="lv-grid2">
                     <div>
-                        <label class="lv-label">Minimum XP per Message</label>
-                        <input type="number" id="lv_msg_xp_min" class="lv-input" min="1" value="<?= lv_int($settings,'msg_xp_min',10) ?>">
+                        <label class="bh-label">Minimum XP per Message</label>
+                        <input type="number" id="lv_msg_xp_min" class="bh-input" min="1" value="<?= lv_int($settings,'msg_xp_min',10) ?>">
                     </div>
                     <div>
-                        <label class="lv-label">Maximum XP per Message</label>
-                        <input type="number" id="lv_msg_xp_max" class="lv-input" min="1" value="<?= lv_int($settings,'msg_xp_max',25) ?>">
+                        <label class="bh-label">Maximum XP per Message</label>
+                        <input type="number" id="lv_msg_xp_max" class="bh-input" min="1" value="<?= lv_int($settings,'msg_xp_max',25) ?>">
                     </div>
                 </div>
             </div>
-            <div class="lv-field">
-                <label class="lv-label">Cooldown (Sekunden)</label>
-                <input type="number" id="lv_msg_cooldown" class="lv-input" min="0" value="<?= lv_int($settings,'msg_cooldown',15) ?>">
-                <div class="lv-hint">Nutzer erhalten innerhalb dieser Zeit keine weiteren XP.</div>
+            <div class="bh-field">
+                <label class="bh-label">Cooldown (Sekunden)</label>
+                <input type="number" id="lv_msg_cooldown" class="bh-input" min="0" value="<?= lv_int($settings,'msg_cooldown',15) ?>">
+                <div class="bh-hint">Nutzer erhalten innerhalb dieser Zeit keine weiteren XP.</div>
             </div>
             <div class="lv-btn-row">
-                <button type="button" class="lv-btn" id="lvSaveMsg">Speichern</button>
+                <button type="button" class="bh-btn bh-btn--primary" id="lvSaveMsg">Speichern</button>
                 <span class="lv-save-msg" id="lvSaveMsgMsg"></span>
             </div>
         </div>
     </div>
 
     <!-- ══ Voice XP ══ -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="lv-voice-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="lv-voice-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Leveling</div>
-                <div class="lv-card__title">Voice XP Settings</div>
+                <div class="bh-card-title">Voice XP Settings</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -285,30 +285,30 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
                     <div class="lv-feature__desc">Nutzer erhalten XP durch Teilnahme in Sprachkanälen.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="lv_voice_xp_enabled" <?= lv_bool($settings,'voice_xp_enabled') ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="lv_voice_xp_enabled" <?= lv_bool($settings,'voice_xp_enabled') ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
-            <div class="lv-field">
-                <label class="lv-label">XP per Minute</label>
-                <input type="number" id="lv_voice_xp_per_minute" class="lv-input" min="1" value="<?= lv_int($settings,'voice_xp_per_minute',5) ?>">
-                <div class="lv-hint">XP die jede Minute im Sprachkanal gutgeschrieben werden.</div>
+            <div class="bh-field">
+                <label class="bh-label">XP per Minute</label>
+                <input type="number" id="lv_voice_xp_per_minute" class="bh-input" min="1" value="<?= lv_int($settings,'voice_xp_per_minute',5) ?>">
+                <div class="bh-hint">XP die jede Minute im Sprachkanal gutgeschrieben werden.</div>
             </div>
             <div class="lv-btn-row">
-                <button type="button" class="lv-btn" id="lvSaveVoice">Speichern</button>
+                <button type="button" class="bh-btn bh-btn--primary" id="lvSaveVoice">Speichern</button>
                 <span class="lv-save-msg" id="lvSaveVoiceMsg"></span>
             </div>
         </div>
     </div>
 
     <!-- ══ XP Boosters ══ -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="lv-boost-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="lv-boost-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Leveling</div>
-                <div class="lv-card__title">XP Boosters</div>
+                <div class="bh-card-title">XP Boosters</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -323,9 +323,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
                     <div class="lv-feature__desc">Alle geltenden Boosts werden addiert. Sonst wird nur der höchste Boost verwendet.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="lv_sum_boosts" <?= lv_bool($settings,'sum_boosts') ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="lv_sum_boosts" <?= lv_bool($settings,'sum_boosts') ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
@@ -335,14 +335,14 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
                     <div class="lv-feature__desc">Der Boost-Wert variiert leicht (±1%) um etwas Zufälligkeit hinzuzufügen.</div>
                 </div>
                 <div class="lv-feature__right">
-                    <label class="lv-toggle">
-                        <input type="checkbox" id="lv_randomize_boosts" <?= lv_bool($settings,'randomize_boosts',true) ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input class="bh-toggle-input" type="checkbox" id="lv_randomize_boosts" <?= lv_bool($settings,'randomize_boosts',true) ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
             </div>
             <div class="lv-btn-row" style="border-top:none;padding-top:4px;">
-                <button type="button" class="lv-btn lv-btn--sm" id="lvSaveBoostOpts">Optionen speichern</button>
+                <button type="button" class="bh-btn bh-btn--primary bh-btn bh-btn--sm" id="lvSaveBoostOpts">Optionen speichern</button>
                 <span class="lv-save-msg" id="lvSaveBoostOptsMsg"></span>
             </div>
 
@@ -366,34 +366,34 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
                 <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--bh-text-muted,#8b949e);margin-bottom:12px;">Booster hinzufügen</div>
                 <div class="lv-grid2" style="margin-bottom:12px;">
                     <div>
-                        <label class="lv-label">Typ</label>
-                        <select id="lvBstType" class="lv-select">
+                        <label class="bh-label">Typ</label>
+                        <select id="lvBstType" class="bh-select">
                             <option value="role">Rollen-Boost</option>
                             <option value="channel">Kanal-Boost</option>
                         </select>
                     </div>
                     <div>
-                        <label class="lv-label">Prozent</label>
-                        <input type="number" id="lvBstPct" class="lv-input" min="1" value="10">
+                        <label class="bh-label">Prozent</label>
+                        <input type="number" id="lvBstPct" class="bh-input" min="1" value="10">
                     </div>
                 </div>
                 <div style="margin-bottom:12px;">
-                    <label class="lv-label" id="lvBstTargetLbl">Rollen-ID</label>
-                    <input type="text" id="lvBstTarget" class="lv-input" placeholder="Discord ID">
-                    <div class="lv-hint">Rechtsklick auf Rolle/Kanal → ID kopieren (Entwickler-Modus erforderlich)</div>
+                    <label class="bh-label" id="lvBstTargetLbl">Rollen-ID</label>
+                    <input type="text" id="lvBstTarget" class="bh-input" placeholder="Discord ID">
+                    <div class="bh-hint">Rechtsklick auf Rolle/Kanal → ID kopieren (Entwickler-Modus erforderlich)</div>
                 </div>
-                <button type="button" class="lv-btn" id="lvAddBstBtn">Hinzufügen</button>
+                <button type="button" class="bh-btn bh-btn--primary" id="lvAddBstBtn">Hinzufügen</button>
                 <span class="lv-save-msg" id="lvBstMsg" style="margin-left:10px;"></span>
             </div>
         </div>
     </div>
 
     <!-- ══ Commands ══ -->
-    <div class="lv-card">
-        <div class="lv-card__hdr lv-toggle-hdr" data-target="lv-cmds-body">
+    <div class="bh-card">
+        <div class="bh-card-hdr lv-toggle-hdr" data-target="lv-cmds-body">
             <div class="lv-card__hdr-left">
                 <div class="lv-card__kicker">Module</div>
-                <div class="lv-card__title">Commands</div>
+                <div class="bh-card-title">Commands</div>
             </div>
             <svg class="lv-chevron lv-chevron--open" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -414,12 +414,12 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
                 ?>
                 <div class="lv-cmd">
                     <div>
-                        <div class="lv-cmd__name"><?= lv_h($cmd['name']) ?></div>
-                        <div class="lv-cmd__desc"><?= lv_h($cmd['desc']) ?></div>
+                        <div class="bh-cmd-name"><?= lv_h($cmd['name']) ?></div>
+                        <div class="bh-cmd-desc"><?= lv_h($cmd['desc']) ?></div>
                     </div>
-                    <label class="lv-toggle">
-                        <input type="checkbox" class="lvCmdToggle" data-key="<?= lv_h($cmd['key']) ?>" <?= $on ? 'checked' : '' ?>>
-                        <span class="lv-toggle__track"></span>
+                    <label class="bh-toggle">
+                        <input type="checkbox" class="lvCmdToggle bh-toggle-input" data-key="<?= lv_h($cmd['key']) ?>" <?= $on ? 'checked' : '' ?>>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
                 </div>
                 <?php endforeach; ?>

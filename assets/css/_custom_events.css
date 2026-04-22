@@ -3,55 +3,10 @@
 .ce-event-section.is-collapsed .ce-collapse-icon { transform: rotate(-90deg); }
 
 /* Toggle */
-.ce-event-toggle {
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-.ce-event-toggle-input {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-    pointer-events: none;
-}
-.ce-event-toggle-track {
-    display: inline-block;
-    position: relative;
-    width: 40px;
-    height: 22px;
-    border-radius: 999px;
-    background: #d1d5db;
-    transition: background 0.2s ease;
-    flex-shrink: 0;
-}
-.dark .ce-event-toggle-track { background: #4b5563; }
 
-.ce-event-toggle-input:checked + .ce-event-toggle-track {
-    background: #14b8a6;
-}
-.ce-event-toggle-thumb {
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-    transition: transform 0.2s ease;
-}
-.ce-event-toggle-input:checked + .ce-event-toggle-track .ce-event-toggle-thumb {
-    transform: translateX(18px);
-}
+.dark 
 
-/* Modal */
-.ce-modal-overlay {
-    display: none; position: fixed; inset: 0; z-index: 1050;
-    background: rgba(0,0,0,.6); align-items: flex-start; justify-content: center;
-    padding-top: 60px;
-}
+.ce-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 500; align-items: center; justify-content: center; padding: 16px; }
 .ce-modal-overlay.is-open { display: flex; }
 .ce-modal {
     background: #1c2128; border: 1px solid #2d3139; border-radius: 12px;
@@ -78,20 +33,12 @@
 
 /* Event type grid */
 .ce-type-category { margin-bottom: 12px; }
-.ce-type-category-label {
-    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-    color: #8b949e; margin-bottom: 6px; padding: 0 2px;
-}
+
 .ce-type-cards {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 6px;
 }
-.ce-type-card {
-    display: flex; flex-direction: column; gap: 2px;
-    background: rgba(255,255,255,0.04); border: 1px solid #2d3139; border-radius: 8px;
-    padding: 8px 10px; cursor: pointer; transition: background 0.15s, border-color 0.15s;
-    text-align: left;
-}
+
 .ce-type-card:hover { background: rgba(20,184,166,0.12); border-color: #14b8a6; }
 .ce-type-card.is-hidden { display: none; }
-.ce-type-card-label { font-size: 12px; font-weight: 600; color: #e6edf3; line-height: 1.3; }
+
 .ce-type-card-type  { font-size: 10px; color: #8b949e; font-family: monospace; }

@@ -149,79 +149,101 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:twitch');
 ?>
 
 <?= bh_mod_render($modEnabled, $botId, 'module:twitch', 'Twitch Notifications', 'Twitch-Benachrichtigungen für diesen Bot ein- oder ausschalten.') ?>
-<div id="bh-mod-body">
-<div id="tn-flash" style="display:none"></div>
+<style>
+.bh-info-tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:rgba(99,102,241,.18);color:#818cf8;font-size:10px;font-weight:700;cursor:default;flex-shrink:0;vertical-align:middle;margin-left:6px;line-height:1}
+.bh-info-tip:hover{background:rgba(99,102,241,.32)}
+.bh-info-float-tip{position:fixed;transform:translate(-50%,calc(-100% - 8px));background:#1e293b;color:#e2e8f0;font-size:11px;font-weight:400;white-space:nowrap;padding:6px 10px;border-radius:7px;border:1px solid #374461;box-shadow:0 4px 12px rgba(0,0,0,.4);pointer-events:none;opacity:0;transition:opacity .15s;z-index:9999}
+.bh-info-float-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#374461}
+</style>
+<script>
+(function(){
+  var tipText = <?= json_encode($configSet
+    ? 'Twitch API Credentials sind konfiguriert. Notifications sind aktiv.'
+    : 'Twitch API Credentials fehlen — bitte im Admin Panel konfigurieren.'
+  ) ?>;
 
-<!-- ── Credentials Info Notice ────────────────────────────────────────────── -->
-<div class="rounded-xl border <?= $configSet ? 'border-emerald-200 dark:border-emerald-700/60 bg-emerald-50 dark:bg-emerald-500/10' : 'border-amber-200 dark:border-amber-700/60 bg-amber-50 dark:bg-amber-500/10' ?> px-4 py-3 flex items-start gap-3 mb-6">
-    <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 shrink-0 <?= $configSet ? 'text-emerald-500' : 'text-amber-500' ?>" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-        <?php if ($configSet): ?>
-            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-        <?php else: ?>
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-        <?php endif; ?>
-    </svg>
-    <div class="text-sm <?= $configSet ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-300' ?>">
-        <?php if ($configSet): ?>
-            Twitch API Credentials sind konfiguriert. Notifications sind aktiv.
-        <?php else: ?>
-            Twitch API Credentials fehlen. Konfiguriere sie im
-            <a href="/admin/settings" class="font-semibold underline">Admin Panel → Settings</a>.
-        <?php endif; ?>
-    </div>
-</div>
+  var float = document.createElement('div');
+  float.className = 'bh-info-float-tip';
+  float.textContent = tipText;
+  document.body.appendChild(float);
+
+  var icon = document.createElement('span');
+  icon.className = 'bh-info-tip';
+  icon.textContent = 'i';
+
+  icon.addEventListener('mouseenter', function(){
+    var r = icon.getBoundingClientRect();
+    float.style.left = (r.left + r.width / 2) + 'px';
+    float.style.top  = (r.top + window.scrollY) + 'px';
+    float.style.opacity = '1';
+  });
+  icon.addEventListener('mouseleave', function(){
+    float.style.opacity = '0';
+  });
+
+  var title = document.querySelector('.bh-mod-feature__title');
+  if(title) title.appendChild(icon);
+})();
+</script>
+<div id="bh-mod-body">
+<div id="bh-alert" style="display:none"></div>
 
 <!-- ── Add Streamer Card ────────────────────────────────────────────────────── -->
-<div class="bg-white dark:bg-gray-800 shadow-xs rounded-xl" style="margin-bottom:24px">
-    <div class="p-5 border-b border-gray-100 dark:border-gray-700/60">
-        <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Add Streamer Notification</h2>
+<div class="bh-card" style="padding:0;margin-bottom:20px">
+    <div class="bh-card-hdr">
+        <div class="bh-card-title" style="margin:0">Streamer hinzufügen</div>
     </div>
-    <div class="p-5">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+    <div class="bh-card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
             <div>
-                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Twitch Username</label>
-                <input type="text" id="tn-streamer-login"
-                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                    placeholder="streamer_username" maxlength="50">
+                <label class="bh-label" for="tn-streamer-login">Twitch Benutzername</label>
+                <input type="text" id="tn-streamer-login" class="bh-input"
+                    placeholder="streamer_name" maxlength="50">
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Discord Channel</label>
-                <div style="display:flex;gap:8px;align-items:center">
-                    <select id="tn-channel-select"
-                        class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
-                        <option value="">— Loading channels… —</option>
-                    </select>
-                </div>
+                <label class="bh-label" for="tn-channel-select">Discord Kanal</label>
+                <select id="tn-channel-select" class="bh-select">
+                    <option value="">— Kanäle werden geladen… —</option>
+                </select>
                 <div id="tn-channel-error" style="display:none;font-size:11px;color:#f87171;margin-top:3px"></div>
             </div>
         </div>
 
-        <div style="margin-bottom:12px">
-            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Custom Message <span class="font-normal text-gray-400">(optional)</span>
+        <div style="margin-bottom:14px">
+            <label class="bh-label" for="tn-custom-message">
+                Custom Message <span style="font-weight:400;color:#4f5f80">(optional)</span>
             </label>
-            <textarea id="tn-custom-message" rows="2"
-                class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500 resize-none"
-                placeholder="Custom notification text, e.g. Hey @everyone, {streamer} is live!"></textarea>
+            <textarea id="tn-custom-message" rows="2" class="bh-textarea"
+                placeholder="{streamer} ist jetzt live auf Twitch! 🎮"></textarea>
         </div>
 
-        <button onclick="tnAdd()" id="tn-add-btn"
-            class="inline-flex items-center gap-1.5 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold px-4 py-2 transition-colors">
-            Add Streamer
+        <div class="bh-vars">
+            <div class="bh-vars-title">Verfügbare Variablen — klicken zum Kopieren</div>
+            <div class="bh-vars-list">
+                <span class="bh-var-chip" onclick="tnCopyVar(this,'{streamer}')">{streamer}</span>
+                <span class="bh-var-chip" onclick="tnCopyVar(this,'{title}')">{title}</span>
+                <span class="bh-var-chip" onclick="tnCopyVar(this,'{game}')">{game}</span>
+                <span class="bh-var-chip" onclick="tnCopyVar(this,'{url}')">{url}</span>
+            </div>
+        </div>
+
+        <button onclick="tnAdd()" id="tn-add-btn" class="bh-btn bh-btn--primary">
+            Streamer hinzufügen
         </button>
     </div>
 </div>
 
 <!-- ── Streamers List ───────────────────────────────────────────────────────── -->
-<div class="bg-white dark:bg-gray-800 shadow-xs rounded-xl">
-    <div class="p-5 border-b border-gray-100 dark:border-gray-700/60">
-        <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Configured Streamers</h2>
+<div class="bh-card" style="padding:0">
+    <div class="bh-card-hdr">
+        <div class="bh-card-title" style="margin:0">Konfigurierte Streamer</div>
+        <span class="bh-tag"><?= count($notifications) ?></span>
     </div>
-    <div class="p-5">
+    <div class="bh-card-body">
         <div id="tn-list">
         <?php if (empty($notifications)): ?>
             <div id="tn-empty" class="text-sm text-gray-400 dark:text-gray-500 text-center py-6">
-                No streamers configured yet. Add one above.
+                Noch keine Streamer konfiguriert. Füge oben einen hinzu.
             </div>
         <?php else: ?>
             <?php foreach ($notifications as $n): ?>
@@ -232,7 +254,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:twitch');
                 $isEnabled = (int)$n['is_enabled'] === 1;
                 $lastNotify = $n['last_notified_at'] ? date('d.m.Y H:i', strtotime((string)$n['last_notified_at'])) : '—';
             ?>
-            <div class="tn-row" id="tn-row-<?= (int)$n['id'] ?>" style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--tn-sep, #f0f0f0)">
+            <div class="tn-row" id="tn-row-<?= (int)$n['id'] ?>">
                 <div style="display:flex;align-items:center;gap:12px;min-width:0">
                     <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#9147ff22;flex-shrink:0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#9147ff"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
@@ -248,25 +270,22 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:twitch');
                             <?php endif; ?>
                         </div>
                         <div style="font-size:11px;color:#6b7280;margin-top:2px">
-                            Channel: <code style="color:#a5b4fc"><?= $esc($chanId) ?></code>
-                            &nbsp;·&nbsp; Last notified: <?= $esc($lastNotify) ?>
+                            Kanal: <code style="color:#a5b4fc"><?= $esc($chanId) ?></code>
+                            &nbsp;·&nbsp; Zuletzt: <?= $esc($lastNotify) ?>
                             <?php if (!$isEnabled): ?>
-                            &nbsp;·&nbsp; <span style="color:#f87171">Disabled</span>
+                            &nbsp;·&nbsp; <span style="color:#f87171">Deaktiviert</span>
                             <?php endif; ?>
                         </div>
                     </div>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:12px">
                     <label class="bh-toggle" title="Enable / Disable">
-                        <input type="checkbox" <?= $isEnabled ? 'checked' : '' ?>
+                        <input class="bh-toggle-input" type="checkbox" <?= $isEnabled ? 'checked' : '' ?>
                             onchange="tnToggle(<?= (int)$n['id'] ?>, this.checked)">
-                        <span class="bh-toggle__track"></span>
-                        <span class="bh-toggle__thumb"></span>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
-                    <button onclick="tnDelete(<?= (int)$n['id'] ?>)"
-                        style="background:#ef444420;color:#ef4444;border:none;border-radius:6px;font-size:11px;font-weight:600;padding:4px 10px;cursor:pointer;transition:background 0.15s"
-                        onmouseover="this.style.background='#ef444440'" onmouseout="this.style.background='#ef444420'">
-                        Delete
+                    <button onclick="tnDelete(<?= (int)$n['id'] ?>)" class="tn-del-btn">
+                        Löschen
                     </button>
                 </div>
             </div>
@@ -283,10 +302,25 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:twitch');
     const BOT_ID     = <?= (int)$botId ?>;
     const TEXT_CH_API = '/api/v1/bot_guild_channels.php';
 
+    // ── Copy variable chip ────────────────────────────────────────────────────
+    window.tnCopyVar = function (el, v) {
+        const orig = el.textContent;
+        const done = () => {
+            el.classList.add('is-copied');
+            el.textContent = '✓ Kopiert';
+            setTimeout(() => { el.classList.remove('is-copied'); el.textContent = orig; }, 1200);
+        };
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(v).then(done).catch(() => { const t = document.createElement('textarea'); t.value = v; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); done(); });
+        } else {
+            const t = document.createElement('textarea'); t.value = v; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); done();
+        }
+    };
+
     // ── Flash ─────────────────────────────────────────────────────────────────
     function flash(msg, ok) {
-        const el = document.getElementById('tn-flash');
-        el.className = 'tn-flash--' + (ok ? 'ok' : 'err');
+        const el = document.getElementById('bh-alert');
+        el.className = 'bh-alert bh-alert--' + (ok ? 'ok' : 'err');
         el.textContent = msg;
         el.style.display = '';
         clearTimeout(el._t);
@@ -410,7 +444,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:twitch');
         const div  = document.createElement('div');
         div.className = 'tn-row';
         div.id = 'tn-row-' + id;
-        div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--tn-sep, #f0f0f0)';
+        div.style.cssText = '';
         div.innerHTML = `
             <div style="display:flex;align-items:center;gap:12px;min-width:0">
                 <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#9147ff22;flex-shrink:0">
@@ -422,22 +456,17 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:twitch');
                         <span style="display:inline-block;background:#374151;color:#9ca3af;font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px">OFFLINE</span>
                     </div>
                     <div style="font-size:11px;color:#6b7280;margin-top:2px">
-                        Channel: <code style="color:#a5b4fc">${escHtml(channelId)}</code>
-                        &nbsp;·&nbsp; Last notified: —
+                        Kanal: <code style="color:#a5b4fc">${escHtml(channelId)}</code>
+                        &nbsp;·&nbsp; Zuletzt: —
                     </div>
                 </div>
             </div>
             <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:12px">
-                <label class="bh-toggle" title="Enable / Disable">
-                    <input type="checkbox" checked onchange="tnToggle(${id}, this.checked)">
-                    <span class="bh-toggle__track"></span>
-                    <span class="bh-toggle__thumb"></span>
+                <label class="bh-toggle" title="Aktivieren / Deaktivieren">
+                    <input class="bh-toggle-input" type="checkbox" checked onchange="tnToggle(${id}, this.checked)">
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
-                <button onclick="tnDelete(${id})"
-                    style="background:#ef444420;color:#ef4444;border:none;border-radius:6px;font-size:11px;font-weight:600;padding:4px 10px;cursor:pointer"
-                    onmouseover="this.style.background='#ef444440'" onmouseout="this.style.background='#ef444420'">
-                    Delete
-                </button>
+                <button onclick="tnDelete(${id})" class="tn-del-btn">Löschen</button>
             </div>
         `;
         list.prepend(div);
@@ -445,7 +474,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:twitch');
 
     // ── Delete ────────────────────────────────────────────────────────────────
     window.tnDelete = async function (id) {
-        if (!confirm('Remove this streamer notification?')) return;
+        if (!confirm('Streamer-Benachrichtigung wirklich entfernen?')) return;
         try {
             const res  = await fetch(location.href, {
                 method: 'POST',
@@ -459,7 +488,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:twitch');
                 flash('Deleted.', true);
                 if (document.getElementById('tn-list').children.length === 0) {
                     document.getElementById('tn-list').innerHTML =
-                        '<div id="tn-empty" class="text-sm text-gray-400 dark:text-gray-500 text-center py-6">No streamers configured yet. Add one above.</div>';
+                        '<div id="tn-empty" class="text-sm text-gray-400 dark:text-gray-500 text-center py-6">Noch keine Streamer konfiguriert. Füge oben einen hinzu.</div>';
                 }
             } else {
                 flash(json.error || 'Error.', false);

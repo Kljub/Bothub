@@ -140,95 +140,107 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:youtube');
 ?>
 
 <?= bh_mod_render($modEnabled, $botId, 'module:youtube', 'YouTube Notifications', 'YouTube-Benachrichtigungen für diesen Bot ein- oder ausschalten.') ?>
-<div id="bh-mod-body">
-<div id="yn-flash" style="display:none"></div>
+<style>
+.bh-info-tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:rgba(99,102,241,.18);color:#818cf8;font-size:10px;font-weight:700;cursor:default;flex-shrink:0;vertical-align:middle;margin-left:6px;line-height:1}
+.bh-info-tip:hover{background:rgba(99,102,241,.32)}
+.bh-info-float-tip{position:fixed;transform:translate(-50%,calc(-100% - 8px));background:#1e293b;color:#e2e8f0;font-size:11px;font-weight:400;white-space:nowrap;padding:6px 10px;border-radius:7px;border:1px solid #374461;box-shadow:0 4px 12px rgba(0,0,0,.4);pointer-events:none;opacity:0;transition:opacity .15s;z-index:9999}
+.bh-info-float-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#374461}
+</style>
+<script>
+(function(){
+  var float = document.createElement('div');
+  float.className = 'bh-info-float-tip';
+  float.textContent = 'YouTube Channel ID nötig (z.B. UCxxxxxx). Bot prüft alle 5 Min. via RSS-Feed — kein API-Key erforderlich.';
+  document.body.appendChild(float);
 
-<!-- ── Info Notice ─────────────────────────────────────────────────────────── -->
-<div class="rounded-xl border border-rose-200 dark:border-rose-700/60 bg-rose-50 dark:bg-rose-500/10 px-4 py-3 flex items-start gap-3 mb-6">
-    <svg xmlns="http://www.w3.org/2000/svg" class="mt-0.5 shrink-0 text-rose-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-    </svg>
-    <div class="text-sm text-rose-700 dark:text-rose-300">
-        Nutze die <strong>YouTube Channel ID</strong> (z.B. <code class="bg-rose-100 dark:bg-rose-900/40 px-1 rounded">UCxxxxxxxxxxxxxxxxxxxxxx</code>).
-        Du findest sie auf YouTube unter <em>Kanalseite → Mehr → Kanal teilen → Kanal-ID kopieren</em>.
-        Der Bot prüft alle 5 Minuten auf neue Videos via RSS-Feed (kein API-Key nötig).
-    </div>
-</div>
+  var icon = document.createElement('span');
+  icon.className = 'bh-info-tip';
+  icon.textContent = 'i';
+
+  icon.addEventListener('mouseenter', function(){
+    var r = icon.getBoundingClientRect();
+    float.style.left = (r.left + r.width / 2) + 'px';
+    float.style.top  = (r.top + window.scrollY) + 'px';
+    float.style.opacity = '1';
+  });
+  icon.addEventListener('mouseleave', function(){ float.style.opacity = '0'; });
+
+  var title = document.querySelector('.bh-mod-feature__title');
+  if(title) title.appendChild(icon);
+})();
+</script>
+<div id="bh-mod-body">
+<div id="bh-alert" style="display:none"></div>
 
 <!-- ── Add Channel Card ─────────────────────────────────────────────────────── -->
-<div class="bg-white dark:bg-gray-800 shadow-xs rounded-xl" style="margin-bottom:24px">
-    <div class="p-5 border-b border-gray-100 dark:border-gray-700/60">
-        <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100">YouTube-Kanal hinzufügen</h2>
+<div class="bh-card" style="padding:0;margin-bottom:20px">
+    <div class="bh-card-hdr">
+        <div class="bh-card-title" style="margin:0">YouTube-Kanal hinzufügen</div>
     </div>
-    <div class="p-5">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+    <div class="bh-card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
             <div>
-                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">YouTube Channel ID</label>
-                <input type="text" id="yn-yt-channel-id"
-                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                <label class="bh-label" for="yn-yt-channel-id">YouTube Channel ID</label>
+                <input type="text" id="yn-yt-channel-id" class="bh-input"
                     placeholder="UCxxxxxxxxxxxxxxxxxxxxxx" maxlength="64">
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Anzeigename (optional)</label>
-                <input type="text" id="yn-yt-channel-name"
-                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                <label class="bh-label" for="yn-yt-channel-name">
+                    Anzeigename <span style="font-weight:400;color:#4f5f80">(optional)</span>
+                </label>
+                <input type="text" id="yn-yt-channel-name" class="bh-input"
                     placeholder="Kanalname" maxlength="128">
             </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
             <div>
-                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Discord Channel</label>
-                <select id="yn-channel-select"
-                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <label class="bh-label" for="yn-channel-select">Discord Kanal</label>
+                <select id="yn-channel-select" class="bh-select">
                     <option value="">— Lade Kanäle… —</option>
                 </select>
                 <div id="yn-channel-error" style="display:none;font-size:11px;color:#f87171;margin-top:3px"></div>
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Ping Role <span class="font-normal text-gray-400">(optional)</span></label>
-                <select id="yn-role-select"
-                    class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500">
+                <label class="bh-label" for="yn-role-select">
+                    Ping-Rolle <span style="font-weight:400;color:#4f5f80">(optional)</span>
+                </label>
+                <select id="yn-role-select" class="bh-select">
                     <option value="">— Keine Rolle —</option>
                 </select>
             </div>
         </div>
 
-        <div style="margin-bottom:12px">
-            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Custom Message <span class="font-normal text-gray-400">(optional)</span>
+        <div style="margin-bottom:14px">
+            <label class="bh-label" for="yn-custom-message">
+                Custom Message <span style="font-weight:400;color:#4f5f80">(optional)</span>
             </label>
-            <textarea id="yn-custom-message" rows="2"
-                class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500 resize-none"
+            <textarea id="yn-custom-message" rows="2" class="bh-textarea"
                 placeholder="z.B. @everyone {channel} hat ein neues Video! {title} → {url}"></textarea>
-            <div style="font-size:11px;color:#6b7280;margin-top:4px">
-                Verfügbare Variablen:
-                <code style="background:#f3f4f6;dark:background:#1f2937;padding:1px 4px;border-radius:3px;font-size:10px">{channel}</code>
-                <code style="background:#f3f4f6;padding:1px 4px;border-radius:3px;font-size:10px">{title}</code>
-                <code style="background:#f3f4f6;padding:1px 4px;border-radius:3px;font-size:10px">{url}</code>
+        </div>
+
+        <div class="bh-vars">
+            <div class="bh-vars-title">Verfügbare Variablen — klicken zum Kopieren</div>
+            <div class="bh-vars-list">
+                <span class="bh-var-chip" onclick="ynCopyVar(this,'{channel}')">{channel}</span>
+                <span class="bh-var-chip" onclick="ynCopyVar(this,'{title}')">{title}</span>
+                <span class="bh-var-chip" onclick="ynCopyVar(this,'{url}')">{url}</span>
             </div>
         </div>
 
-        <button onclick="ynAdd()" id="yn-add-btn"
-            class="inline-flex items-center gap-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-            </svg>
+        <button onclick="ynAdd()" id="yn-add-btn" class="bh-btn bh-btn--primary">
             Kanal hinzufügen
         </button>
     </div>
 </div>
 
 <!-- ── Channels List ─────────────────────────────────────────────────────────── -->
-<div class="bg-white dark:bg-gray-800 shadow-xs rounded-xl">
-    <div class="p-5 border-b border-gray-100 dark:border-gray-700/60 flex items-center justify-between">
-        <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Konfigurierte Kanäle</h2>
-        <span id="yn-count-badge" class="text-xs font-semibold bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-full">
-            <?= count($notifications) ?>
-        </span>
+<div class="bh-card" style="padding:0">
+    <div class="bh-card-hdr">
+        <div class="bh-card-title" style="margin:0">Konfigurierte Kanäle</div>
+        <span id="yn-count-badge" class="bh-tag"><?= count($notifications) ?></span>
     </div>
-    <div class="p-5">
+    <div class="bh-card-body">
         <div id="yn-list">
         <?php if (empty($notifications)): ?>
             <div id="yn-empty" class="text-sm text-gray-400 dark:text-gray-500 text-center py-6">
@@ -244,7 +256,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:youtube');
                 $isEnabled  = (int)$n['is_enabled'] === 1;
                 $lastNotify = $n['last_notified_at'] ? date('d.m.Y H:i', strtotime((string)$n['last_notified_at'])) : '—';
             ?>
-            <div class="yn-row" id="yn-row-<?= (int)$n['id'] ?>" style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--yn-sep, #f0f0f0)">
+            <div class="yn-row" id="yn-row-<?= (int)$n['id'] ?>">
                 <div style="display:flex;align-items:center;gap:12px;min-width:0">
                     <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#FF000022;flex-shrink:0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#FF0000">
@@ -269,14 +281,11 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:youtube');
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:12px">
                     <label class="bh-toggle" title="Enable / Disable">
-                        <input type="checkbox" <?= $isEnabled ? 'checked' : '' ?>
+                        <input class="bh-toggle-input" type="checkbox" <?= $isEnabled ? 'checked' : '' ?>
                             onchange="ynToggle(<?= (int)$n['id'] ?>, this.checked)">
-                        <span class="bh-toggle__track"></span>
-                        <span class="bh-toggle__thumb"></span>
+                        <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                     </label>
-                    <button onclick="ynDelete(<?= (int)$n['id'] ?>)"
-                        style="background:#ef444420;color:#ef4444;border:none;border-radius:6px;font-size:11px;font-weight:600;padding:4px 10px;cursor:pointer;transition:background 0.15s"
-                        onmouseover="this.style.background='#ef444440'" onmouseout="this.style.background='#ef444420'">
+                    <button onclick="ynDelete(<?= (int)$n['id'] ?>)" class="yn-del-btn">
                         Löschen
                     </button>
                 </div>
@@ -296,10 +305,25 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:youtube');
     const ROLES_API    = '/api/v1/bot_guild_roles.php';
     let loadedGuildId  = '';
 
+    // ── Copy variable chip ────────────────────────────────────────────────────
+    window.ynCopyVar = function (el, v) {
+        const orig = el.textContent;
+        const done = () => {
+            el.classList.add('is-copied');
+            el.textContent = '✓ Kopiert';
+            setTimeout(() => { el.classList.remove('is-copied'); el.textContent = orig; }, 1200);
+        };
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(v).then(done).catch(() => { const t = document.createElement('textarea'); t.value = v; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); done(); });
+        } else {
+            const t = document.createElement('textarea'); t.value = v; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); done();
+        }
+    };
+
     // ── Flash ─────────────────────────────────────────────────────────────────
     function flash(msg, ok) {
-        const el = document.getElementById('yn-flash');
-        el.className = 'yn-flash--' + (ok ? 'ok' : 'err');
+        const el = document.getElementById('bh-alert');
+        el.className = 'bh-alert bh-alert--' + (ok ? 'ok' : 'err');
         el.textContent = msg;
         el.style.display = '';
         clearTimeout(el._t);
@@ -442,7 +466,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:youtube');
         const div  = document.createElement('div');
         div.className = 'yn-row';
         div.id = 'yn-row-' + id;
-        div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--yn-sep, #f0f0f0)';
+        div.style.cssText = '';
         div.innerHTML = `
             <div style="display:flex;align-items:center;gap:12px;min-width:0">
                 <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#FF000022;flex-shrink:0">
@@ -465,15 +489,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:youtube');
             </div>
             <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:12px">
                 <label class="bh-toggle" title="Enable / Disable">
-                    <input type="checkbox" checked onchange="ynToggle(${id}, this.checked)">
-                    <span class="bh-toggle__track"></span>
-                    <span class="bh-toggle__thumb"></span>
+                    <input class="bh-toggle-input" type="checkbox" checked onchange="ynToggle(${id}, this.checked)">
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
-                <button onclick="ynDelete(${id})"
-                    style="background:#ef444420;color:#ef4444;border:none;border-radius:6px;font-size:11px;font-weight:600;padding:4px 10px;cursor:pointer"
-                    onmouseover="this.style.background='#ef444440'" onmouseout="this.style.background='#ef444420'">
-                    Löschen
-                </button>
+                <button onclick="ynDelete(${id})" class="yn-del-btn">Löschen</button>
             </div>
         `;
         list.prepend(div);

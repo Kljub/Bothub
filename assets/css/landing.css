@@ -119,35 +119,7 @@
   margin-top: 6px;
 }
 
-.bh-field{ margin-bottom: 12px; }
-
-.bh-label{
-  display: block;
-  font-size: 13px;
-  font-weight: 650;
-  color: rgba(226,232,240,.86);
-  margin-bottom: 6px;
-}
-
-.bh-input{
-  width: 100%;
-  border-radius: 12px;
-  border: 1px solid rgba(148,163,184,.22);
-  background: rgba(2,6,23,.40);
-  color: rgba(241,245,249,.95);
-  padding: 11px 12px;
-  outline: none;
-  transition: box-shadow .15s ease, border-color .15s ease, background-color .15s ease;
-}
-
-.bh-input:focus{
-  border-color: rgba(168,85,247,.62);
-  box-shadow: 0 0 0 4px rgba(168,85,247,.18);
-  background: rgba(2,6,23,.55);
-}
-
 /* landing cards */
-.bh-card,
 .bh-panel{
   border: 1px solid rgba(148,163,184,.20);
   background: linear-gradient(180deg, rgba(15,23,42,.58), rgba(2,6,23,.34));
@@ -156,10 +128,8 @@
   backdrop-filter: blur(10px);
 }
 
-.bh-card{ padding: 18px; }
 .bh-panel{ padding: 22px; }
 
-.bh-card-title,
 .bh-panel-title{
   font-weight: 750;
   color: rgba(241,245,249,.96);
@@ -167,7 +137,6 @@
   margin-bottom: 6px;
 }
 
-.bh-card-text,
 .bh-panel-text{
   color: var(--bh-muted);
   line-height: 1.55;

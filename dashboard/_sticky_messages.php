@@ -81,42 +81,41 @@ $evtHandler    = (int)($s['evt_handler']     ?? 1);
 $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 ?>
 
-<div class="sm-section-label">STICKY MESSAGES</div>
-<div class="sm-section-title">Setup</div>
+<div class="bh-section-label">STICKY MESSAGES</div>
+<div class="bh-section-title">Setup</div>
 
-<div id="sm-flash" style="display:none"></div>
+<div id="bh-alert" style="display:none"></div>
 
 <!-- Setup Card -->
-<div class="sm-card">
+<div class="bh-card">
     <!-- Manager Role -->
-    <div class="sm-field">
-        <div class="sm-field-label">Manager Role</div>
-        <div class="sm-field-desc">Only people with this selected role will be able to create/delete sticky messages.</div>
+    <div class="bh-field">
+        <div class="bh-label">Manager Role</div>
+        <div class="bh-hint">Only people with this selected role will be able to create/delete sticky messages.</div>
         <div id="sm-role-box" style="background:#151b2b;border:1px solid #2e3850;border-radius:8px;padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:42px">
             <?php if ($managerRoleId): ?>
-            <span class="arc-tag" id="sm-role-tag" data-id="<?= $esc($managerRoleId) ?>">
+            <span class="bh-tag" id="sm-role-tag" data-id="<?= $esc($managerRoleId) ?>">
                 Role: <?= $esc($managerRoleId) ?>
-                <button class="arc-tag-rm" onclick="smRemoveRole()">×</button>
+                <button class="bh-tag-rm" onclick="smRemoveRole()">×</button>
             </span>
             <?php endif; ?>
-            <button type="button" class="arc-add-btn" id="sm-role-add-btn" <?= $managerRoleId ? 'style="display:none"' : '' ?>>+</button>
+            <button type="button" class="bh-add-btn" id="sm-role-add-btn" <?= $managerRoleId ? 'style="display:none"' : '' ?>>+</button>
         </div>
     </div>
 </div>
 
 <!-- Default Sticky Message -->
-<div class="sm-card">
-    <div class="sm-card-title">Default Sticky Message</div>
-    <div class="sm-card-desc">Edit a default plain text or embed message to use as a sticky message. People will be able to edit these values when they run <span style="color:#ef4444">/sticky-post</span>!</div>
+<div class="bh-card">
+    <div class="bh-card-title">Default Sticky Message</div>
+    <div class="bh-card-desc">Edit a default plain text or embed message to use as a sticky message. People will be able to edit these values when they run <span style="color:#ef4444">/sticky-post</span>!</div>
 
-    <div class="sm-embed-toggle-row">
-        <span class="sm-embed-toggle-label">Message</span>
+    <div class="bh-toggle-row">
+        <span class="bh-toggle-row__title">Message</span>
         <div style="display:flex;align-items:center;gap:8px">
             <span style="font-size:12px;color:#4f5f80">Embed</span>
             <label class="bh-toggle">
-                <input type="checkbox" id="sm-is-embed" <?= $isEmbed ? 'checked' : '' ?>>
-                <span class="bh-toggle__track"></span>
-                <span class="bh-toggle__thumb"></span>
+                <input class="bh-toggle-input" type="checkbox" id="sm-is-embed" <?= $isEmbed ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
     </div>
@@ -128,42 +127,42 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
                 <div class="sm-embed-body">
                     <div class="sm-embed-row">
                         <div>
-                            <div class="sm-embed-label">Author</div>
-                            <input type="text" id="sm-embed-author" class="sm-embed-input" placeholder="Author" value="<?= $esc($embedAuthor) ?>">
+                            <div class="bh-embed-label">Author</div>
+                            <input type="text" id="sm-embed-author" class="bh-embed-input" placeholder="Author" value="<?= $esc($embedAuthor) ?>">
                         </div>
                         <div>
-                            <div class="sm-embed-label">Thumbnail URL</div>
-                            <input type="text" id="sm-embed-thumb" class="sm-embed-input" placeholder="{server_icon}" value="<?= $esc($embedThumb) ?>">
+                            <div class="bh-embed-label">Thumbnail URL</div>
+                            <input type="text" id="sm-embed-thumb" class="bh-embed-input" placeholder="{server_icon}" value="<?= $esc($embedThumb) ?>">
                         </div>
                     </div>
                     <div>
-                        <div class="sm-embed-label">Title</div>
-                        <input type="text" id="sm-embed-title" class="sm-embed-input" placeholder="Sticky Messages" value="<?= $esc($embedTitle) ?>">
+                        <div class="bh-embed-label">Title</div>
+                        <input type="text" id="sm-embed-title" class="bh-embed-input" placeholder="Sticky Messages" value="<?= $esc($embedTitle) ?>">
                     </div>
                     <div>
-                        <div class="sm-embed-label">Description</div>
-                        <textarea id="sm-embed-body" class="sm-embed-textarea" maxlength="2000"><?= $esc($embedBody) ?></textarea>
+                        <div class="bh-embed-label">Description</div>
+                        <textarea id="sm-embed-body" class="bh-embed-textarea" maxlength="2000"><?= $esc($embedBody) ?></textarea>
                     </div>
                     <div>
-                        <div class="sm-embed-label">Image URL</div>
-                        <input type="text" id="sm-embed-image" class="sm-embed-input" placeholder="https://..." value="<?= $esc($embedImage) ?>">
+                        <div class="bh-embed-label">Image URL</div>
+                        <input type="text" id="sm-embed-image" class="bh-embed-input" placeholder="https://..." value="<?= $esc($embedImage) ?>">
                     </div>
                     <div style="margin-top:4px">
-                        <div class="sm-embed-label">Footer</div>
-                        <input type="text" id="sm-embed-footer" class="sm-embed-input" placeholder="Sticky messages module" value="<?= $esc($embedFooter) ?>">
+                        <div class="bh-embed-label">Footer</div>
+                        <input type="text" id="sm-embed-footer" class="bh-embed-input" placeholder="Sticky messages module" value="<?= $esc($embedFooter) ?>">
                     </div>
                     <div class="sm-embed-footer-row">
                         <div>
-                            <div class="sm-embed-label">Color</div>
+                            <div class="bh-embed-label">Color</div>
                             <div style="display:flex;align-items:center;gap:8px">
                                 <span id="sm-color-swatch" class="sm-color-btn" style="background:<?= $esc($embedColor) ?>" onclick="document.getElementById('sm-color-picker').click()"></span>
                                 <input type="color" id="sm-color-picker" value="<?= $esc($embedColor) ?>" style="display:none">
-                                <input type="text" id="sm-color-hex" class="sm-embed-input" value="<?= $esc($embedColor) ?>" style="width:90px;font-family:monospace">
+                                <input type="text" id="sm-color-hex" class="bh-embed-input" value="<?= $esc($embedColor) ?>" style="width:90px;font-family:monospace">
                             </div>
                         </div>
                         <div>
-                            <div class="sm-embed-label">Embed URL</div>
-                            <input type="text" id="sm-embed-url" class="sm-embed-input" placeholder="https://..." value="<?= $esc($embedUrl) ?>">
+                            <div class="bh-embed-label">Embed URL</div>
+                            <input type="text" id="sm-embed-url" class="bh-embed-input" placeholder="https://..." value="<?= $esc($embedUrl) ?>">
                         </div>
                     </div>
                 </div>
@@ -172,101 +171,97 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
     </div>
 
     <div id="sm-plain-panel" <?= $isEmbed ? 'style="display:none"' : '' ?>>
-        <textarea id="sm-plain-text" class="sm-input" style="min-height:80px;resize:vertical" placeholder="Your sticky message text…"><?= $esc($plainText) ?></textarea>
+        <textarea id="sm-plain-text" class="bh-input" style="min-height:80px;resize:vertical" placeholder="Your sticky message text…"><?= $esc($plainText) ?></textarea>
     </div>
 </div>
 
 <!-- Settings Card -->
-<div class="sm-card">
+<div class="bh-card">
     <!-- Repost count -->
-    <div class="sm-field">
-        <div class="sm-field-label">Repost Message Count</div>
-        <div class="sm-field-desc">Choose how many messages can be sent after the latest sticky message before posting a new one.</div>
+    <div class="bh-field">
+        <div class="bh-label">Repost Message Count</div>
+        <div class="bh-hint">Choose how many messages can be sent after the latest sticky message before posting a new one.</div>
         <div>
-            <div class="sm-input-label">Message Count</div>
-            <input type="number" id="sm-repost-count" class="sm-input" value="<?= (int)$repostCount ?>" min="1" max="500" style="max-width:180px">
+            <div class="bh-label">Message Count</div>
+            <input type="number" id="sm-repost-count" class="bh-input" value="<?= (int)$repostCount ?>" min="1" max="500" style="max-width:180px">
         </div>
     </div>
 
     <!-- Show Author -->
-    <div class="sm-toggle-row">
+    <div class="bh-toggle-row">
         <div>
-            <div class="sm-toggle-label">Show Author</div>
-            <div class="sm-toggle-desc">Shows the poster of the sticky message as an author. <strong>Only works with an embed stickied message!</strong></div>
+            <div class="bh-toggle-row__title">Show Author</div>
+            <div class="bh-toggle-row__desc">Shows the poster of the sticky message as an author. <strong>Only works with an embed stickied message!</strong></div>
         </div>
         <label class="bh-toggle" style="margin-left:16px">
-            <input type="checkbox" id="sm-show-author" <?= $showAuthor ? 'checked' : '' ?>>
-            <span class="bh-toggle__track"></span>
-            <span class="bh-toggle__thumb"></span>
+            <input class="bh-toggle-input" type="checkbox" id="sm-show-author" <?= $showAuthor ? 'checked' : '' ?>>
+            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
         </label>
     </div>
 
     <!-- Add Reaction -->
-    <div class="sm-toggle-row">
+    <div class="bh-toggle-row">
         <div>
-            <div class="sm-toggle-label">Add Reaction</div>
-            <div class="sm-toggle-desc">Choose whether or not a default reaction should be added to the sticky message.</div>
+            <div class="bh-toggle-row__title">Add Reaction</div>
+            <div class="bh-toggle-row__desc">Choose whether or not a default reaction should be added to the sticky message.</div>
         </div>
         <label class="bh-toggle" style="margin-left:16px">
-            <input type="checkbox" id="sm-add-reaction" <?= $addReaction ? 'checked' : '' ?>>
-            <span class="bh-toggle__track"></span>
-            <span class="bh-toggle__thumb"></span>
+            <input class="bh-toggle-input" type="checkbox" id="sm-add-reaction" <?= $addReaction ? 'checked' : '' ?>>
+            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
         </label>
     </div>
 
     <!-- Reaction Emoji -->
-    <div class="sm-field" style="padding-top:16px">
-        <div class="sm-field-label">Reaction Emoji</div>
-        <div class="sm-field-desc">Choose which emoji to add to the sticky message by default. You can use <strong>default emojis</strong> or a custom emoji using <code style="color:#a5b4fc">emoji_name:emoji_id</code>.</div>
+    <div class="bh-field" style="padding-top:16px">
+        <div class="bh-label">Reaction Emoji</div>
+        <div class="bh-hint">Choose which emoji to add to the sticky message by default. You can use <strong>default emojis</strong> or a custom emoji using <code style="color:#a5b4fc">emoji_name:emoji_id</code>.</div>
         <div>
-            <div class="sm-input-label">Emoji</div>
-            <input type="text" id="sm-reaction-emoji" class="sm-input" value="<?= $esc($reactionEmoji) ?>" style="max-width:180px">
+            <div class="bh-label">Emoji</div>
+            <input type="text" id="sm-reaction-emoji" class="bh-input" value="<?= $esc($reactionEmoji) ?>" style="max-width:180px">
         </div>
     </div>
 </div>
 
 <!-- Commands -->
 <div style="margin-top:8px">
-    <div class="sm-module-label">MODULE</div>
+    <div class="bh-section-label">MODULE</div>
     <div class="sm-module-title">Commands</div>
-    <div class="sm-cmd-grid">
-        <div class="sm-cmd-card">
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
             <div>
-                <div class="sm-cmd-name">/sticky-post</div>
-                <div class="sm-cmd-desc">Post a new sticky message to a channel!</div>
+                <div class="bh-cmd-name">/sticky-post</div>
+                <div class="bh-cmd-desc">Post a new sticky message to a channel!</div>
             </div>
             <label class="bh-toggle" style="margin-left:16px">
-                <input type="checkbox" id="sm-cmd-sticky-post" <?= $cmdStickyPost ? 'checked' : '' ?>>
-                <span class="bh-toggle__track"></span>
-                <span class="bh-toggle__thumb"></span>
+                <input class="bh-toggle-input" type="checkbox" id="sm-cmd-sticky-post" <?= $cmdStickyPost ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
-        <div class="sm-cmd-card">
-            <div><div class="sm-cmd-name">Add Command</div><div class="sm-cmd-desc">This command will have access to all the variables and settings of this module.</div></div>
-            <button class="sm-cmd-add-btn">Add</button>
+        <div class="bh-cmd-card">
+            <div><div class="bh-cmd-name">Add Command</div><div class="bh-cmd-desc">This command will have access to all the variables and settings of this module.</div></div>
+            <button class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 </div>
 
 <!-- Events -->
 <div style="margin-top:28px;margin-bottom:8px">
-    <div class="sm-module-label">MODULE</div>
+    <div class="bh-section-label">MODULE</div>
     <div class="sm-module-title">Events</div>
-    <div class="sm-cmd-grid">
-        <div class="sm-cmd-card">
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
             <div>
-                <div class="sm-cmd-name">Sticky Messages (Poster)</div>
-                <div class="sm-cmd-desc">When a new message is sent</div>
+                <div class="bh-cmd-name">Sticky Messages (Poster)</div>
+                <div class="bh-cmd-desc">When a new message is sent</div>
             </div>
             <label class="bh-toggle" style="margin-left:16px">
-                <input type="checkbox" id="sm-evt-handler" <?= $evtHandler ? 'checked' : '' ?>>
-                <span class="bh-toggle__track"></span>
-                <span class="bh-toggle__thumb"></span>
+                <input class="bh-toggle-input" type="checkbox" id="sm-evt-handler" <?= $evtHandler ? 'checked' : '' ?>>
+                <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
             </label>
         </div>
-        <div class="sm-cmd-card">
-            <div><div class="sm-cmd-name">Add Event</div><div class="sm-cmd-desc">This event will have access to all the variables and settings of this module.</div></div>
-            <button class="sm-cmd-add-btn">Add</button>
+        <div class="bh-cmd-card">
+            <div><div class="bh-cmd-name">Add Event</div><div class="bh-cmd-desc">This event will have access to all the variables and settings of this module.</div></div>
+            <button class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 </div>
@@ -301,12 +296,12 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
         BhPerm.openPicker(this, BOT_ID, 'roles', [], (item) => {
             managerRoleId = item.id;
             const box = document.getElementById('sm-role-box');
-            box.querySelectorAll('.arc-tag').forEach(t => t.remove());
+            box.querySelectorAll('.bh-tag').forEach(t => t.remove());
             const tag = document.createElement('span');
-            tag.className = 'arc-tag';
+            tag.className = 'bh-tag';
             tag.id = 'sm-role-tag';
             tag.dataset.id = item.id;
-            tag.innerHTML = `${esc(item.name || item.id)}<button class="arc-tag-rm" onclick="smRemoveRole()">×</button>`;
+            tag.innerHTML = `${esc(item.name || item.id)}<button class="bh-tag-rm" onclick="smRemoveRole()">×</button>`;
             box.insertBefore(tag, document.getElementById('sm-role-add-btn'));
             document.getElementById('sm-role-add-btn').style.display = 'none';
         });
@@ -353,8 +348,8 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
     };
 
     function flash(msg, ok) {
-        const el = document.getElementById('sm-flash');
-        el.className = 'sm-flash ' + (ok ? 'sm-flash--ok' : 'sm-flash--err');
+        const el = document.getElementById('bh-alert');
+        el.className = 'bh-alert ' + (ok ? 'bh-alert--ok' : 'bh-alert--err');
         el.textContent = msg;
         el.style.display = '';
         clearTimeout(el._t);

@@ -87,20 +87,20 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:statistic-channels');
 
 <?= bh_mod_render($modEnabled, $botId, 'module:statistic-channels', 'Statistic Channels', 'Statistik-Kanäle für diesen Bot ein- oder ausschalten.') ?>
 <div id="bh-mod-body">
-<div class="sc-section-label">STATISTIC CHANNELS</div>
-<div class="sc-section-title">New Counter Setup</div>
+<div class="bh-section-label">STATISTIC CHANNELS</div>
+<div class="bh-section-title">New Counter Setup</div>
 
-<div id="sc-flash" style="display:none"></div>
+<div id="bh-alert" style="display:none"></div>
 
-<div class="sc-card">
-    <div class="sc-card-title">Statistic Channel Setup</div>
-    <div class="sc-card-desc">Set up a new locked voice channel to track a selected metric of your server in.</div>
+<div class="bh-card">
+    <div class="bh-card-title">Statistic Channel Setup</div>
+    <div class="bh-card-desc">Set up a new locked voice channel to track a selected metric of your server in.</div>
 
     <!-- Channel Selection Type -->
-    <div class="sc-field">
-        <div class="sc-field-label">Channel Selection Type</div>
-        <div class="sc-field-desc">Select a voice channel from a dropdown (the bot fetches all available voice channels), or paste the <span style="color:#ef4444">Channel ID</span> manually.</div>
-        <select id="sc-sel-type" class="sc-select" style="max-width:220px" onchange="scToggleInputType()">
+    <div class="bh-field">
+        <div class="bh-label">Channel Selection Type</div>
+        <div class="bh-hint">Select a voice channel from a dropdown (the bot fetches all available voice channels), or paste the <span style="color:#ef4444">Channel ID</span> manually.</div>
+        <select id="sc-sel-type" class="bh-select" style="max-width:220px" onchange="scToggleInputType()">
             <option value="dropdown">Bot Dropdown</option>
             <option value="id">Paste Channel ID</option>
         </select>
@@ -109,13 +109,13 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:statistic-channels');
     <!-- Bot Dropdown mode -->
     <div id="sc-dropdown-mode" style="margin-top:10px">
         <div id="sc-guild-wrap" style="display:none;margin-bottom:10px">
-            <div class="sc-input-label">Server</div>
-            <select id="sc-guild-select" class="sc-select" onchange="scLoadVoiceChannels(this.value)">
+            <div class="bh-label">Server</div>
+            <select id="sc-guild-select" class="bh-select" onchange="scLoadVoiceChannels(this.value)">
                 <option value="">— Server wählen —</option>
             </select>
         </div>
-        <div class="sc-input-label">Voice Channel</div>
-        <select id="sc-channel-select" class="sc-select">
+        <div class="bh-label">Voice Channel</div>
+        <select id="sc-channel-select" class="bh-select">
             <option value="">— Channels werden geladen… —</option>
         </select>
         <div id="sc-load-error" style="display:none;font-size:11px;color:#f87171;margin-top:4px"></div>
@@ -123,23 +123,23 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:statistic-channels');
 
     <!-- Paste ID mode -->
     <div id="sc-id-mode" style="display:none;margin-top:10px">
-        <div class="sc-input-label">Channel ID</div>
-        <input type="text" id="sc-channel-id" class="sc-input" placeholder="Voice Channel ID (e.g. 123456789012345678)">
+        <div class="bh-label">Channel ID</div>
+        <input type="text" id="sc-channel-id" class="bh-input" placeholder="Voice Channel ID (e.g. 123456789012345678)">
     </div>
 
     <!-- Channel Name -->
-    <div class="sc-field" style="margin-top:20px">
-        <div class="sc-field-label">Channel Name</div>
-        <div class="sc-field-desc">Choose a name for your counter channel. Use <span style="color:#ef4444">{value}</span> as the placeholder for the live value.</div>
-        <div class="sc-input-label">Channel Name</div>
-        <input type="text" id="sc-channel-name" class="sc-input" placeholder="Online Members: {value}" value="Online Members: {value}">
+    <div class="bh-field" style="margin-top:20px">
+        <div class="bh-label">Channel Name</div>
+        <div class="bh-hint">Choose a name for your counter channel. Use <span style="color:#ef4444">{value}</span> as the placeholder for the live value.</div>
+        <div class="bh-label">Channel Name</div>
+        <input type="text" id="sc-channel-name" class="bh-input" placeholder="Online Members: {value}" value="Online Members: {value}">
     </div>
 
     <!-- Statistic Type -->
-    <div class="sc-field">
-        <div class="sc-field-label">Statistic Type</div>
-        <div class="sc-field-desc">Choose the type of data your channel will track.</div>
-        <select id="sc-stat-type" class="sc-select" onchange="scUpdateNamePlaceholder()">
+    <div class="bh-field">
+        <div class="bh-label">Statistic Type</div>
+        <div class="bh-hint">Choose the type of data your channel will track.</div>
+        <select id="sc-stat-type" class="bh-select" onchange="scUpdateNamePlaceholder()">
             <?php foreach ($statTypeLabels as $val => $label): ?>
             <option value="<?= $esc($val) ?>"><?= $esc($label) ?></option>
             <?php endforeach; ?>
@@ -147,15 +147,14 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:statistic-channels');
     </div>
 
     <!-- Auto-Lock -->
-    <div class="sc-toggle-row" style="border-top:1px solid #1a2030;padding-top:16px">
+    <div class="bh-toggle-row" style="border-top:1px solid #1a2030;padding-top:16px">
         <div>
-            <div class="sc-toggle-label">Auto-Lock Channel</div>
-            <div class="sc-toggle-desc">While having this setting enabled, permissions for the <strong>@everyone</strong> role will be denied to enter your statistic channel.</div>
+            <div class="bh-toggle-row__title">Auto-Lock Channel</div>
+            <div class="bh-toggle-row__desc">While having this setting enabled, permissions for the <strong>@everyone</strong> role will be denied to enter your statistic channel.</div>
         </div>
         <label class="bh-toggle" style="margin-left:16px">
-            <input type="checkbox" id="sc-auto-lock" checked>
-            <span class="bh-toggle__track"></span>
-            <span class="bh-toggle__thumb"></span>
+            <input class="bh-toggle-input" type="checkbox" id="sc-auto-lock" checked>
+            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
         </label>
     </div>
 
@@ -164,14 +163,14 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:statistic-channels');
 
 <!-- Existing counters -->
 <?php if (!empty($counters)): ?>
-<div class="sc-section-label" style="margin-top:28px">EXISTING COUNTERS</div>
+<div class="bh-section-label" style="margin-top:28px">EXISTING COUNTERS</div>
 <?php endif; ?>
 <div id="sc-list">
 <?php foreach ($counters as $c): ?>
-<div class="sc-list-card" id="sc-row-<?= (int)$c['id'] ?>">
+<div class="bh-list-card" id="sc-row-<?= (int)$c['id'] ?>">
     <div>
-        <div class="sc-list-name"><?= $esc((string)$c['channel_name']) ?></div>
-        <div class="sc-list-meta">
+        <div class="bh-list-name"><?= $esc((string)$c['channel_name']) ?></div>
+        <div class="bh-list-meta">
             Channel: <code style="color:#a5b4fc"><?= $esc((string)$c['channel_id']) ?></code>
             &nbsp;·&nbsp; Type: <strong><?= $esc($statTypeLabels[$c['stat_type']] ?? $c['stat_type']) ?></strong>
             <?php if ($c['cached_value'] !== ''): ?>&nbsp;·&nbsp; Last: <strong><?= $esc((string)$c['cached_value']) ?></strong><?php endif; ?>
@@ -180,10 +179,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:statistic-channels');
     </div>
     <div style="display:flex;align-items:center;gap:8px">
         <label class="bh-toggle">
-            <input type="checkbox" <?= (int)$c['is_active'] ? 'checked' : '' ?>
+            <input class="bh-toggle-input" type="checkbox" <?= (int)$c['is_active'] ? 'checked' : '' ?>
                 onchange="scToggle(<?= (int)$c['id'] ?>, this.checked)">
-            <span class="bh-toggle__track"></span>
-            <span class="bh-toggle__thumb"></span>
+            <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
         </label>
         <button class="sc-list-del-btn" onclick="scDelete(<?= (int)$c['id'] ?>)">Delete</button>
     </div>
@@ -193,24 +191,24 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:statistic-channels');
 
 <!-- Commands -->
 <div style="margin-top:32px">
-    <div class="sc-module-label">MODULE</div>
+    <div class="bh-section-label">MODULE</div>
     <div class="sc-module-title">Commands</div>
-    <div class="sc-cmd-grid">
-        <div class="sc-cmd-card">
-            <div><div class="sc-cmd-name">Add Command</div><div class="sc-cmd-desc">This command will have access to all the variables and settings of this module.</div></div>
-            <button class="sc-cmd-add-btn">Add</button>
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
+            <div><div class="bh-cmd-name">Add Command</div><div class="bh-cmd-desc">This command will have access to all the variables and settings of this module.</div></div>
+            <button class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 </div>
 
 <!-- Events -->
 <div style="margin-top:28px;margin-bottom:32px">
-    <div class="sc-module-label">MODULE</div>
+    <div class="bh-section-label">MODULE</div>
     <div class="sc-module-title">Events</div>
-    <div class="sc-cmd-grid">
-        <div class="sc-cmd-card">
-            <div><div class="sc-cmd-name">Add Event</div><div class="sc-cmd-desc">This event will have access to all the variables and settings of this module.</div></div>
-            <button class="sc-cmd-add-btn">Add</button>
+    <div class="bh-cmd-grid">
+        <div class="bh-cmd-card">
+            <div><div class="bh-cmd-name">Add Event</div><div class="bh-cmd-desc">This event will have access to all the variables and settings of this module.</div></div>
+            <button class="bh-btn bh-btn--primary">Add</button>
         </div>
     </div>
 </div>
@@ -370,27 +368,26 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:statistic-channels');
         const list = document.getElementById('sc-list');
         const labels = <?= json_encode($statTypeLabels) ?>;
         const div = document.createElement('div');
-        div.className = 'sc-list-card';
+        div.className = 'bh-list-card';
         div.id = 'sc-row-' + id;
         div.innerHTML = `
             <div>
-                <div class="sc-list-name">${esc(p.channel_name)}</div>
-                <div class="sc-list-meta">Channel: <code style="color:#a5b4fc">${esc(p.channel_id)}</code> &nbsp;·&nbsp; Type: <strong>${esc(labels[p.stat_type]||p.stat_type)}</strong></div>
+                <div class="bh-list-name">${esc(p.channel_name)}</div>
+                <div class="bh-list-meta">Channel: <code style="color:#a5b4fc">${esc(p.channel_id)}</code> &nbsp;·&nbsp; Type: <strong>${esc(labels[p.stat_type]||p.stat_type)}</strong></div>
             </div>
             <div style="display:flex;align-items:center;gap:8px">
                 <label class="bh-toggle">
-                    <input type="checkbox" checked onchange="scToggle(${id},this.checked)">
-                    <span class="bh-toggle__track"></span>
-                    <span class="bh-toggle__thumb"></span>
+                    <input class="bh-toggle-input" type="checkbox" checked onchange="scToggle(${id},this.checked)">
+                    <span class="bh-toggle-track"><span class="bh-toggle-thumb"></span></span>
                 </label>
                 <button class="sc-list-del-btn" onclick="scDelete(${id})">Delete</button>
             </div>`;
         list.prepend(div);
 
         // Show "EXISTING COUNTERS" label if it wasn't there
-        if (!document.querySelector('.sc-section-label[data-existing]')) {
+        if (!document.querySelector('.bh-section-label[data-existing]')) {
             const lbl = document.createElement('div');
-            lbl.className = 'sc-section-label';
+            lbl.className = 'bh-section-label';
             lbl.dataset.existing = '1';
             lbl.style.marginTop = '28px';
             lbl.textContent = 'EXISTING COUNTERS';
@@ -415,8 +412,8 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:statistic-channels');
     };
 
     function flash(msg, ok) {
-        const el = document.getElementById('sc-flash');
-        el.className = 'sc-flash ' + (ok ? 'sc-flash--ok' : 'sc-flash--err');
+        const el = document.getElementById('bh-alert');
+        el.className = 'bh-alert ' + (ok ? 'bh-alert--ok' : 'bh-alert--err');
         el.textContent = msg; el.style.display = '';
         clearTimeout(el._t); el._t = setTimeout(()=>el.style.display='none',4000);
     }

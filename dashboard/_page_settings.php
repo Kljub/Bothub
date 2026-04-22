@@ -593,25 +593,25 @@ if ($baseQuery !== []) {
     </div>
 
     <?php if ($flashOk !== null): ?>
-        <div class="bh-settings-alert bh-settings-alert--ok">
+        <div class="bh-alert bh-alert--ok">
             <?= htmlspecialchars($flashOk, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
         </div>
     <?php endif; ?>
 
     <?php if ($flashErr !== null): ?>
-        <div class="bh-settings-alert bh-settings-alert--err">
+        <div class="bh-alert bh-alert--err">
             <?= htmlspecialchars($flashErr, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
         </div>
     <?php endif; ?>
 
     <?php if ($tokenHint !== null): ?>
-        <div class="bh-settings-alert bh-settings-alert--warn">
+        <div class="bh-alert bh-alert--warn">
             <?= htmlspecialchars($tokenHint, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
         </div>
     <?php endif; ?>
 
     <?php if ($discordError !== null): ?>
-        <div class="bh-settings-alert bh-settings-alert--err">
+        <div class="bh-alert bh-alert--err">
             <?= htmlspecialchars($discordError, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
         </div>
     <?php endif; ?>
@@ -631,21 +631,21 @@ if ($baseQuery !== []) {
             <input type="hidden" name="bot_id" value="<?= (int)($currentBotId ?? 0) ?>">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES) ?>">
 
-            <section class="bh-settings-card">
-                <div class="bh-settings-card__header">
+            <section class="bh-card">
+                <div class="bh-card-hdr">
                     <div>
-                        <div class="bh-settings-card__title">Bot Name <span class="bh-settings-info">ⓘ</span></div>
-                        <div class="bh-settings-card__text">Your bot's username</div>
+                        <div class="bh-card-title">Bot Name <span class="bh-settings-info">ⓘ</span></div>
+                        <div class="bh-card-desc">Your bot's username</div>
                     </div>
                 </div>
 
-                <div class="bh-settings-card__body">
-                    <label class="bh-settings-label" for="new_name">Username</label>
+                <div class="bh-card-body">
+                    <label class="bh-label" for="new_name">Username</label>
                     <input
                         id="new_name"
                         name="new_name"
                         type="text"
-                        class="bh-settings-input"
+                        class="bh-input"
                         placeholder="<?= htmlspecialchars($displayName, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
                         maxlength="32"
                         autocomplete="off"
@@ -653,15 +653,15 @@ if ($baseQuery !== []) {
                 </div>
             </section>
 
-            <section class="bh-settings-card">
-                <div class="bh-settings-card__header">
+            <section class="bh-card">
+                <div class="bh-card-hdr">
                     <div>
-                        <div class="bh-settings-card__title">Bot Avatar <span class="bh-settings-info">ⓘ</span></div>
-                        <div class="bh-settings-card__text">Your bot's profile picture</div>
+                        <div class="bh-card-title">Bot Avatar <span class="bh-settings-info">ⓘ</span></div>
+                        <div class="bh-card-desc">Your bot's profile picture</div>
                     </div>
                 </div>
 
-                <div class="bh-settings-card__body">
+                <div class="bh-card-body">
                     <div class="bh-settings-avatar-row">
                         <div class="bh-settings-avatar-preview">
                             <?php if (is_string($discordAvatarUrl) && $discordAvatarUrl !== ''): ?>
@@ -679,7 +679,7 @@ if ($baseQuery !== []) {
                                 class="bh-settings-file-input"
                                 accept=".png,.jpg,.jpeg,.gif,.webp,image/png,image/jpeg,image/gif,image/webp"
                             >
-                            <label for="avatar_file" class="bh-settings-upload-btn">Choose Image</label>
+                            <label for="avatar_file" class="bh-btn bh-btn--secondary">Choose Image</label>
                             <div class="bh-settings-upload-help">Allowed: png, jpg, gif, webp · max. 2 MiB</div>
                             <div class="bh-settings-upload-help">Hinweis: Discord erlaubt max. 2 Avatar-Änderungen pro Stunde.</div>
                             <div class="bh-settings-upload-help">User ID: <?= htmlspecialchars($displayUserId, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></div>
@@ -688,15 +688,15 @@ if ($baseQuery !== []) {
                 </div>
             </section>
 
-            <section class="bh-settings-card">
-                <div class="bh-settings-card__header">
+            <section class="bh-card">
+                <div class="bh-card-hdr">
                     <div>
-                        <div class="bh-settings-card__title">Bot Banner <span class="bh-settings-info">ⓘ</span></div>
-                        <div class="bh-settings-card__text">Your bot's profile banner</div>
+                        <div class="bh-card-title">Bot Banner <span class="bh-settings-info">ⓘ</span></div>
+                        <div class="bh-card-desc">Your bot's profile banner</div>
                     </div>
                 </div>
 
-                <div class="bh-settings-card__body">
+                <div class="bh-card-body">
                     <?php if (is_string($discordBannerUrl) && $discordBannerUrl !== ''): ?>
                         <div class="bh-settings-banner-preview">
                             <img src="<?= htmlspecialchars($discordBannerUrl, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" alt="Bot Banner">
@@ -713,14 +713,14 @@ if ($baseQuery !== []) {
                             class="bh-settings-file-input"
                             accept=".png,.jpg,.jpeg,.gif,.webp,image/png,image/jpeg,image/gif,image/webp"
                         >
-                        <label for="banner_file" class="bh-settings-upload-btn">Choose Banner</label>
+                        <label for="banner_file" class="bh-btn bh-btn--secondary">Choose Banner</label>
                         <div class="bh-settings-upload-help">Empfohlen: 960×540 px · png, jpg, gif, webp · max. 2 MiB</div>
                     </div>
                 </div>
             </section>
 
             <div class="bh-settings-actions">
-                <button type="submit" class="bh-settings-save-btn">Save Changes</button>
+                <button type="submit" class="bh-btn bh-btn--primary">Save Changes</button>
             </div>
         </form>
 
@@ -729,21 +729,21 @@ if ($baseQuery !== []) {
             <input type="hidden" name="bot_id" value="<?= (int)($currentBotId ?? 0) ?>">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES) ?>">
 
-            <section class="bh-settings-card">
-                <div class="bh-settings-card__header">
+            <section class="bh-card">
+                <div class="bh-card-hdr">
                     <div>
-                        <div class="bh-settings-card__title">Bot Token</div>
-                        <div class="bh-settings-card__text">Token aktualisieren — z. B. nach einem Reset im Discord Developer Portal. Der Bot wird dabei gestoppt.</div>
+                        <div class="bh-card-title">Bot Token</div>
+                        <div class="bh-card-desc">Token aktualisieren — z. B. nach einem Reset im Discord Developer Portal. Der Bot wird dabei gestoppt.</div>
                     </div>
                 </div>
 
-                <div class="bh-settings-card__body">
-                    <label class="bh-settings-label" for="new_token">Neuer Bot-Token</label>
+                <div class="bh-card-body">
+                    <label class="bh-label" for="new_token">Neuer Bot-Token</label>
                     <input
                         id="new_token"
                         name="new_token"
                         type="password"
-                        class="bh-settings-input"
+                        class="bh-input"
                         placeholder="Neuen Token hier einfügen"
                         autocomplete="off"
                         autocorrect="off"
@@ -754,21 +754,21 @@ if ($baseQuery !== []) {
             </section>
 
             <div class="bh-settings-actions">
-                <button type="submit" class="bh-settings-save-btn">Token speichern</button>
+                <button type="submit" class="bh-btn bh-btn--primary">Token speichern</button>
             </div>
         </form>
     <?php endif; ?>
 
     <?php if ($activeTab === 'status'): ?>
-        <section class="bh-settings-card">
-            <div class="bh-settings-card__header">
+        <section class="bh-card">
+            <div class="bh-card-hdr">
                 <div>
-                    <div class="bh-settings-card__title">Bot Status</div>
-                    <div class="bh-settings-card__text">Hier kannst du den Bot sichtbar auf Online oder Offline setzen.</div>
+                    <div class="bh-card-title">Bot Status</div>
+                    <div class="bh-card-desc">Hier kannst du den Bot sichtbar auf Online oder Offline setzen.</div>
                 </div>
             </div>
 
-            <div class="bh-settings-card__body">
+            <div class="bh-card-body">
                 <div class="bh-status-panel">
                     <div class="<?= htmlspecialchars($statusBadgeClass, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
                         <?= htmlspecialchars($statusLabel, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
@@ -802,19 +802,19 @@ if ($baseQuery !== []) {
                             <input type="hidden" name="action" value="set_bot_online">
                             <input type="hidden" name="bot_id" value="<?= (int)($currentBotId ?? 0) ?>">
                             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES) ?>">
-                            <button type="submit" class="bh-status-btn bh-status-btn--online">Online</button>
+                            <button type="submit" class="bh-btn bh-btn bh-btn--primary">Online</button>
                         </form>
 
                         <form method="post" action="<?= htmlspecialchars($formAction, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
                             <input type="hidden" name="action" value="set_bot_offline">
                             <input type="hidden" name="bot_id" value="<?= (int)($currentBotId ?? 0) ?>">
                             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES) ?>">
-                            <button type="submit" class="bh-status-btn bh-status-btn--offline">Offline</button>
+                            <button type="submit" class="bh-btn bh-btn bh-btn--secondary">Offline</button>
                         </form>
                     </div>
 
                     <?php if ($lastError !== null && trim($lastError) !== ''): ?>
-                        <div class="bh-settings-alert bh-settings-alert--err bh-settings-alert--inline">
+                        <div class="bh-alert bh-alert--err bh-alert--inline">
                             <?= htmlspecialchars($lastError, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
                         </div>
                     <?php endif; ?>
@@ -827,32 +827,32 @@ if ($baseQuery !== []) {
         </section>
     <?php endif; ?>
 
-    <section class="bh-settings-card bh-settings-card--danger">
-        <div class="bh-settings-card__header">
+    <section class="bh-card bh-card bh-card--danger">
+        <div class="bh-card-hdr">
             <div>
-                <div class="bh-settings-card__title">Danger Zone</div>
-                <div class="bh-settings-card__text">Bot dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden.</div>
+                <div class="bh-card-title">Danger Zone</div>
+                <div class="bh-card-desc">Bot dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden.</div>
             </div>
         </div>
 
-        <div class="bh-settings-card__body">
+        <div class="bh-card-body">
             <form method="post" action="<?= htmlspecialchars($formAction, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" class="bh-settings-danger-form">
                 <input type="hidden" name="action" value="delete_bot">
                 <input type="hidden" name="bot_id" value="<?= (int)($currentBotId ?? 0) ?>">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES) ?>">
 
-                <label class="bh-settings-label" for="confirm_delete">Tippe DELETE zum Bestätigen</label>
+                <label class="bh-label" for="confirm_delete">Tippe DELETE zum Bestätigen</label>
 
                 <div class="bh-settings-danger-row">
                     <input
                         id="confirm_delete"
                         name="confirm_delete"
                         type="text"
-                        class="bh-settings-input bh-settings-input--danger"
+                        class="bh-input bh-settings-input--danger"
                         placeholder="DELETE"
                         autocomplete="off"
                     >
-                    <button type="submit" class="bh-status-btn bh-status-btn--offline">Bot löschen</button>
+                    <button type="submit" class="bh-btn bh-btn bh-btn--secondary">Bot löschen</button>
                 </div>
 
                 <div class="bh-settings-upload-help">Hinweis: Der Bot und die zugehörigen Daten werden entfernt.</div>

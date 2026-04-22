@@ -5,7 +5,7 @@
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: #53fc1820;
+    background: rgba(83,252,24,.1);
     flex-shrink: 0;
 }
 .kn-link { color: #53fc18; text-decoration: none; }
@@ -18,7 +18,7 @@
     border-radius: 4px;
     letter-spacing: .05em;
 }
-.kn-badge--live    { background: #ef4444; color: #fff; }
+.kn-badge--live    { background: rgba(83,252,24,.18); color: #53fc18; border: 1px solid rgba(83,252,24,.3); }
 .kn-badge--offline { background: #374151; color: #9ca3af; }
 .kn-meta { font-size: 11px; color: #6b7280; margin-top: 2px; }
 .kn-row {
@@ -26,13 +26,13 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 0;
-    border-bottom: 1px solid var(--kn-sep, #f3f4f6);
+    border-bottom: 1px solid #2e3850;
+    gap: 12px;
 }
 .kn-row:last-child { border-bottom: none; }
-.dark .kn-row { --kn-sep: #374151; }
 .kn-del-btn {
-    background: #ef444420;
-    color: #ef4444;
+    background: rgba(239,68,68,.15);
+    color: #f87171;
     border: none;
     border-radius: 6px;
     font-size: 11px;
@@ -41,7 +41,7 @@
     cursor: pointer;
     transition: background .15s;
 }
-.kn-del-btn:hover { background: #ef444440; }
+.kn-del-btn:hover { background: rgba(239,68,68,.28); }
 #kn-flash {
     border-radius: 8px;
     padding: 10px 14px;
@@ -49,7 +49,5 @@
     font-weight: 500;
     margin-bottom: 16px;
 }
-#kn-flash.kn-ok  { background: #d1fae5; color: #065f46; }
-#kn-flash.kn-err { background: #fee2e2; color: #991b1b; }
-.dark #kn-flash.kn-ok  { background: #064e3b; color: #a7f3d0; }
-.dark #kn-flash.kn-err { background: #450a0a; color: #fca5a5; }
+#kn-flash.kn-ok  { background: rgba(16,185,129,.12); color: #6ee7b7; border: 1px solid rgba(16,185,129,.2); }
+#kn-flash.kn-err { background: rgba(239,68,68,.12);  color: #fca5a5; border: 1px solid rgba(239,68,68,.2); }
