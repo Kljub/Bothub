@@ -62,7 +62,7 @@ The system provides a modular architecture with features such as:
 ---
 
 ### 🔜 Planned
-- 🤖 Discord bot improvements  
+- 🤖 Discord bot improvements  ✅
 - 🔐 Improved bot security  
 - 🔁 Secret reroll system  
 - 🧭 Routing improvements  
