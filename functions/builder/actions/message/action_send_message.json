@@ -1,0 +1,71 @@
+{
+    "loadout": {
+        "type": "action.send_message",
+        "category": "action",
+        "title": "Send Message",
+        "icon": "message",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "description": "Sendet eine Nachricht im aktuellen Kontext."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "input",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "content",
+            "type": "textarea",
+            "label": "Message Content",
+            "placeholder": "Hello, {user}!",
+            "required": false
+        },
+        {
+            "key": "tts",
+            "type": "select",
+            "label": "Text-to-Speech",
+            "help": "Send this message as a Text-to-Speech message.",
+            "options": [
+                {
+                    "value": "",
+                    "label": "No"
+                },
+                {
+                    "value": "1",
+                    "label": "Yes"
+                }
+            ]
+        },
+        {
+            "key": "ephemeral",
+            "type": "select",
+            "label": "Ephemeral",
+            "help": "Only show this message to the user who triggered it.",
+            "options": [
+                {
+                    "value": "",
+                    "label": "No"
+                },
+                {
+                    "value": "1",
+                    "label": "Yes"
+                }
+            ]
+        }
+    ]
+}

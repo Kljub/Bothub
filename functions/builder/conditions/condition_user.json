@@ -1,0 +1,45 @@
+{
+    "loadout": {
+        "type": "condition.user",
+        "category": "condition",
+        "title": "User Condition",
+        "icon": "condition",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Prüfe ob es sich um einen bestimmten Nutzer handelt."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "true",
+                "type": "flow",
+                "description": "Erfüllt"
+            },
+            {
+                "name": "false",
+                "type": "flow",
+                "description": "Nicht erfüllt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "user_id",
+            "type": "text",
+            "label": "User-ID",
+            "placeholder": "",
+            "required": true
+        }
+    ]
+}

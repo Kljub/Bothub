@@ -1,0 +1,54 @@
+{
+    "loadout": {
+        "type": "action.mod.ban",
+        "category": "action",
+        "title": "Ban Member",
+        "icon": "action",
+        "colors": {
+            "primary": "red",
+            "secondary": "dark"
+        },
+        "description": "Banne ein Mitglied vom Server."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "user_id",
+            "type": "text",
+            "label": "User ID oder {option.user}",
+            "placeholder": "",
+            "required": true
+        },
+        {
+            "key": "reason",
+            "type": "textarea",
+            "label": "Grund",
+            "placeholder": "",
+            "required": false
+        },
+        {
+            "key": "delete_days",
+            "type": "text",
+            "label": "Nachrichten löschen (Tage)",
+            "placeholder": "0",
+            "required": false
+        }
+    ]
+}

@@ -45,6 +45,18 @@ async function handleButtonInteraction(interaction, botManager, botId) {
         await handleTicketButton(interaction, botId);
         return;
     }
+
+    if (id.startsWith('ace_')) {
+        const { handleArcEnCielButton } = require('./services/arcenciel-service');
+        await handleArcEnCielButton(interaction, botId);
+        return;
+    }
+
+    if (id === 'sug_up' || id === 'sug_down') {
+        const { handleSuggestionButton } = require('./services/suggestion-service');
+        await handleSuggestionButton(interaction, botId);
+        return;
+    }
 }
 
 async function handleModalInteraction(interaction, botManager, botId) {

@@ -1,0 +1,46 @@
+{
+    "loadout": {
+        "type": "action.vc.deafen_member",
+        "category": "action",
+        "title": "Deafen / Undeafen a VC Member",
+        "icon": "action",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Taubschalte oder hebe Taubschaltung auf."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "user_id",
+            "type": "text",
+            "label": "User ID oder {option.user}",
+            "placeholder": "",
+            "required": true
+        },
+        {
+            "key": "deafen",
+            "type": "switch",
+            "label": "Taubschalten",
+            "required": false
+        }
+    ]
+}

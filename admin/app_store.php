@@ -79,6 +79,17 @@ $pdo->exec("
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ");
 
+// ── Bootstrap official apps (runs on every page load — idempotent) ────────────
+$pdo->exec("INSERT IGNORE INTO apps
+    (app_key, name, description, version, category, icon_svg, author, is_official, sidebar_view, schema_sql, db_tables)
+VALUES
+    ('arcenciel', 'Arc en Ciel',
+     'KI-gestützte Bildgenerierung mit Stable Diffusion via Arc en Ciel API. Unterstützt /imagine, /img2img und /autotag.',
+     '1.0.0', 'utility',
+     '<path d=\"M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1ZM2.4 8.8a5.6 5.6 0 1 1 11.2 0 5.6 5.6 0 0 1-11.2 0Zm5.6-2.4a.8.8 0 0 0-.8.8v1.6H5.6a.8.8 0 0 0 0 1.6h1.6v1.6a.8.8 0 0 0 1.6 0V10.4h1.6a.8.8 0 0 0 0-1.6H8.8V7.2a.8.8 0 0 0-.8-.8Z\"/>',
+     'BotHub', 1, 'arcenciel', NULL, '[\"bot_arcenciel_settings\"]')
+");
+
 // ── AJAX: install ─────────────────────────────────────────────────────────────
 if ($isAjax && $_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['_action'] ?? '') === 'install') {
     while (ob_get_level() > 0) { ob_end_clean(); }

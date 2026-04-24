@@ -199,10 +199,10 @@ $fgSchedDays    = (string)($fgSettings['schedule_days']   ?? 'Mon,Tue,Wed,Thu,Fr
 $fgLastCheck    = $fgSettings['last_checked_at'] ?? null;
 $modEnabled   = bh_mod_is_enabled($pdo, $botId, 'module:free-games');
 
-// Ensure command row exists
+// Ensure command row exists (preserves is_enabled across page loads)
 try {
-    bhcmd_upsert_command($pdo, $botId, 'free-games', 'predefined',
-        'free-games', 'Zeigt aktuell kostenlose Spiele von den aktivierten Plattformen.', 0, null);
+    bhcmd_ensure_command($pdo, $botId, 'free-games', 'predefined',
+        'free-games', 'Zeigt aktuell kostenlose Spiele von den aktivierten Plattformen.', 1);
 } catch (Throwable) {}
 
 $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');

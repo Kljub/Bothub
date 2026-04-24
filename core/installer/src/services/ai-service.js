@@ -41,6 +41,13 @@ function clearSession(botId, userId) {
     conversationCache.delete(`${botId}:${userId}`);
 }
 
+function clearAllConversations(botId) {
+    const prefix = `${botId}:`;
+    for (const key of conversationCache.keys()) {
+        if (key.startsWith(prefix)) conversationCache.delete(key);
+    }
+}
+
 // ── Table init ─────────────────────────────────────────────────────────────────
 async function ensureTables() {
     await dbQuery(`CREATE TABLE IF NOT EXISTS \`bot_ai_settings\` (
@@ -361,4 +368,4 @@ function attachMentionEvents(client, botId) {
     });
 }
 
-module.exports = { ensureTables, askAI, clearSession, attachMentionEvents, PROVIDER_DEFAULTS };
+module.exports = { ensureTables, askAI, clearSession, clearAllConversations, attachMentionEvents, PROVIDER_DEFAULTS };

@@ -1,0 +1,75 @@
+{
+    "loadout": {
+        "type": "action.delete_message",
+        "category": "action",
+        "title": "Delete Message",
+        "icon": "trash",
+        "colors": {
+            "primary": "red",
+            "secondary": "dark"
+        },
+        "subtitle": "Delete",
+        "description": "Deletes a message by variable name or message ID."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {
+        "delete_mode": "by_var",
+        "target_message_node_id": "",
+        "message_id": "",
+        "channel_id": ""
+    },
+    "properties": [
+        {
+            "key": "delete_mode",
+            "type": "select",
+            "label": "Delete Mode",
+            "help": "Choose how to identify the message to delete.",
+            "options": [
+                {
+                    "value": "by_var",
+                    "label": "By Variable (stored message)"
+                },
+                {
+                    "value": "by_id",
+                    "label": "By Message ID"
+                }
+            ]
+        },
+        {
+            "key": "target_message_node_id",
+            "type": "message_node_select",
+            "label": "Target Message",
+            "help": "Wähle die Message-Aktion aus dem Builder die gelöscht werden soll.",
+            "show_if": ["delete_mode", ["by_var"]]
+        },
+        {
+            "key": "message_id",
+            "type": "text",
+            "label": "Message-ID",
+            "placeholder": "{message.id}",
+            "show_if": ["delete_mode", ["by_id"]]
+        },
+        {
+            "key": "channel_id",
+            "type": "text",
+            "label": "Channel-ID",
+            "placeholder": "{channel.id}",
+            "show_if": ["delete_mode", ["by_id"]]
+        }
+    ]
+}

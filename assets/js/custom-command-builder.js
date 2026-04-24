@@ -48,6 +48,7 @@
         builder: readInitialBuilder(),
         selectedNodeId: null,
         selectedNodeIds: [],
+        highlightedNodeId: null,
         clipboardNodes: [],
         pendingConnection: null,
         dragNodeId: null,
@@ -91,6 +92,7 @@
     registerKeyboard();
     registerTemplateActions();
     registerFormSubmit();
+    registerChipCopy();
     if (MODE === 'event' || MODE === 'timed') { registerEventMeta(); }
 
     function readInitialBuilder() {
@@ -730,6 +732,41 @@
         });
     }
 
+    function copyText(text) {
+        const fallback = () => {
+            const tmp = document.createElement('textarea');
+            tmp.value = text;
+            tmp.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+            document.body.appendChild(tmp);
+            tmp.focus();
+            tmp.select();
+            try { document.execCommand('copy'); } catch (_) {}
+            document.body.removeChild(tmp);
+        };
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).catch(fallback);
+            } else {
+                fallback();
+            }
+        } catch (_) {
+            fallback();
+        }
+    }
+
+    function registerChipCopy() {
+        if (!dynamicFields) return;
+        dynamicFields.addEventListener('click', (e) => {
+            const chip = e.target instanceof Element ? e.target.closest('.cc-rb-chip') : null;
+            if (!chip) return;
+            const text = chip.textContent.trim();
+            if (!text) return;
+            copyText(text);
+            chip.classList.add('is-copied');
+            setTimeout(() => chip.classList.remove('is-copied'), 1200);
+        });
+    }
+
     function addNodeFromType(type, label, x, y) {
         if (isNativeNodeType(type)) {
             return;
@@ -1003,7 +1040,8 @@
             el.className = 'cc-node cc-node--' + def.category
                 + nativeClass
                 + (isPrimarySelected ? ' is-selected' : '')
-                + (isMultiSelected && !isPrimarySelected ? ' is-multi-selected' : '');
+                + (isMultiSelected && !isPrimarySelected ? ' is-multi-selected' : '')
+                + (node.id === state.highlightedNodeId ? ' is-highlighted' : '');
             el.style.left = node.x + 'px';
             el.style.top = node.y + 'px';
             el.dataset.nodeId = node.id;
@@ -1109,12 +1147,13 @@
 
                 // Render flow output ports (centered at bottom of node)
                 flowOutputs.forEach((portName, index) => {
-                    const spacing = flowOutputs.length > 1 ? (100 / (flowOutputs.length + 1)) * (index + 1) : 50;
+                    const multiSpacing = flowOutputs.length > 1 ? (100 / (flowOutputs.length + 1)) * (index + 1) : null;
+                    const leftStyle = multiSpacing !== null ? ' style="left: ' + multiSpacing + '%;"' : '';
                     outputPortsHtml += ''
                         + '<button type="button" class="cc-port cc-port--output'
                         + (isPendingPort(node.id, portName) ? ' is-pending' : '')
                         + '" data-node-id="' + escapeAttr(node.id) + '" data-port-type="output" data-port-name="' + escapeAttr(portName) + '"'
-                        + ' style="left: calc(' + spacing + '% - 6px);" title="' + escapeAttr(portName) + '">'
+                        + leftStyle + ' title="' + escapeAttr(portName) + '">'
                         + '</button>';
                 });
 
@@ -1347,6 +1386,18 @@
             return;
         }
 
+        // Component nodes (button/menu) may only connect from a matching component output port
+        if (targetDef.category === 'component') {
+            const validSpawn = (sourceDef.output_ports || []).some(
+                (p) => p.kind === 'component' && p.spawn_type === targetNode.type && p.key === pending.fromPort
+            );
+            if (!validSpawn) {
+                state.pendingConnection = null;
+                renderAll();
+                return;
+            }
+        }
+
         state.builder.edges = state.builder.edges.filter((edge) => {
             // Each output port can connect to exactly one target (replace if reconnected)
             if (edge.from_node_id === pending.fromNodeId && edge.from_port === pending.fromPort) {
@@ -1549,6 +1600,7 @@
             mainLayout.classList.remove('is-drawer-open');
         }
         dynamicFields.innerHTML = '';
+        if (state.highlightedNodeId) { state.highlightedNodeId = null; renderNodes(); }
 
         if (propNodeId) {
             propNodeId.value = '';
@@ -1624,7 +1676,7 @@
         card.querySelector('.cc-opt-info-header').appendChild(copiedMsg);
 
         chip.addEventListener('click', () => {
-            navigator.clipboard.writeText('{option.' + (node.config.option_name || 'varname') + '}').catch(() => {});
+            copyText('{option.' + (node.config.option_name || 'varname') + '}');
             copiedMsg.classList.add('is-visible');
             setTimeout(() => copiedMsg.classList.remove('is-visible'), 1500);
         });
@@ -1655,7 +1707,7 @@
         const chip = card.querySelector('#cc-sm-info-chip');
         chip.addEventListener('click', () => {
             const v = '{' + (node.config.var_name || 'selected_option') + '}';
-            navigator.clipboard.writeText(v).catch(() => {});
+            copyText(v);
         });
 
         dynamicFields.appendChild(card);
@@ -2538,6 +2590,40 @@
             return;
         }
 
+        // ── message_node_select: dropdown of send_or_edit nodes in canvas ───
+        if (field.type === 'message_node_select') {
+            const sel = document.createElement('select');
+            sel.className = 'cc-prop-select';
+            const emptyOpt = document.createElement('option');
+            emptyOpt.value = '';
+            emptyOpt.textContent = '— Optional: Message-Aktion auswählen —';
+            sel.appendChild(emptyOpt);
+
+            const msgNodes = state.builder.nodes.filter((n) => n.type === 'action.message.send_or_edit' && n.id !== node.id);
+            msgNodes.forEach((mn) => {
+                const opt = document.createElement('option');
+                opt.value = mn.id;
+                opt.textContent = mn.config.var_name || mn.label || mn.id;
+                if (mn.id === node.config[field.key]) {
+                    opt.selected = true;
+                    state.highlightedNodeId = mn.id;
+                }
+                sel.appendChild(opt);
+            });
+
+            sel.addEventListener('change', () => {
+                node.config[field.key] = sel.value;
+                state.highlightedNodeId = sel.value || null;
+                markDirty();
+                writeJsonField();
+                renderNodes();
+            });
+
+            wrapper.appendChild(sel);
+            dynamicFields.appendChild(wrapper);
+            return;
+        }
+
         // ── event_select: grouped select of all Discord event types ──────────
         if (field.type === 'event_select') {
             const eventTypes = window.CebEventTypes || {};
@@ -2625,6 +2711,14 @@
                 });
             }
 
+            // Live update var_usage chips
+            if (field.key === 'var_name' && Array.isArray(field.var_usage)) {
+                const name = input.value.trim() || 'varname';
+                dynamicFields.querySelectorAll('.cc-rb-chip[data-var-usage]').forEach((chip) => {
+                    chip.textContent = '{' + name + '.' + chip.dataset.varUsage + '}';
+                });
+            }
+
             // Live update variable hint + info card chip for option-name fields
             if (def.category === 'option' && field.key === 'option_name') {
                 const newName = input.value || 'varname';
@@ -2680,19 +2774,28 @@
 
             chip.addEventListener('click', () => {
                 const val = '{option.' + (node.config.option_name || 'varname') + '}';
-                navigator.clipboard.writeText(val).catch(() => {
-                    const tmp = document.createElement('textarea');
-                    tmp.value = val;
-                    tmp.style.cssText = 'position:fixed;opacity:0';
-                    document.body.appendChild(tmp);
-                    tmp.select();
-                    document.body.removeChild(tmp);
-                });
+                copyText(val);
                 copied.classList.add('is-visible');
                 setTimeout(() => copied.classList.remove('is-visible'), 1500);
             });
 
             wrapper.appendChild(hintWrap);
+        }
+
+        // ── var_usage chips ────────────────────────────────────────────────
+        if (field.key === 'var_name' && Array.isArray(field.var_usage) && field.var_usage.length) {
+            const usageDiv = document.createElement('div');
+            usageDiv.className = 'cc-rb-usage';
+            const varName = String(node.config.var_name || '').trim() || 'varname';
+            let html = '<div class="cc-rb-usage-title">Using Variable</div>';
+            field.var_usage.forEach((u) => {
+                html += '<div class="cc-rb-usage-row">'
+                    + '<span class="cc-rb-chip" data-var-usage="' + u.var + '">{' + varName + '.' + u.var + '}</span>'
+                    + ' <small>' + u.label + '</small>'
+                    + '</div>';
+            });
+            usageDiv.innerHTML = html;
+            wrapper.appendChild(usageDiv);
         }
 
         dynamicFields.appendChild(wrapper);
@@ -3856,16 +3959,6 @@
     const botNameEl      = document.getElementById('cc-mb-bot-name');
     const botAvatarImg   = document.getElementById('cc-mb-bot-avatar-img');
     const botAvatarFb    = document.getElementById('cc-mb-bot-avatar-fallback');
-    const responseTypeSel      = document.getElementById('cc-mb-response-type');
-    const condSpecificChannel  = document.getElementById('cc-mb-cond-specific-channel');
-    const condChannelOption    = document.getElementById('cc-mb-cond-channel-option');
-    const condDmUserOption     = document.getElementById('cc-mb-cond-dm-user-option');
-    const condDmSpecificUser   = document.getElementById('cc-mb-cond-dm-specific-user');
-    const condEditAction       = document.getElementById('cc-mb-cond-edit-action');
-    const inputChannelId       = document.getElementById('cc-mb-target-channel-id');
-    const inputOptionName      = document.getElementById('cc-mb-target-option-name');
-    const inputDmOptionName    = document.getElementById('cc-mb-target-dm-option-name');
-    const inputUserId          = document.getElementById('cc-mb-target-user-id');
     const inputEditTargetVar   = document.getElementById('cc-mb-edit-target-var');
 
     if (!overlay || !embedTpl || !fieldTpl) {
@@ -4191,27 +4284,6 @@
 
     // ── open / close ──────────────────────────────────────────────────────────
 
-    // ── response type conditional visibility ─────────────────────────────────
-
-    const RESPONSE_TYPE_CONDS = {
-        specific_channel: condSpecificChannel,
-        channel_option:   condChannelOption,
-        dm_user_option:   condDmUserOption,
-        dm_specific_user: condDmSpecificUser,
-        edit_action:      condEditAction,
-    };
-
-    function updateResponseTypeConds() {
-        const val = responseTypeSel ? responseTypeSel.value : 'reply';
-        Object.entries(RESPONSE_TYPE_CONDS).forEach(([key, el]) => {
-            if (el) el.style.display = (val === key) ? 'block' : 'none';
-        });
-    }
-
-    if (responseTypeSel) {
-        responseTypeSel.addEventListener('change', updateResponseTypeConds);
-    }
-
     function open(node) {
         if (!node) {
             return;
@@ -4222,16 +4294,7 @@
             node.config = {};
         }
 
-        // populate response type
-        if (responseTypeSel) {
-            responseTypeSel.value = node.config.response_type || 'reply';
-        }
-        if (inputChannelId)      inputChannelId.value      = node.config.target_channel_id      || '';
-        if (inputOptionName)     inputOptionName.value     = node.config.target_option_name     || '';
-        if (inputDmOptionName)   inputDmOptionName.value   = node.config.target_dm_option_name  || '';
-        if (inputUserId)         inputUserId.value         = node.config.target_user_id         || '';
         if (inputEditTargetVar)  inputEditTargetVar.value  = node.config.edit_target_var        || '';
-        updateResponseTypeConds();
 
         // populate content
         if (contentTA) {
@@ -4265,11 +4328,6 @@
             close();
             return;
         }
-        currentNode.config.response_type           = responseTypeSel    ? responseTypeSel.value              : 'reply';
-        currentNode.config.target_channel_id       = inputChannelId    ? inputChannelId.value.trim()         : '';
-        currentNode.config.target_option_name      = inputOptionName   ? inputOptionName.value.trim()        : '';
-        currentNode.config.target_dm_option_name   = inputDmOptionName ? inputDmOptionName.value.trim()      : '';
-        currentNode.config.target_user_id          = inputUserId       ? inputUserId.value.trim()            : '';
         currentNode.config.edit_target_var         = inputEditTargetVar ? inputEditTargetVar.value.trim()    : '';
         currentNode.config.message_content         = contentTA ? contentTA.value : '';
         currentNode.config.embeds                  = readEmbeds();

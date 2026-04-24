@@ -49,6 +49,12 @@ $settingsItems = [
         'view' => 'status',
         'icon' => '<path d="M8 2a6 6 0 1 0 6 6A6 6 0 0 0 8 2Zm0 2a4 4 0 1 1-4 4 4 4 0 0 1 4-4Zm0 1.5a2.5 2.5 0 1 0 2.5 2.5A2.5 2.5 0 0 0 8 5.5Z"/>',
     ],
+    [
+        'label' => 'Logs',
+        'type' => 'view',
+        'view' => 'logs',
+        'icon' => '<path d="M3 2h10a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Zm1 3v1h8V5H4Zm0 3v1h8V8H4Zm0 3v1h5v-1H4Z"/>',
+    ],
 ];
 
 $messagesItems = [

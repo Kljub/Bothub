@@ -1,0 +1,43 @@
+{
+    "loadout": {
+        "type": "action.flow.wait",
+        "category": "action",
+        "title": "Wait",
+        "icon": "clock",
+        "colors": {
+            "primary": "gray",
+            "secondary": "dark"
+        },
+        "description": "Wartet eine bestimmte Zeit, bevor die naechste Aktion ausgefuehrt wird.",
+        "group": "Flow Control"
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "duration",
+            "type": "number",
+            "label": "Duration (ms)",
+            "placeholder": "1000",
+            "help": "How many milliseconds to wait before continuing (max 14000).",
+            "min": 100,
+            "max": 14000,
+            "required": true
+        }
+    ]
+}

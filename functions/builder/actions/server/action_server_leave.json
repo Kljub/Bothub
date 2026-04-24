@@ -1,0 +1,32 @@
+{
+    "loadout": {
+        "type": "action.server.leave",
+        "category": "action",
+        "title": "Leave Server",
+        "icon": "action",
+        "colors": {
+            "primary": "red",
+            "secondary": "dark"
+        },
+        "description": "Verlasse den aktuellen Server."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": []
+}

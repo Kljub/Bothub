@@ -122,14 +122,8 @@ try {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 } catch (Throwable) {}
 
-// ── Detect guild_id from bot_instances ───────────────────────────────────────
-$guildId = '';
-try {
-    $giRow = $pdo->prepare('SELECT guild_id FROM bot_instances WHERE id = ? LIMIT 1');
-    $giRow->execute([$botId]);
-    $giResult = $giRow->fetch(PDO::FETCH_ASSOC);
-    $guildId  = (string)($giResult['guild_id'] ?? '');
-} catch (Throwable) {}
+// ── Guild context from global index.php selector ──────────────────────────────
+$guildId = $currentGuildId ?? '';
 
 // ── Load settings (INSERT IGNORE + SELECT) ────────────────────────────────────
 $settings = [];
@@ -179,8 +173,14 @@ $countingCommands = [
 
 foreach ($countingCommands as $cmd) {
     $pdo->prepare(
-        'INSERT IGNORE INTO commands (bot_id, command_key, command_type, name, description, is_enabled) VALUES (?, ?, ?, ?, ?, 1)'
-    )->execute([$botId, $cmd['key'], 'counting', $cmd['name'], $cmd['desc']]);
+        'INSERT INTO commands (bot_id, command_key, command_type, name, description, is_enabled)
+         VALUES (?, ?, ?, ?, ?, 1)
+         ON DUPLICATE KEY UPDATE
+             command_type = VALUES(command_type),
+             name         = VALUES(name),
+             description  = VALUES(description),
+             updated_at   = NOW()'
+    )->execute([$botId, $cmd['key'], 'module', $cmd['name'], $cmd['desc']]);
 }
 
 $cmdKeys  = array_column($countingCommands, 'key');
@@ -206,7 +206,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
     </div>
 
     <?= bh_mod_render($modEnabled, $botId, 'module:counting', 'Counting', 'Zählkanal-Funktion und alle Counting-Commands für diesen Bot ein- oder ausschalten.') ?>
-    <div id="bh-mod-body">
+    <div>
 
     <!-- ── Stats ────────────────────────────────────────────────────────────── -->
     <div class="lv-stats">
@@ -237,11 +237,18 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
         </div>
         <div class="lv-card__body" id="cnt-settings-body">
 
-            <!-- Channel ID -->
+            <!-- Channel picker -->
             <div class="bh-field">
-                <label class="bh-label" for="cnt-channel-id">Zähl-Channel ID</label>
-                <input type="text" id="cnt-channel-id" class="bh-input" value="<?= cnt_h($channelId) ?>" placeholder="z.B. 1234567890123456789" maxlength="20">
-                <div class="bh-hint">Die Discord Channel-ID des Kanals, in dem gezählt wird. Leer lassen um das Modul zu deaktivieren.</div>
+                <label class="bh-label">Zähl-Channel</label>
+                <input type="hidden" id="cnt-channel-val" value="<?= cnt_h($channelId) ?>">
+                <input type="hidden" id="cnt-guild-val"   value="<?= cnt_h($guildId) ?>">
+                <div class="it-picker-row" id="cnt-channel-box"
+                     data-bh-val="cnt-channel-val"
+                     data-bh-guild="cnt-guild-val"
+                     data-bh-bot="<?= $botId ?>">
+                    <button type="button" class="it-picker-add">+</button>
+                </div>
+                <div class="bh-hint">Der Channel, in dem gezählt wird. Leer lassen um das Modul zu deaktivieren.</div>
             </div>
 
             <!-- Mode -->
@@ -419,12 +426,15 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
         <?php endforeach; ?>
     </div>
 
-    </div><!-- /bh-mod-body -->
+    </div>
 </div>
 
 <script>
 (function () {
+    const BOT_ID   = <?= json_encode($botId) ?>;
     const GUILD_ID = <?= json_encode($guildId) ?>;
+
+    // ── Channel picker (initialised by channel-picker.js) ────────────────────
 
     function post(data) {
         const fd = new FormData();
@@ -475,8 +485,8 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
 
         const payload = {
             cnt_action:        'save_settings',
-            guild_id:           GUILD_ID,
-            channel_id:         document.getElementById('cnt-channel-id').value.trim(),
+            guild_id:           document.getElementById('cnt-guild-val').value || GUILD_ID,
+            channel_id:         document.getElementById('cnt-channel-val').value.trim(),
             mode:               document.getElementById('cnt-mode').value,
             reaction_emoji:     document.getElementById('cnt-reaction-emoji').value.trim(),
             error_wrong_msg:    document.getElementById('cnt-error-wrong').value.trim(),

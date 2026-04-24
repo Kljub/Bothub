@@ -1,0 +1,60 @@
+{
+    "loadout": {
+        "type": "condition.comparison",
+        "category": "condition",
+        "title": "Comparison Condition",
+        "icon": "condition",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Run actions based on the difference between two values."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "else",
+                "type": "flow",
+                "description": "Sonst"
+            }
+        ]
+    },
+    "default": {
+        "run_mode": "first_match",
+        "conditions": [
+            {
+                "base_value": "",
+                "operator": "==",
+                "comparison_value": ""
+            }
+        ]
+    },
+    "properties": [
+        {
+            "type": "comparison_conditions"
+        }
+    ],
+    "operator_values": [
+        "<",
+        "<=",
+        ">",
+        ">=",
+        "==",
+        "!=",
+        "contains",
+        "not_contains",
+        "starts_with",
+        "ends_with",
+        "not_starts_with",
+        "not_ends_with",
+        "collection_contains",
+        "collection_not_contains"
+    ]
+}

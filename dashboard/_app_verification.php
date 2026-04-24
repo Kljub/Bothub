@@ -233,10 +233,12 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
 
             <!-- Default Channel -->
             <div class="bh-field">
-                <label class="bh-label" for="vfy-channel-id">Default Channel ID</label>
-                <input type="text" id="vfy-channel-id" class="bh-input" placeholder="Channel-ID eingeben"
-                       value="<?= vfy_h($channelId) ?>" maxlength="20">
-                <div class="bh-hint">In diesen Channel sendet <code>/verification setup</code> das Embed. Rechtsklick auf Channel → ID kopieren.</div>
+                <label class="bh-label">Default Channel</label>
+                <input type="hidden" id="vfy-channel-id" value="<?= vfy_h($channelId) ?>">
+                <div class="it-picker-row" id="vfy-channel-id-box">
+                    <button type="button" class="it-picker-add" id="vfy-channel-id-btn">+</button>
+                </div>
+                <div class="bh-hint">In diesen Channel sendet <code>/verification setup</code> das Embed.</div>
             </div>
 
             <!-- Verified Role -->
@@ -340,9 +342,11 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
                         <div class="bh-hint">Beschriftung des Buttons im Embed</div>
                     </div>
                     <div>
-                        <label class="bh-label" for="vfy-log-channel">Logging Channel ID</label>
-                        <input type="text" id="vfy-log-channel" class="bh-input" placeholder="Channel-ID"
-                               value="<?= vfy_h($logChannelId) ?>" maxlength="20">
+                        <label class="bh-label">Logging Channel</label>
+                        <input type="hidden" id="vfy-log-channel" value="<?= vfy_h($logChannelId) ?>">
+                        <div class="it-picker-row" id="vfy-log-channel-box">
+                            <button type="button" class="it-picker-add" id="vfy-log-channel-btn">+</button>
+                        </div>
                         <div class="bh-hint">Für erfolgreiche/fehlgeschlagene Verifikationen (optional)</div>
                     </div>
                 </div>
@@ -446,6 +450,11 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
 
 <script>
 (function () {
+    const BOT_ID = <?= json_encode($botId) ?>;
+
+    bhSetupChannelPicker('vfy-channel-id-box', 'vfy-channel-id', 'vfy-channel-id-btn', BOT_ID);
+    bhSetupChannelPicker('vfy-log-channel-box', 'vfy-log-channel', 'vfy-log-channel-btn', BOT_ID);
+
     function post(data) {
         const fd = new FormData();
         for (const [k, v] of Object.entries(data)) fd.append(k, v);

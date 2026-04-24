@@ -1,0 +1,40 @@
+{
+    "loadout": {
+        "type": "action.role.remove_from_everyone",
+        "category": "action",
+        "title": "Remove Roles from Everyone",
+        "icon": "action",
+        "colors": {
+            "primary": "purple",
+            "secondary": "dark"
+        },
+        "description": "Entferne Rollen von allen Mitgliedern."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "role_ids",
+            "type": "text",
+            "label": "Rollen-IDs (kommagetrennt)",
+            "placeholder": "123,456",
+            "required": true
+        }
+    ]
+}

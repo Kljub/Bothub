@@ -32,7 +32,17 @@ async function dbQuery(sql, params = []) {
     return rows;
 }
 
+async function botLog(botId, level, message, context = null) {
+    try {
+        await dbQuery(
+            'INSERT INTO bot_logs (bot_id, level, message, context_json) VALUES (?, ?, ?, ?)',
+            [botId, level, String(message).slice(0, 65535), context ? JSON.stringify(context) : null]
+        );
+    } catch (_) {}
+}
+
 module.exports = {
     getDbPool,
-    dbQuery
+    dbQuery,
+    botLog
 };

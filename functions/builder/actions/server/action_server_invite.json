@@ -1,0 +1,54 @@
+{
+    "loadout": {
+        "type": "action.server.create_invite",
+        "category": "action",
+        "title": "Create Server Invite",
+        "icon": "action",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Erstelle einen Server-Einladungslink."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "max_age",
+            "type": "text",
+            "label": "Gültigkeitsdauer (Sek., 0=unbegrenzt)",
+            "placeholder": "86400",
+            "required": false
+        },
+        {
+            "key": "max_uses",
+            "type": "text",
+            "label": "Max. Nutzungen (0=unbegrenzt)",
+            "placeholder": "0",
+            "required": false
+        },
+        {
+            "key": "result_var",
+            "type": "text",
+            "label": "Link als Variable speichern",
+            "placeholder": "invite_url",
+            "required": false
+        }
+    ]
+}

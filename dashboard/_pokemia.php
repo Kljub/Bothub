@@ -264,12 +264,12 @@ $esc = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE
                 <div class="bh-eco-settings-grid">
                     <div class="bh-eco-field">
                         <label class="bh-eco-label">Spawn-Channel (Channel-ID)</label>
-                        <input type="text" name="spawn_channel"
-                               class="bh-input"
-                               value="<?= $esc((string)($spawnConfig['spawn_channel'] ?? '')) ?>"
-                               placeholder="z. B. 123456789012345678"
-                               pattern="[0-9]*" maxlength="25">
-                        <div class="bh-eco-hint">Channel-ID des Channels, in dem wild Pokémon erscheinen. Leer lassen = alle Channels.</div>
+                        <input type="hidden" name="spawn_channel" id="pkm-channel-val"
+                               value="<?= $esc((string)($spawnConfig['spawn_channel'] ?? '')) ?>">
+                        <div class="it-picker-row" id="pkm-channel-box">
+                            <button type="button" class="it-picker-add" id="pkm-channel-btn">+</button>
+                        </div>
+                        <div class="bh-eco-hint">Channel, in dem wild Pokémon erscheinen. Leer lassen = alle Channels.</div>
                     </div>
                     <div class="bh-eco-field">
                         <label class="bh-eco-label">Spawn-Rate (Nachrichten)</label>
@@ -322,6 +322,9 @@ $esc = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE
 <script>
 (function () {
     var url = window.location.pathname + window.location.search;
+    var BOT_ID = <?= (int)$botId ?>;
+
+    bhSetupChannelPicker('pkm-channel-box', 'pkm-channel-val', 'pkm-channel-btn', BOT_ID);
 
     // Collapsible card headers
     document.querySelectorAll('.bh-eco-card__header--toggle').forEach(function (hdr) {

@@ -1,0 +1,40 @@
+{
+    "loadout": {
+        "type": "action.channel.delete",
+        "category": "action",
+        "title": "Delete a Channel",
+        "icon": "action",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "description": "Lösche einen Kanal."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "channel_id",
+            "type": "text",
+            "label": "Channel ID",
+            "placeholder": "",
+            "required": true
+        }
+    ]
+}

@@ -261,6 +261,26 @@ function createHttpServer(botManager) {
             return;
         }
 
+        // ── AI memory reset  POST /ai/clear-memory/bot/:id ───────────────
+        if (method === 'POST' && /^\/ai\/clear-memory\/bot\/\d+$/.test(pathname)) {
+            if (!isReloadAuthorized(req)) { sendUnauthorized(res); return; }
+
+            const clearBotId = Number.parseInt(pathname.split('/').pop(), 10);
+            if (!Number.isFinite(clearBotId) || clearBotId <= 0) {
+                sendJson(res, 400, { ok: false, error: 'invalid_bot_id' });
+                return;
+            }
+
+            try {
+                const { clearAllConversations } = require('./services/ai-service');
+                clearAllConversations(clearBotId);
+                sendJson(res, 200, { ok: true });
+            } catch (err) {
+                sendJson(res, 500, { ok: false, error: err instanceof Error ? err.message : String(err) });
+            }
+            return;
+        }
+
         // ── Core self-update  POST /core/update ───────────────────────────
         if (method === 'POST' && pathname === '/core/update') {
             if (!isReloadAuthorized(req)) { sendUnauthorized(res); return; }

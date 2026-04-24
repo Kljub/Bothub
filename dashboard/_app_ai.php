@@ -216,6 +216,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         exit;
     }
 
+    if ($action === 'reset_memory') {
+        try {
+            $secretPath = dirname(__DIR__) . '/db/config/secret.php';
+            $secret     = is_file($secretPath) ? require $secretPath : [];
+            $appKey     = trim((string)($secret['APP_KEY'] ?? ''));
+
+            $stmt    = $pdo->query("SELECT endpoint FROM core_runners WHERE endpoint != '' ORDER BY id ASC LIMIT 1");
+            $runner  = $stmt ? $stmt->fetch() : null;
+            $endpoint = rtrim(trim((string)($runner['endpoint'] ?? '')), '/');
+
+            if ($endpoint === '' || $appKey === '') {
+                echo json_encode(['ok' => false, 'error' => 'Runner nicht erreichbar.']);
+                exit;
+            }
+
+            $ch = curl_init($endpoint . '/ai/clear-memory/bot/' . $botId);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST           => true,
+                CURLOPT_POSTFIELDS     => '',
+                CURLOPT_TIMEOUT        => 4,
+                CURLOPT_CONNECTTIMEOUT => 2,
+                CURLOPT_HTTPHEADER     => [
+                    'Authorization: Bearer ' . $appKey,
+                    'Content-Type: application/json',
+                ],
+            ]);
+            $raw      = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($httpCode === 200) {
+                echo json_encode(['ok' => true]);
+            } else {
+                echo json_encode(['ok' => false, 'error' => 'Runner antwortete mit HTTP ' . $httpCode]);
+            }
+        } catch (Throwable $e) {
+            echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+        }
+        exit;
+    }
+
     echo json_encode(['ok' => false, 'error' => 'Unknown action']);
     exit;
 }
@@ -329,6 +371,16 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
                         <input type="number" id="ai-session-timeout" class="bh-input" value="<?= (int)($settings['session_timeout_min'] ?? 30) ?>" min="1" max="1440">
                         <div class="bh-hint">Nach dieser Inaktivität wird der Verlauf automatisch gelöscht.</div>
                     </div>
+                </div>
+            </div>
+            <div class="lv-feature">
+                <div class="lv-feature__left">
+                    <div class="lv-feature__title">Memory zurücksetzen</div>
+                    <div class="lv-feature__desc">Löscht alle aktiven Gesprächsverläufe aller User für diesen Bot sofort.</div>
+                </div>
+                <div class="lv-feature__right">
+                    <button class="bh-btn bh-btn--danger" id="ai-reset-memory" style="white-space:nowrap">Memory löschen</button>
+                    <span class="lv-save-msg" id="ai-reset-memory-msg" style="margin-left:10px"></span>
                 </div>
             </div>
             <div class="lv-feature">
@@ -672,6 +724,19 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
         chk.addEventListener('change', function () {
             post({ action: 'toggle_command', command_key: this.dataset.key, enabled: this.checked ? 1 : 0 });
         });
+    });
+
+    // Reset memory
+    document.getElementById('ai-reset-memory').addEventListener('click', function () {
+        const btn = this;
+        const msg = document.getElementById('ai-reset-memory-msg');
+        if (!confirm('Alle Gesprächsverläufe für diesen Bot löschen?')) return;
+        btn.disabled = true;
+        post({ action: 'reset_memory' }).then(r => {
+            showMsg(msg, r.ok, r.ok ? '✓ Memory gelöscht' : '✗ ' + (r.error || 'Fehler'));
+        }).catch(() => {
+            showMsg(msg, false, '✗ Netzwerkfehler');
+        }).finally(() => { btn.disabled = false; });
     });
 })();
 </script>

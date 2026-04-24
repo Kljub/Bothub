@@ -1,0 +1,32 @@
+{
+    "loadout": {
+        "type": "action.message.publish",
+        "category": "action",
+        "title": "Publish a Message",
+        "icon": "action",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "description": "Veröffentliche eine Nachricht in einem Ankündigungskanal."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": []
+}

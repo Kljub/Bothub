@@ -1,0 +1,60 @@
+{
+    "loadout": {
+        "type": "action.message.send_form",
+        "category": "action",
+        "title": "Send a Form",
+        "icon": "document-text",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "subtitle": "Form",
+        "description": "Send a form or modal and wait for the user to fill it out."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {
+        "form_name": "my-form",
+        "form_title": "Form Title",
+        "block_label": "Send a Form",
+        "fields": []
+    },
+    "properties": [
+        {
+            "key": "form_name",
+            "type": "text",
+            "label": "Form Name",
+            "placeholder": "my-form"
+        },
+        {
+            "key": "form_title",
+            "type": "text",
+            "label": "Form Titel",
+            "placeholder": "Mein Formular"
+        },
+        {
+            "key": "block_label",
+            "type": "text",
+            "label": "Block Label",
+            "placeholder": "Send a Form"
+        },
+        {
+            "type": "form_builder",
+            "label": "Form Felder"
+        }
+    ]
+}

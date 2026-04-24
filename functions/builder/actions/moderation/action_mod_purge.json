@@ -1,0 +1,47 @@
+{
+    "loadout": {
+        "type": "action.mod.purge",
+        "category": "action",
+        "title": "Purge Messages",
+        "icon": "action",
+        "colors": {
+            "primary": "red",
+            "secondary": "dark"
+        },
+        "description": "Lösche mehrere Nachrichten auf einmal."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "amount",
+            "type": "text",
+            "label": "Anzahl (max. 100)",
+            "placeholder": "10",
+            "required": true
+        },
+        {
+            "key": "channel_id",
+            "type": "text",
+            "label": "Channel ID (leer = aktueller Kanal)",
+            "placeholder": "",
+            "required": false
+        }
+    ]
+}

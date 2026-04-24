@@ -138,9 +138,11 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
                         placeholder="Category ID" value="<?= tk_h($s['category_id']) ?>">
                 </div>
                 <div class="bh-field">
-                    <label class="bh-label" for="tk-log-channel">Log Channel ID</label>
-                    <input type="text" id="tk-log-channel" class="bh-input" maxlength="32"
-                        placeholder="Log Channel ID (optional)" value="<?= tk_h($s['log_channel_id']) ?>">
+                    <label class="bh-label">Log Channel</label>
+                    <input type="hidden" id="tk-log-channel-val" value="<?= tk_h($s['log_channel_id']) ?>">
+                    <div class="it-picker-row" id="tk-log-channel-box">
+                        <button type="button" class="it-picker-add" id="tk-log-channel-btn">+</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -292,6 +294,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
     'use strict';
 
     var apiUrl = window.location.href;
+    var BOT_ID = <?= (int)$botId ?>;
+
+    bhSetupChannelPicker('tk-log-channel-box', 'tk-log-channel-val', 'tk-log-channel-btn', BOT_ID);
 
     function showBanner(msg, isErr) {
         var b = document.getElementById('tk-banner');
@@ -311,7 +316,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
             action:          'save',
             support_role_id: document.getElementById('tk-support-role').value.trim(),
             category_id:     document.getElementById('tk-category').value.trim(),
-            log_channel_id:  document.getElementById('tk-log-channel').value.trim(),
+            log_channel_id:  document.getElementById('tk-log-channel-val').value.trim(),
             open_message:    document.getElementById('tk-open-msg').value,
             dm_message:      document.getElementById('tk-dm-msg').value,
         };

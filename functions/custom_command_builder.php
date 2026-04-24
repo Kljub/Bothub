@@ -12,7 +12,7 @@ require_once __DIR__ . '/translate.php';
  * - /functions/builder/options/
  * - /functions/builder/general/
  *
- * Jede Datei muss ein Array zurückgeben.
+ * Jede Datei muss ein JSON-Objekt mit einem 'type'-Feld sein.
  */
 function custom_command_builder_raw_definitions(): array
 {
@@ -36,21 +36,30 @@ function custom_command_builder_raw_definitions(): array
             continue;
         }
 
-        if (strtolower($file->getExtension()) !== 'php') {
+        if (strtolower($file->getExtension()) !== 'json') {
             continue;
         }
 
-        $def = require $file->getPathname();
+        $raw = file_get_contents($file->getPathname());
+        if ($raw === false) {
+            continue;
+        }
 
+        $def = json_decode($raw, true);
         if (!is_array($def)) {
             continue;
         }
 
-        if (!isset($def['type']) || !is_string($def['type']) || $def['type'] === '') {
+        // New format: type lives inside loadout.type
+        $type = isset($def['loadout']['type']) && is_string($def['loadout']['type']) && $def['loadout']['type'] !== ''
+            ? $def['loadout']['type']
+            : (isset($def['type']) && is_string($def['type']) && $def['type'] !== '' ? $def['type'] : '');
+
+        if ($type === '') {
             continue;
         }
 
-        $defs[$def['type']] = $def;
+        $defs[$type] = $def;
     }
 
     ksort($defs);
@@ -95,8 +104,12 @@ function custom_command_builder_node_payload(string $type): array
 
     $def = $defs[$type];
 
+    $defType = isset($def['loadout']['type']) ? $def['loadout']['type'] : ($def['type'] ?? '');
+    $defData = isset($def['default']) && is_array($def['default']) ? $def['default']
+        : (isset($def['defaults']) && is_array($def['defaults']) ? $def['defaults'] : []);
+
     return [
-        'type' => $def['type'],
-        'data' => isset($def['defaults']) && is_array($def['defaults']) ? $def['defaults'] : [],
+        'type' => $defType,
+        'data' => $defData,
     ];
 }

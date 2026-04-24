@@ -4,6 +4,16 @@ declare(strict_types=1);
 $projectRoot = dirname(__DIR__);
 require_once $projectRoot . '/functions/html.php';
 
+if (!defined('BH_DEV_MODE')) {
+    $appCfg = @include $projectRoot . '/db/config/app.php';
+    define('BH_DEV_MODE', is_array($appCfg) && !empty($appCfg['dev_mode']));
+    unset($appCfg);
+}
+
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 if (!isset($pageTitle) || !is_string($pageTitle)) {
     $pageTitle = 'Admin';
 }
@@ -17,6 +27,7 @@ if (!isset($contentHtml) || !is_string($contentHtml)) {
     <meta charset="utf-8">
     <title><?= h('BotHub Admin – ' . $pageTitle) ?></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="csrf-token" content="<?= h($_SESSION['csrf_token'] ?? '') ?>">
 
     <link href="/assets/css/vendors/flatpickr.min.css" rel="stylesheet">
     <link href="/assets/css/mosaic.css" rel="stylesheet">

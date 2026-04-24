@@ -1,0 +1,40 @@
+{
+    "loadout": {
+        "type": "action.role.delete",
+        "category": "action",
+        "title": "Delete a Role",
+        "icon": "action",
+        "colors": {
+            "primary": "purple",
+            "secondary": "dark"
+        },
+        "description": "Lösche eine Rolle."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "role_id",
+            "type": "text",
+            "label": "Rollen-ID",
+            "placeholder": "",
+            "required": true
+        }
+    ]
+}

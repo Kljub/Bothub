@@ -1,0 +1,47 @@
+{
+    "loadout": {
+        "type": "action.thread.edit",
+        "category": "action",
+        "title": "Edit a Thread",
+        "icon": "action",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "description": "Bearbeite einen bestehenden Thread."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "thread_id",
+            "type": "text",
+            "label": "Thread ID",
+            "placeholder": "",
+            "required": true
+        },
+        {
+            "key": "name",
+            "type": "text",
+            "label": "Neuer Name",
+            "placeholder": "",
+            "required": false
+        }
+    ]
+}

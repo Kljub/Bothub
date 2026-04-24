@@ -61,6 +61,31 @@ function bhcmd_is_enabled(PDO $pdo, int $botId, string $key): int
 }
 
 /**
+ * Ensure a command row exists without overwriting is_enabled.
+ * On first insert the row is created with $defaultEnabled.
+ * If the row already exists only the metadata (type/name/description) is updated.
+ */
+function bhcmd_ensure_command(PDO $pdo, int $botId, string $key, string $type, string $name, string $description, int $defaultEnabled = 1): void
+{
+    $pdo->prepare(
+        "INSERT INTO commands (bot_id, command_key, command_type, name, description, is_enabled, created_at, updated_at)
+         VALUES (:bot_id, :command_key, :command_type, :name, :description, :is_enabled, NOW(), NOW())
+         ON DUPLICATE KEY UPDATE
+             command_type = VALUES(command_type),
+             name         = VALUES(name),
+             description  = VALUES(description),
+             updated_at   = NOW()"
+    )->execute([
+        ':bot_id'       => $botId,
+        ':command_key'  => $key,
+        ':command_type' => $type,
+        ':name'         => $name,
+        ':description'  => $description,
+        ':is_enabled'   => $defaultEnabled,
+    ]);
+}
+
+/**
  * Upsert is_enabled for a module command (type='module').
  */
 function bhcmd_set_module_enabled(PDO $pdo, int $botId, string $key, int $isEnabled): void

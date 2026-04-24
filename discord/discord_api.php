@@ -95,3 +95,12 @@ function discord_api_get_me(string $botToken): array
 {
     return discord_api_request_bot($botToken, 'GET', '/users/@me', null);
 }
+
+/**
+ * GET /oauth2/applications/@me — returns application info including description.
+ * @return array{ok:bool, http:int, data:array<string,mixed>|null, error:string|null}
+ */
+function discord_api_get_application(string $botToken): array
+{
+    return discord_api_request_bot($botToken, 'GET', '/oauth2/applications/@me', null);
+}

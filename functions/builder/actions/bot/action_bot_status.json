@@ -1,0 +1,65 @@
+{
+    "loadout": {
+        "type": "action.bot.set_status",
+        "category": "action",
+        "title": "Change the Bot Status",
+        "icon": "action",
+        "colors": {
+            "primary": "orange",
+            "secondary": "dark"
+        },
+        "description": "Ändere den Status / die Aktivität des Bots."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "status",
+            "type": "select",
+            "label": "Status",
+            "options": [
+                "online",
+                "idle",
+                "dnd",
+                "invisible"
+            ],
+            "required": true
+        },
+        {
+            "key": "activity_type",
+            "type": "select",
+            "label": "Activity Type",
+            "options": [
+                "Playing",
+                "Streaming",
+                "Listening",
+                "Watching",
+                "Competing"
+            ],
+            "required": false
+        },
+        {
+            "key": "activity_text",
+            "type": "text",
+            "label": "Activity Text",
+            "placeholder": "z.B. Minecraft",
+            "required": false
+        }
+    ]
+}

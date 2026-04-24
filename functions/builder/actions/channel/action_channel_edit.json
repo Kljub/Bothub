@@ -1,0 +1,54 @@
+{
+    "loadout": {
+        "type": "action.channel.edit",
+        "category": "action",
+        "title": "Edit a Channel",
+        "icon": "action",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "description": "Bearbeite einen bestehenden Kanal."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "channel_id",
+            "type": "text",
+            "label": "Channel ID",
+            "placeholder": "",
+            "required": true
+        },
+        {
+            "key": "name",
+            "type": "text",
+            "label": "Neuer Name",
+            "placeholder": "",
+            "required": false
+        },
+        {
+            "key": "topic",
+            "type": "text",
+            "label": "Neues Thema",
+            "placeholder": "",
+            "required": false
+        }
+    ]
+}

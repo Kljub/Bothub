@@ -1,0 +1,60 @@
+{
+    "loadout": {
+        "type": "action.role.create",
+        "category": "action",
+        "title": "Create a Role",
+        "icon": "action",
+        "colors": {
+            "primary": "purple",
+            "secondary": "dark"
+        },
+        "description": "Erstelle eine neue Rolle."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "name",
+            "type": "text",
+            "label": "Rollenname",
+            "placeholder": "Neue Rolle",
+            "required": true
+        },
+        {
+            "key": "color",
+            "type": "text",
+            "label": "Farbe (Hex)",
+            "placeholder": "#5865F2",
+            "required": false
+        },
+        {
+            "key": "hoist",
+            "type": "switch",
+            "label": "Separat anzeigen",
+            "required": false
+        },
+        {
+            "key": "result_var",
+            "type": "text",
+            "label": "Rollen-ID als Variable speichern",
+            "placeholder": "new_role_id",
+            "required": false
+        }
+    ]
+}

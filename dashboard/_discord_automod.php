@@ -191,9 +191,10 @@ function am_h(string $v): string {
             </div>
         </div>
         <div class="bh-card-body">
-            <input type="text" id="am-log-channel" class="am-input am-input-full" maxlength="32"
-                placeholder="Channel ID (optional)"
-                value="<?= am_h($s['log_channel_id']) ?>">
+            <input type="hidden" id="am-log-channel-val" value="<?= am_h($s['log_channel_id']) ?>">
+            <div class="it-picker-row" id="am-log-channel-box">
+                <button type="button" class="it-picker-add" id="am-log-channel-btn">+</button>
+            </div>
         </div>
     </div>
 
@@ -207,6 +208,9 @@ function am_h(string $v): string {
     'use strict';
 
     var apiUrl = window.location.href;
+    var BOT_ID = <?= (int)$botId ?>;
+
+    bhSetupChannelPicker('am-log-channel-box', 'am-log-channel-val', 'am-log-channel-btn', BOT_ID);
 
     // ── Spam toggle body ──────────────────────────────────────────
     document.getElementById('am-anti-spam').addEventListener('change', function () {
@@ -294,7 +298,7 @@ function am_h(string $v): string {
             spam_action:    document.getElementById('am-spam-action').value,
             link_channels:  getList('am-lc-tags'),
             blacklist:      getList('am-bl-tags'),
-            log_channel_id: document.getElementById('am-log-channel').value.trim(),
+            log_channel_id: document.getElementById('am-log-channel-val').value.trim(),
         };
 
         fetch(apiUrl, {

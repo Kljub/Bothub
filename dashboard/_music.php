@@ -129,7 +129,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAjax) {
 
     if ($type === 'bool' && isset($musicCmdMap[$field])) {
         $val = ($_POST['value'] ?? '') === '1' ? 1 : 0;
+        // Update both the commands table (for slash-sync) and bot_music_settings (for runtime check)
         bhcmd_set_module_enabled($pdo, $botId, $musicCmdMap[$field], $val);
+        $pdo->prepare("UPDATE bot_music_settings SET {$field} = ? WHERE bot_id = ?")->execute([$val, $botId]);
         try { bh_notify_slash_sync($botId); } catch (Throwable) {}
         echo json_encode(['ok' => true, 'field' => $field, 'value' => $val]);
         exit;
@@ -362,9 +364,11 @@ foreach ($_musicCmdKeyMap as $fieldKey => $cmdKey) {
                     </div>
                     <div>
                         <label class="bh-label">Musik-Textkanal <span style="font-weight:400;color:#4f5f80">(optional)</span></label>
-                        <input type="text" class="bh-input" style="margin-top:4px"
-                            name="music_channel_id" placeholder="Kanal-ID"
+                        <input type="hidden" name="music_channel_id" id="music-channel-val"
                             value="<?= htmlspecialchars((string)($ms['music_channel_id'] ?? '')) ?>">
+                        <div class="it-picker-row" id="music-channel-box" style="margin-top:4px">
+                            <button type="button" class="it-picker-add" id="music-channel-btn">+</button>
+                        </div>
                         <p class="bh-hint">Musikbefehle nur in diesem Kanal erlauben. Leer = überall.</p>
                     </div>
                 </div>
@@ -460,6 +464,9 @@ foreach ($_musicCmdKeyMap as $fieldKey => $cmdKey) {
 <script>
 (function () {
     var url = window.location.pathname + window.location.search;
+    var BOT_ID = <?= (int)$botId ?>;
+
+    bhSetupChannelPicker('music-channel-box', 'music-channel-val', 'music-channel-btn', BOT_ID);
 
     function bhMusicToggle(el) {
         var field = el.dataset.field;

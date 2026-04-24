@@ -270,7 +270,7 @@ if (!is_string($initialBuilderJson) || $initialBuilderJson === '') {
     <meta charset="utf-8">
     <title><?= h('BotHub – Custom Command Builder') ?></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link href="/assets/css/custom-command-builder.css" rel="stylesheet">
+    <link href="/assets/css/custom-command-builder.css?v=<?= filemtime($_SERVER['DOCUMENT_ROOT'] . '/assets/css/custom-command-builder.css') ?>" rel="stylesheet">
 </head>
 <body>
 <form id="cc-builder-form" method="post" action="/dashboard/custom-commands/builder?command_id=<?= (int)$commandId ?>">
@@ -359,251 +359,89 @@ if (!is_string($initialBuilderJson) || $initialBuilderJson === '') {
                             <input type="text" id="cc-block-search" class="cc-search" placeholder="Search">
                         </div>
 
+<?php
+// ── Dynamic sidebar scanner ────────────────────────────────────────────────
+$_bh_builderBase = dirname(__DIR__) . '/functions/builder';
+$_bh_folderGroups = [
+    'message'    => 'Message',
+    'flow'       => 'Flow Control',
+    'voice'      => 'Voice Channel',
+    'role'       => 'Roles',
+    'channel'    => 'Channels',
+    'moderation' => 'Moderation',
+    'server'     => 'Server',
+    'bot'        => 'Bot',
+];
+$_bh_groupOrder = ['Message', 'Flow Control', 'Voice Channel', 'Roles', 'Channels', 'Moderation', 'Server', 'Bot'];
+$_bh_sidebarNodes = ['option' => [], 'action' => [], 'condition' => []];
+
+$_bh_iter = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($_bh_builderBase));
+foreach ($_bh_iter as $_bh_file) {
+    if ($_bh_file->getExtension() !== 'json') continue;
+    $_bh_data = json_decode(file_get_contents($_bh_file->getPathname()), true);
+    if (!isset($_bh_data['loadout'])) continue;
+    $_bh_l = $_bh_data['loadout'];
+    $_bh_cat = $_bh_l['category'] ?? '';
+    if (!isset($_bh_sidebarNodes[$_bh_cat])) continue;
+
+    $_bh_parentDir = basename(dirname($_bh_file->getPathname()));
+    $_bh_group = $_bh_l['group'] ?? ($_bh_folderGroups[$_bh_parentDir] ?? 'General');
+
+    $_bh_sidebarNodes[$_bh_cat][$_bh_group][] = [
+        'type'  => $_bh_l['type'] ?? '',
+        'title' => $_bh_l['title'] ?? '',
+        'desc'  => $_bh_l['description'] ?? '',
+        'badge' => $_bh_l['sidebar_badge'] ?? null,
+    ];
+}
+
+// Sort action groups by defined order, append any extras alphabetically
+$_bh_orderedActions = [];
+foreach ($_bh_groupOrder as $_bh_g) {
+    if (isset($_bh_sidebarNodes['action'][$_bh_g])) {
+        $_bh_orderedActions[$_bh_g] = $_bh_sidebarNodes['action'][$_bh_g];
+    }
+}
+foreach ($_bh_sidebarNodes['action'] as $_bh_g => $_bh_items) {
+    if (!isset($_bh_orderedActions[$_bh_g])) $_bh_orderedActions[$_bh_g] = $_bh_items;
+}
+$_bh_sidebarNodes['action'] = $_bh_orderedActions;
+?>
+
                         <div class="cc-tab-panel is-active" data-block-tab-content="options">
                             <div class="cc-group-title">Options</div>
                             <div class="cc-block-list">
-                                <button type="button" class="cc-block-item cc-block-item--option" draggable="true" data-block-type="option.text" data-block-label="Text">
+                                <?php foreach ($_bh_sidebarNodes['option']['General'] ?? array_merge(...array_values($_bh_sidebarNodes['option'])) as $_bh_node): ?>
+                                <button type="button" class="cc-block-item cc-block-item--option" draggable="true" data-block-type="<?= htmlspecialchars($_bh_node['type']) ?>" data-block-label="<?= htmlspecialchars($_bh_node['title']) ?>">
                                     <span class="cc-drag-handle">⋮⋮</span>
-                                    <span class="cc-badge">T</span>
-                                    <span class="cc-block-copy">
-                                        <strong>Text</strong>
-                                        <small>A text option.</small>
-                                    </span>
+                                    <span class="cc-badge"><?= htmlspecialchars($_bh_node['badge'] ?? 'O') ?></span>
+                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($_bh_node['title']) ?></strong><small><?= htmlspecialchars($_bh_node['desc']) ?></small></span>
                                 </button>
-
-                                <button type="button" class="cc-block-item cc-block-item--option" draggable="true" data-block-type="option.number" data-block-label="Number">
-                                    <span class="cc-drag-handle">⋮⋮</span>
-                                    <span class="cc-badge">#</span>
-                                    <span class="cc-block-copy">
-                                        <strong>Number</strong>
-                                        <small>A number option.</small>
-                                    </span>
-                                </button>
-
-                                <button type="button" class="cc-block-item cc-block-item--option" draggable="true" data-block-type="option.user" data-block-label="User">
-                                    <span class="cc-drag-handle">⋮⋮</span>
-                                    <span class="cc-badge">U</span>
-                                    <span class="cc-block-copy">
-                                        <strong>User</strong>
-                                        <small>Select a member from the server.</small>
-                                    </span>
-                                </button>
-
-                                <button type="button" class="cc-block-item cc-block-item--option" draggable="true" data-block-type="option.channel" data-block-label="Channel">
-                                    <span class="cc-drag-handle">⋮⋮</span>
-                                    <span class="cc-badge">#</span>
-                                    <span class="cc-block-copy">
-                                        <strong>Channel</strong>
-                                        <small>Select a channel from the server.</small>
-                                    </span>
-                                </button>
-
-                                <button type="button" class="cc-block-item cc-block-item--option" draggable="true" data-block-type="option.role" data-block-label="Role">
-                                    <span class="cc-drag-handle">⋮⋮</span>
-                                    <span class="cc-badge">R</span>
-                                    <span class="cc-block-copy">
-                                        <strong>Role</strong>
-                                        <small>Select a role from the server.</small>
-                                    </span>
-                                </button>
-
-                                <button type="button" class="cc-block-item cc-block-item--option" draggable="true" data-block-type="option.choice" data-block-label="Choice">
-                                    <span class="cc-drag-handle">⋮⋮</span>
-                                    <span class="cc-badge">?</span>
-                                    <span class="cc-block-copy">
-                                        <strong>Choice</strong>
-                                        <small>A True or False option.</small>
-                                    </span>
-                                </button>
-
-                                <button type="button" class="cc-block-item cc-block-item--option" draggable="true" data-block-type="option.attachment" data-block-label="Attachment">
-                                    <span class="cc-drag-handle">⋮⋮</span>
-                                    <span class="cc-badge">F</span>
-                                    <span class="cc-block-copy">
-                                        <strong>Attachment</strong>
-                                        <small>An attachment option.</small>
-                                    </span>
-                                </button>
+                                <?php endforeach; ?>
                             </div>
                         </div>
 
                         <div class="cc-tab-panel" data-block-tab-content="actions">
-
-                            <div class="cc-group-title">Message</div>
+                            <?php foreach ($_bh_sidebarNodes['action'] as $_bh_groupName => $_bh_groupItems): ?>
+                            <div class="cc-group-title"><?= htmlspecialchars($_bh_groupName) ?></div>
                             <div class="cc-block-list">
-                                <?php foreach ([
-                                    ['action.message.send_or_edit',    'Send or Edit a Message',        'Send or edit a message with embeds.'],
-                                    ['action.message.edit_component',  'Edit a Button or Select Menu',  'Edit a component of a previous message.'],
-                                    ['action.message.send_form',       'Send Form',                     'Send a modal form as interaction response.'],
-                                    ['action.delete_message',          'Delete a Message',              'Delete a message by variable or message ID.'],
-                                    ['action.message.publish',         'Publish a Message',             'Publish a message to an announcement channel.'],
-                                    ['action.message.react',           'React to a Message',            'Add a reaction to a message.'],
-                                    ['action.message.pin',             'Pin a Message',                 'Pin a message in the current channel.'],
-                                ] as [$type, $label, $desc]): ?>
-                                <button type="button" class="cc-block-item cc-block-item--action" draggable="true" data-block-type="<?= htmlspecialchars($type) ?>" data-block-label="<?= htmlspecialchars($label) ?>">
+                                <?php foreach ($_bh_groupItems as $_bh_node): ?>
+                                <button type="button" class="cc-block-item cc-block-item--action" draggable="true" data-block-type="<?= htmlspecialchars($_bh_node['type']) ?>" data-block-label="<?= htmlspecialchars($_bh_node['title']) ?>">
                                     <span class="cc-drag-handle">⋮⋮</span><span class="cc-badge">A</span>
-                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($label) ?></strong><small><?= htmlspecialchars($desc) ?></small></span>
+                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($_bh_node['title']) ?></strong><small><?= htmlspecialchars($_bh_node['desc']) ?></small></span>
                                 </button>
                                 <?php endforeach; ?>
                             </div>
-
-                            <div class="cc-group-title">HTTP</div>
-                            <div class="cc-block-list">
-                                <button type="button" class="cc-block-item cc-block-item--action" draggable="true" data-block-type="action.http.request" data-block-label="Send API Request">
-                                    <span class="cc-drag-handle">⋮⋮</span><span class="cc-badge">A</span>
-                                    <span class="cc-block-copy"><strong>Send API Request</strong><small>Make an HTTP request to an external API.</small></span>
-                                </button>
-                            </div>
-
-                            <div class="cc-group-title">Flow Control</div>
-                            <div class="cc-block-list">
-                                <?php foreach ([
-                                    ['action.flow.loop.run',      'Run Loop',                       'Execute a loop block.'],
-                                    ['action.flow.loop.stop',     'Stop Loop',                      'Stop an active loop.'],
-                                    ['action.flow.loop.set_mode', 'Set Loop Mode',                  'Change the mode of a running loop.'],
-                                    ['action.flow.wait',          'Wait before running another Action', 'Wait before executing another action.'],
-                                    ['action.text.manipulate',    'Manipulate some text',           'Manipulate and run functions on provided text.'],
-                                    ['action.utility.error_log',  'Send an Error Log Message',      'Send an error message to the configured log channel.'],
-                                    ['variable.local.set',        'Set a local unique Variable',    'Set a variable scoped to this command execution.'],
-                                    ['action.bot.set_status',     'Change the Bot Status',          'Change the bot\'s activity and online status.'],
-                                    ['action.utility.note',       'Note',                           'Write a note in the flow tree.'],
-                                ] as [$type, $label, $desc]): ?>
-                                <button type="button" class="cc-block-item cc-block-item--action" draggable="true" data-block-type="<?= htmlspecialchars($type) ?>" data-block-label="<?= htmlspecialchars($label) ?>">
-                                    <span class="cc-drag-handle">⋮⋮</span><span class="cc-badge">A</span>
-                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($label) ?></strong><small><?= htmlspecialchars($desc) ?></small></span>
-                                </button>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <div class="cc-group-title">Music <span class="cc-group-badge">Optional</span></div>
-                            <div class="cc-block-list">
-                                <?php foreach ([
-                                    ['action.music.create_player', 'Create Music Player',   'Create a music player (YouTube, Spotify, Plex).'],
-                                    ['action.music.create_plex',   'Create Plex Player',    'Create a Plex-specific music player.'],
-                                    ['action.music.add_queue',     'Add to Queue',          'Add a track to the queue.'],
-                                    ['action.music.play_queue',    'Play Queue',            'Start playing the queue.'],
-                                    ['action.music.remove_queue',  'Remove Queue',          'Remove a track from the queue.'],
-                                    ['action.music.shuffle_queue', 'Shuffle Queue',         'Shuffle the queue randomly.'],
-                                    ['action.music.pause',         'Pause Music',           'Pause the current playback.'],
-                                    ['action.music.resume',        'Resume Music',          'Resume paused playback.'],
-                                    ['action.music.stop',          'Stop Music',            'Stop playback and clear the queue.'],
-                                    ['action.music.disconnect',    'Disconnect from VC',    'Disconnect the bot from the voice channel.'],
-                                    ['action.music.skip',          'Skip Track',            'Skip the current track.'],
-                                    ['action.music.previous',      'Play Previous Track',   'Play the previous track.'],
-                                    ['action.music.seek',          'Set Track Position',    'Jump to a specific position in the track.'],
-                                    ['action.music.volume',        'Set Volume',            'Set the playback volume (0–200).'],
-                                    ['action.music.autoleave',     'Set Autoleave',         'Enable or disable auto-disconnect on inactivity.'],
-                                    ['action.music.replay',        'Replay Track',          'Replay the current track.'],
-                                    ['action.music.filter',        'Apply Audio Filter',    'Apply an audio filter to the playback.'],
-                                    ['action.music.clear_filters', 'Clear Filters',         'Remove all active audio filters.'],
-                                    ['action.music.search',        'Search Tracks',         'Search for tracks and show results.'],
-                                ] as [$type, $label, $desc]): ?>
-                                <button type="button" class="cc-block-item cc-block-item--action" draggable="true" data-block-type="<?= htmlspecialchars($type) ?>" data-block-label="<?= htmlspecialchars($label) ?>">
-                                    <span class="cc-drag-handle">⋮⋮</span><span class="cc-badge">A</span>
-                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($label) ?></strong><small><?= htmlspecialchars($desc) ?></small></span>
-                                </button>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <div class="cc-group-title">Voice Channel</div>
-                            <div class="cc-block-list">
-                                <?php foreach ([
-                                    ['action.vc.join',          'Join a Voice Channel',         'Make the bot join a voice channel.'],
-                                    ['action.vc.leave',         'Leave VC',                     'Leave the current voice channel.'],
-                                    ['action.vc.move_member',   'Move a VC Member',             'Move a member to another voice channel.'],
-                                    ['action.vc.kick_member',   'Kick a VC Member',             'Kick a member from their voice channel.'],
-                                    ['action.vc.mute_member',   'Mute / Unmute a VC Member',    'Server-mute or unmute a member.'],
-                                    ['action.vc.deafen_member', 'Deafen / Undeafen a VC Member','Server-deafen or undeafen a member.'],
-                                ] as [$type, $label, $desc]): ?>
-                                <button type="button" class="cc-block-item cc-block-item--action" draggable="true" data-block-type="<?= htmlspecialchars($type) ?>" data-block-label="<?= htmlspecialchars($label) ?>">
-                                    <span class="cc-drag-handle">⋮⋮</span><span class="cc-badge">A</span>
-                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($label) ?></strong><small><?= htmlspecialchars($desc) ?></small></span>
-                                </button>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <div class="cc-group-title">Roles</div>
-                            <div class="cc-block-list">
-                                <?php foreach ([
-                                    ['action.role.add_to_member',       'Add Roles to a Member',       'Add one or more roles to a member.'],
-                                    ['action.role.remove_from_member',  'Remove Roles from a Member',  'Remove roles from a member.'],
-                                    ['action.role.add_to_everyone',     'Add Roles to Everyone',       'Add a role to all server members.'],
-                                    ['action.role.remove_from_everyone','Remove Roles from Everyone',  'Remove a role from all server members.'],
-                                    ['action.role.create',              'Create a Role',               'Create a new role.'],
-                                    ['action.role.delete',              'Delete a Role',               'Delete an existing role.'],
-                                    ['action.role.edit',                'Edit a Role',                 'Edit an existing role.'],
-                                ] as [$type, $label, $desc]): ?>
-                                <button type="button" class="cc-block-item cc-block-item--action" draggable="true" data-block-type="<?= htmlspecialchars($type) ?>" data-block-label="<?= htmlspecialchars($label) ?>">
-                                    <span class="cc-drag-handle">⋮⋮</span><span class="cc-badge">A</span>
-                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($label) ?></strong><small><?= htmlspecialchars($desc) ?></small></span>
-                                </button>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <div class="cc-group-title">Channels</div>
-                            <div class="cc-block-list">
-                                <?php foreach ([
-                                    ['action.channel.create', 'Create a Channel', 'Create a new text or voice channel.'],
-                                    ['action.channel.edit',   'Edit a Channel',   'Edit an existing channel.'],
-                                    ['action.channel.delete', 'Delete a Channel', 'Delete a channel.'],
-                                    ['action.thread.create',  'Create a Thread',  'Create a new thread.'],
-                                    ['action.thread.edit',    'Edit a Thread',    'Edit an existing thread.'],
-                                    ['action.thread.delete',  'Delete a Thread',  'Delete a thread.'],
-                                ] as [$type, $label, $desc]): ?>
-                                <button type="button" class="cc-block-item cc-block-item--action" draggable="true" data-block-type="<?= htmlspecialchars($type) ?>" data-block-label="<?= htmlspecialchars($label) ?>">
-                                    <span class="cc-drag-handle">⋮⋮</span><span class="cc-badge">A</span>
-                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($label) ?></strong><small><?= htmlspecialchars($desc) ?></small></span>
-                                </button>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <div class="cc-group-title">Moderation</div>
-                            <div class="cc-block-list">
-                                <?php foreach ([
-                                    ['action.mod.kick',     'Kick Member',                'Kick a member from the server.'],
-                                    ['action.mod.ban',      'Ban Member',                 'Ban a member from the server.'],
-                                    ['action.mod.timeout',  'Timeout a Member',           'Put a member in timeout.'],
-                                    ['action.mod.nickname', 'Change Member\'s Nickname',  'Change a member\'s nickname.'],
-                                    ['action.mod.purge',    'Purge Messages',             'Bulk delete messages.'],
-                                ] as [$type, $label, $desc]): ?>
-                                <button type="button" class="cc-block-item cc-block-item--action" draggable="true" data-block-type="<?= htmlspecialchars($type) ?>" data-block-label="<?= htmlspecialchars($label) ?>">
-                                    <span class="cc-drag-handle">⋮⋮</span><span class="cc-badge">A</span>
-                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($label) ?></strong><small><?= htmlspecialchars($desc) ?></small></span>
-                                </button>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <div class="cc-group-title">Server</div>
-                            <div class="cc-block-list">
-                                <?php foreach ([
-                                    ['action.server.create_invite', 'Create Server Invite', 'Generate a server invite link.'],
-                                    ['action.server.leave',         'Leave Server',          'Make the bot leave the server.'],
-                                ] as [$type, $label, $desc]): ?>
-                                <button type="button" class="cc-block-item cc-block-item--action" draggable="true" data-block-type="<?= htmlspecialchars($type) ?>" data-block-label="<?= htmlspecialchars($label) ?>">
-                                    <span class="cc-drag-handle">⋮⋮</span><span class="cc-badge">A</span>
-                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($label) ?></strong><small><?= htmlspecialchars($desc) ?></small></span>
-                                </button>
-                                <?php endforeach; ?>
-                            </div>
-
+                            <?php endforeach; ?>
                         </div>
 
                         <div class="cc-tab-panel" data-block-tab-content="conditions">
                             <div class="cc-group-title">Conditions</div>
                             <div class="cc-block-list">
-                                <?php foreach ([
-                                    ['condition.comparison', 'Comparison Condition',   'Run actions based on the difference between two values.'],
-                                    ['condition.if_else',    'If – Else Condition',    'Run different branches on true or false.'],
-                                    ['condition.chance',     'Chance Condition',       'Branch by random probability.'],
-                                    ['condition.permission', 'Permission Condition',   'Check if the user has a specific permission.'],
-                                    ['condition.role',       'Role Condition',         'Check if the user has a specific role.'],
-                                    ['condition.channel',    'Channel Condition',      'Check if the command was used in a specific channel.'],
-                                    ['condition.user',       'User Condition',         'Check if the user matches a specific user ID.'],
-                                    ['condition.status',     'Status Condition',       'Check the user\'s online status.'],
-                                ] as [$type, $label, $desc]): ?>
-                                <button type="button" class="cc-block-item cc-block-item--condition" draggable="true" data-block-type="<?= htmlspecialchars($type) ?>" data-block-label="<?= htmlspecialchars($label) ?>">
+                                <?php foreach (array_merge(...array_values($_bh_sidebarNodes['condition'])) as $_bh_node): ?>
+                                <button type="button" class="cc-block-item cc-block-item--condition" draggable="true" data-block-type="<?= htmlspecialchars($_bh_node['type']) ?>" data-block-label="<?= htmlspecialchars($_bh_node['title']) ?>">
                                     <span class="cc-drag-handle">⋮⋮</span><span class="cc-badge">C</span>
-                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($label) ?></strong><small><?= htmlspecialchars($desc) ?></small></span>
+                                    <span class="cc-block-copy"><strong><?= htmlspecialchars($_bh_node['title']) ?></strong><small><?= htmlspecialchars($_bh_node['desc']) ?></small></span>
                                 </button>
                                 <?php endforeach; ?>
                             </div>
@@ -789,68 +627,6 @@ if (!is_string($initialBuilderJson) || $initialBuilderJson === '') {
             <!-- LEFT: Editor -->
             <div class="cc-mb-left">
 
-                <!-- Response Type -->
-                <div class="cc-mb-section">
-                    <div class="cc-mb-section-head">
-                        <span class="cc-mb-section-label">
-                            Response type
-                            <span class="cc-mb-section-hint">Where your bot should send this message.</span>
-                        </span>
-                    </div>
-                    <select class="cc-mb-select" id="cc-mb-response-type">
-                        <optgroup label="Reply">
-                            <option value="reply">Reply to the command</option>
-                            <option value="reply_message">Reply to a specific message</option>
-                            <option value="channel">Send the message to the channel the command was used in</option>
-                        </optgroup>
-                        <optgroup label="Specific">
-                            <option value="specific_channel">Send the message to a specific channel</option>
-                            <option value="channel_option">Send the message to a channel option</option>
-                        </optgroup>
-                        <optgroup label="Direct Message">
-                            <option value="dm_user">Direct message the user who used the command</option>
-                            <option value="dm_user_option">Direct message a user option</option>
-                            <option value="dm_specific_user">Direct message a specific user</option>
-                        </optgroup>
-                        <optgroup label="Edit">
-                            <option value="edit_action">Edit a message sent by another action</option>
-                        </optgroup>
-                    </select>
-
-                    <!-- Conditional: channel ID -->
-                    <div class="cc-mb-cond-field" id="cc-mb-cond-specific-channel" style="display:none">
-                        <label class="cc-mb-field-label">Channel ID</label>
-                        <input type="text" class="cc-mb-input" id="cc-mb-target-channel-id" placeholder="Channel ID…" maxlength="32">
-                    </div>
-
-                    <!-- Conditional: channel option name -->
-                    <div class="cc-mb-cond-field" id="cc-mb-cond-channel-option" style="display:none">
-                        <label class="cc-mb-field-label">Option Name</label>
-                        <input type="text" class="cc-mb-input" id="cc-mb-target-option-name" placeholder="Name der Channel-Option…" maxlength="32">
-                    </div>
-
-                    <!-- Conditional: DM user option name -->
-                    <div class="cc-mb-cond-field" id="cc-mb-cond-dm-user-option" style="display:none">
-                        <label class="cc-mb-field-label">Option Name</label>
-                        <input type="text" class="cc-mb-input" id="cc-mb-target-dm-option-name" placeholder="Name der User-Option…" maxlength="32">
-                    </div>
-
-                    <!-- Conditional: DM specific user ID -->
-                    <div class="cc-mb-cond-field" id="cc-mb-cond-dm-specific-user" style="display:none">
-                        <label class="cc-mb-field-label">User ID</label>
-                        <input type="text" class="cc-mb-input" id="cc-mb-target-user-id" placeholder="User ID…" maxlength="32">
-                    </div>
-
-                    <!-- Conditional: edit action – target variable -->
-                    <div class="cc-mb-cond-field" id="cc-mb-cond-edit-action" style="display:none">
-                        <label class="cc-mb-field-label">Edit Target Variable</label>
-                        <input type="text" class="cc-mb-input" id="cc-mb-edit-target-var" placeholder="z.B. my_message" maxlength="64" pattern="[a-z0-9_]+">
-                        <span class="cc-mb-section-hint">Variable name of the message you want to edit.</span>
-                    </div>
-                </div>
-
-                <div class="cc-mb-divider"></div>
-
                 <!-- Message Content -->
                 <div class="cc-mb-section">
                     <div class="cc-mb-section-head">
@@ -1000,6 +776,6 @@ if (!is_string($initialBuilderJson) || $initialBuilderJson === '') {
         botId:   <?= json_encode($currentBotId) ?>,
     };
 </script>
-<script src="/assets/js/custom-command-builder.js"></script>
+<script src="/assets/js/custom-command-builder.js?v=<?= filemtime($_SERVER['DOCUMENT_ROOT'] . '/assets/js/custom-command-builder.js') ?>"></script>
 </body>
 </html>

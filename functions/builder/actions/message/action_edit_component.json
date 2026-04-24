@@ -1,0 +1,31 @@
+{
+    "loadout": {
+        "type": "action.message.edit_component",
+        "category": "action",
+        "title": "Edit a Button or Select Menu",
+        "icon": "action",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "description": "Bearbeite einen Button oder ein Select-Menü einer Nachricht."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": []
+}

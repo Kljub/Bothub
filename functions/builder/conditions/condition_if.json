@@ -1,0 +1,79 @@
+{
+    "loadout": {
+        "type": "condition.if",
+        "category": "condition",
+        "title": "If",
+        "icon": "branch",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Prueft eine einfache Bedingung und verzweigt den Flow."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "input",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "true",
+                "type": "flow",
+                "description": "Erfüllt"
+            },
+            {
+                "name": "false",
+                "type": "flow",
+                "description": "Nicht erfüllt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "left_value",
+            "type": "text",
+            "label": "Left Value",
+            "placeholder": "{user.id}",
+            "required": true
+        },
+        {
+            "key": "operator",
+            "type": "select",
+            "label": "Operator",
+            "required": true,
+            "options": [
+                {
+                    "value": "equals",
+                    "label": "Ist gleich"
+                },
+                {
+                    "value": "not_equals",
+                    "label": "Ist ungleich"
+                },
+                {
+                    "value": "contains",
+                    "label": "Enthaelt"
+                },
+                {
+                    "value": "greater_than",
+                    "label": "Groesser als"
+                },
+                {
+                    "value": "less_than",
+                    "label": "Kleiner als"
+                }
+            ]
+        },
+        {
+            "key": "right_value",
+            "type": "text",
+            "label": "Right Value",
+            "placeholder": "1234567890",
+            "required": true
+        }
+    ]
+}

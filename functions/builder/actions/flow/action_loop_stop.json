@@ -1,0 +1,25 @@
+{
+    "loadout": {
+        "type": "action.flow.loop.stop",
+        "category": "action",
+        "title": "Stop Loop",
+        "icon": "action",
+        "colors": {
+            "primary": "orange",
+            "secondary": "dark"
+        },
+        "description": "Bricht die aktuelle Schleife sofort ab."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": []
+    },
+    "default": {},
+    "properties": []
+}

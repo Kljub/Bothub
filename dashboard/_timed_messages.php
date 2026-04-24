@@ -159,7 +159,10 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
     <div class="bh-field">
         <div class="bh-label">Channel Selection</div>
         <div class="bh-hint">Choose any <span style="color:#ef4444;font-weight:700">text</span> or <span style="color:#ef4444;font-weight:700">announcement</span> channel to send your timed message to.</div>
-        <input type="text" id="tm-channel" class="bh-input" placeholder="Channel ID">
+        <input type="hidden" id="tm-channel-val" value="">
+        <div class="it-picker-row" id="tm-channel-box">
+            <button type="button" class="it-picker-add" id="tm-channel-btn">+</button>
+        </div>
     </div>
 
     <!-- Interval Days -->
@@ -364,6 +367,8 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
 (function () {
     const BOT_ID = <?= (int)$botId ?>;
 
+    const tmChannelPicker = bhSetupChannelPicker('tm-channel-box', 'tm-channel-val', 'tm-channel-btn', BOT_ID);
+
     // ── Color sync ────────────────────────────────────────────────────────
     const colorPicker = document.getElementById('tm-color-picker');
     const colorHex    = document.getElementById('tm-color-hex');
@@ -411,7 +416,7 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
         const payload = {
             action:          'add',
             name:            document.getElementById('tm-name').value.trim(),
-            channel_id:      document.getElementById('tm-channel').value.trim(),
+            channel_id:      document.getElementById('tm-channel-val').value.trim(),
             interval_days:   parseInt(document.getElementById('tm-days').value)   || 0,
             interval_hours:  parseInt(document.getElementById('tm-hours').value)  || 0,
             interval_minutes:parseInt(document.getElementById('tm-minutes').value)|| 0,
@@ -439,7 +444,8 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
                 appendRow(json.id, payload);
                 // reset form
                 document.getElementById('tm-name').value    = '';
-                document.getElementById('tm-channel').value = '';
+                document.getElementById('tm-channel-val').value = '';
+                tmChannelPicker?.clear();
             } else {
                 flash(json.error || 'Error saving.', false);
             }

@@ -3,7 +3,7 @@
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { createHash, createDecipheriv } = require('crypto');
 const { appKey, runnerName } = require('./config');
-const { dbQuery } = require('./db');
+const { dbQuery, botLog } = require('./db');
 const { syncSlashCommands } = require('./slash-sync');
 const { handleInteraction } = require('./interaction-handler');
 const { loadCustomCommandRegistry } = require('./services/custom-command-service');
@@ -30,6 +30,9 @@ const { destroyAllQueues } = require('./services/music-service');
 const { initStatus, cleanupStatus } = require('./services/status-service');
 const { attachTicketEvents } = require('./services/ticket-service');
 const { attachTempVoiceEvents } = require('./services/temp-voice-service');
+const { ensureTables: ensureArcTables, attachArcEnCielEvents, stopPolling: stopArcPolling } = require('./services/arcenciel-service');
+const { attachStarboardEvents } = require('./services/starboard-service');
+const { attachSuggestionButton } = require('./services/suggestion-service');
 
 /**
  * Decrypts a bot token stored as 'enc:<base64(iv16+ciphertext)>'.
@@ -310,8 +313,10 @@ class BotManager {
 
             if (isReload) {
                 console.log(`[Bot ${botId}] Config Reloaded`);
+                botLog(botId, 'info', 'Config reloaded');
             } else {
                 console.log(`[Bot ${botId}] Ready: ${tag} | ${commandTotal} commands loaded`);
+                botLog(botId, 'info', `Bot gestartet: ${tag} | ${commandTotal} Commands geladen`);
             }
         });
 
@@ -319,10 +324,14 @@ class BotManager {
             try {
                 await handleInteraction(interaction, this, botId);
             } catch (error) {
-                console.error(
-                    `[BotHub Core] Interaction handler failed for bot ${botId}:`,
-                    error instanceof Error ? error.message : String(error)
-                );
+                const msg = error instanceof Error ? error.message : String(error);
+                console.error(`[BotHub Core] Interaction handler failed for bot ${botId}:`, msg);
+                botLog(botId, 'error', `Interaction-Fehler: ${msg}`, {
+                    type:        interaction.type,
+                    commandName: interaction.commandName ?? null,
+                    customId:    interaction.customId    ?? null,
+                    guildId:     interaction.guildId     ?? null,
+                });
             }
         });
 
@@ -372,16 +381,21 @@ class BotManager {
         attachInviteTrackerEvents(client, botId);
         attachTicketEvents(client, botId);
         attachTempVoiceEvents(client, botId);
+        attachArcEnCielEvents(client, botId);
+        attachStarboardEvents(client, botId);
+        attachSuggestionButton(client, botId);
 
         client.on('error', async (err) => {
             const message = err instanceof Error ? err.message : String(err);
             console.error(`[BotHub Core] Bot ${botId} client error:`, message);
+            botLog(botId, 'error', `Discord API Fehler: ${message}`);
             await this.setBotStopped(botId, message);
         });
 
         client.on('shardDisconnect', async (event, shardId) => {
             const code = event && typeof event.code !== 'undefined' ? String(event.code) : 'unknown';
             console.warn(`[BotHub Core] Bot ${botId} shard ${String(shardId)} disconnected (code ${code}).`);
+            botLog(botId, 'warn', `Shard ${String(shardId)} getrennt (Code ${code})`);
 
             if (this.clients.has(botId)) {
                 await this.setBotStopped(botId, `Shard disconnected (${code})`);
@@ -411,6 +425,7 @@ class BotManager {
             const isInvalidToken = /invalid token/i.test(firstMsg);
             if (isInvalidToken) {
                 console.error(`[BotHub Core] Bot ${botId}: invalid token — disabling bot (desired_state → stopped).`);
+                botLog(botId, 'error', 'Ungültiger Bot-Token — Bot wurde deaktiviert.');
                 await dbQuery(
                     `UPDATE bot_instances SET desired_state = 'stopped', runtime_status = 'error', last_error = ?, updated_at = NOW() WHERE id = ?`,
                     [firstMsg, botId]
@@ -419,6 +434,7 @@ class BotManager {
             }
 
             console.warn(`[BotHub Core] Bot ${botId}: login failed (attempt 1): ${firstMsg} — retrying in 5s`);
+            botLog(botId, 'warn', `Login fehlgeschlagen (Versuch 1): ${firstMsg} — erneuter Versuch in 5s`);
 
             // Wait 5s then retry with a fresh client — gives Discord time to expire the old session
             await new Promise(resolve => setTimeout(resolve, 5000));
@@ -465,6 +481,7 @@ class BotManager {
         stopYoutubeService(numericBotId);
         stopFreeGamesService(numericBotId);
         stopGiveawayService(numericBotId);
+        stopArcPolling(numericBotId);
         stopVerificationTimer(numericBotId);
         await this.setBotStopped(numericBotId, reason);
     }

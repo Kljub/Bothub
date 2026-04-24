@@ -1,0 +1,58 @@
+{
+    "loadout": {
+        "type": "action.http.request",
+        "category": "action",
+        "title": "Send API Request",
+        "icon": "globe",
+        "colors": {
+            "primary": "orange",
+            "secondary": "dark"
+        },
+        "subtitle": "HTTP",
+        "description": "Make an HTTP request to an external API and use the response."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {
+        "var_name": "",
+        "method": "GET",
+        "url": "",
+        "params": [],
+        "headers": [],
+        "body": "",
+        "body_type": "json",
+        "opt_exclude_empty": true,
+        "opt_vars_url": true,
+        "opt_vars_params": true,
+        "opt_vars_headers": true,
+        "opt_vars_body": true,
+        "opt_sanitize": false
+    },
+    "properties": [
+        {
+            "key": "var_name",
+            "type": "text",
+            "label": "Als Variable speichern",
+            "placeholder": "my_message",
+            "help": "Optionale Variable um später auf diese Nachricht zu verweisen."
+        },
+        {
+            "type": "request_builder_btn"
+        }
+    ]
+}

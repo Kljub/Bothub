@@ -1,0 +1,40 @@
+{
+    "loadout": {
+        "type": "action.role.add_to_everyone",
+        "category": "action",
+        "title": "Add Roles to Everyone",
+        "icon": "action",
+        "colors": {
+            "primary": "purple",
+            "secondary": "dark"
+        },
+        "description": "Füge allen Mitgliedern eine Rolle hinzu."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "role_ids",
+            "type": "text",
+            "label": "Rollen-IDs (kommagetrennt)",
+            "placeholder": "123,456",
+            "required": true
+        }
+    ]
+}

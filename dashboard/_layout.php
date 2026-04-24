@@ -73,6 +73,8 @@ try {
     <script src="/assets/js/bot-metrics-chart.js"></script>
     <script src="/assets/js/command-switches.js"></script>
     <script src="/assets/js/command-accordion.js"></script>
+    <script src="/assets/js/module-toggle.js"></script>
+    <script src="/assets/js/channel-picker.js"></script>
 <?php foreach ($extraJsFiles as $extraJsFile): ?>
     <?php if (is_string($extraJsFile) && $extraJsFile !== ''): ?>
     <script src="<?= h($extraJsFile) ?>"></script>

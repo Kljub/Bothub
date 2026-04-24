@@ -1,0 +1,76 @@
+{
+    "loadout": {
+        "type": "action.message.pin",
+        "category": "action",
+        "title": "Pin a Message",
+        "icon": "pin",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "subtitle": "Pin",
+        "description": "Pin a message in a channel."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {
+        "pin_mode": "by_var",
+        "target_message_node_id": "",
+        "message_id": "",
+        "channel_id": ""
+    },
+    "properties": [
+        {
+            "key": "pin_mode",
+            "type": "select",
+            "label": "Message Mode",
+            "help": "Choose how to identify the message to pin.",
+            "options": [
+                {
+                    "value": "by_var",
+                    "label": "By Variable (stored message)"
+                },
+                {
+                    "value": "by_id",
+                    "label": "By Message ID"
+                }
+            ]
+        },
+        {
+            "key": "target_message_node_id",
+            "type": "message_node_select",
+            "label": "Target Message",
+            "help": "Wähle die Message-Aktion aus dem Builder.",
+            "show_if": ["pin_mode", ["by_var"]]
+        },
+        {
+            "key": "message_id",
+            "type": "text",
+            "label": "Message-ID",
+            "placeholder": "{message.id}",
+            "show_if": ["pin_mode", ["by_id"]]
+        },
+        {
+            "key": "channel_id",
+            "type": "text",
+            "label": "Channel-ID",
+            "placeholder": "{channel.id}",
+            "show_if": ["pin_mode", ["by_id"]]
+        }
+    ]
+}

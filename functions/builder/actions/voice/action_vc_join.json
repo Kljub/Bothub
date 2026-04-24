@@ -1,0 +1,41 @@
+{
+    "loadout": {
+        "type": "action.vc.join",
+        "category": "action",
+        "title": "Join a Voice Channel",
+        "icon": "action",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Lasse den Bot einem Sprachkanal beitreten."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "channel_id",
+            "type": "text",
+            "label": "Channel ID (leer = Channel des Nutzers)",
+            "placeholder": "",
+            "required": false,
+            "vars": true
+        }
+    ]
+}

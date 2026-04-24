@@ -1,0 +1,46 @@
+{
+    "loadout": {
+        "type": "variable.local.set",
+        "category": "variable",
+        "title": "Set Local Variable",
+        "icon": "variable",
+        "colors": {
+            "primary": "teal",
+            "secondary": "dark"
+        },
+        "description": "Setzt eine lokale Variable, die nur in diesem Command genutzt werden kann."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "var_key",
+            "type": "text",
+            "label": "Variable Key",
+            "placeholder": "my_variable",
+            "required": true
+        },
+        {
+            "key": "var_value",
+            "type": "text",
+            "label": "Value",
+            "placeholder": "{user.id}",
+            "required": false
+        }
+    ]
+}

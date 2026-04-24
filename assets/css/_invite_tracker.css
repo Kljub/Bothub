@@ -31,11 +31,22 @@
 
 /* Channel picker row */
 .it-picker-row {
-    display: flex; flex-wrap: wrap; gap: 6px;
-    align-items: center; min-height: 36px;
+    display: flex; flex-wrap: nowrap; gap: 6px;
+    align-items: center; min-height: 28px;
 }
 
-.it-ch-tag-rm:hover { color: #f87171; }
+.it-ch-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(99,102,241,.18); color: #818cf8;
+    border-radius: 4px; padding: 1px 4px 1px 6px;
+    font-family: monospace; font-size: 11px;
+    user-select: none; max-width: 260px;
+}
+.it-ch-tag-rm {
+    background: none; border: none; color: #818cf8; cursor: pointer;
+    font-size: 13px; line-height: 1; padding: 0; opacity: .7;
+}
+.it-ch-tag-rm:hover { color: #f87171; opacity: 1; }
 .it-picker-add {
     background: none; border: 1px dashed #475569; color: #94a3b8;
     border-radius: 6px; width: 28px; height: 28px; font-size: 18px;

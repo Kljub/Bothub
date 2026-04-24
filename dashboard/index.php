@@ -48,6 +48,18 @@ if (count($sidebarBots) > 0 && ($currentBotId === null || $currentBotId <= 0)) {
     $currentBotId = (int)$sidebarBots[0]['id'];
 }
 
+// ── Global guild context (first guild as default; modules override via channel picker) ──
+$currentGuildId = '';
+if ($currentBotId > 0) {
+    try {
+        $gStmt = bh_get_pdo()->prepare(
+            'SELECT guild_id FROM bot_guilds WHERE bot_id = ? ORDER BY id LIMIT 1'
+        );
+        $gStmt->execute([$currentBotId]);
+        $currentGuildId = (string)($gStmt->fetchColumn() ?? '');
+    } catch (Throwable) {}
+}
+
 if ($view === 'settings') {
     $pageTitle = 'Settings';
 } elseif ($view === 'invite') {
@@ -76,6 +88,7 @@ if ($view === 'settings') {
 } elseif ($view === 'music') {
     $pageTitle = 'Music';
     $extraCssFiles[] = '/assets/css/_music.css';
+    $extraCssFiles[] = '/assets/css/_invite_tracker.css';
 } elseif ($view === 'youtube-auth') {
     $pageTitle = 'YouTube Auth';
 } elseif ($view === 'soundboard') {
@@ -83,10 +96,13 @@ if ($view === 'settings') {
     $extraCssFiles[] = '/assets/css/_soundboard.css';
 } elseif ($view === 'status') {
     $pageTitle = 'Status';
+} elseif ($view === 'logs') {
+    $pageTitle = 'Logs';
 } elseif ($view === 'economy-minigames') {
     $pageTitle = 'Economy & Minigames';
 } elseif ($view === 'pokemia') {
     $pageTitle = 'Pokemia';
+    $extraCssFiles[] = '/assets/css/_invite_tracker.css';
 } elseif ($view === 'leveling') {
     $pageTitle = 'Leveling';
     $extraCssFiles[] = '/assets/css/_leveling.css';
@@ -99,6 +115,7 @@ if ($view === 'settings') {
 } elseif ($view === 'timed-messages') {
     $pageTitle = 'Timed Messages';
     $extraCssFiles[] = '/assets/css/_timed_messages.css';
+    $extraCssFiles[] = '/assets/css/_invite_tracker.css';
 } elseif ($view === 'autoresponds') {
     $pageTitle = 'Autoresponder';
     $extraCssFiles[] = '/assets/css/_autoresponder.css';
@@ -117,18 +134,32 @@ if ($view === 'settings') {
 } elseif ($view === 'discord-automod') {
     $pageTitle = 'Discord Automod';
     $extraCssFiles[] = '/assets/css/_discord_automod.css';
+    $extraCssFiles[] = '/assets/css/_invite_tracker.css';
 } elseif ($view === 'giveaways') {
     $pageTitle = 'Giveaways';
     $extraCssFiles[] = '/assets/css/_giveaways.css';
 } elseif ($view === 'counting') {
     $pageTitle = 'Counting';
     $extraCssFiles[] = '/assets/css/_giveaways.css';
+    $extraCssFiles[] = '/assets/css/_invite_tracker.css';
 } elseif ($view === 'verification') {
     $pageTitle = 'Verification';
     $extraCssFiles[] = '/assets/css/_giveaways.css';
+    $extraCssFiles[] = '/assets/css/_invite_tracker.css';
 } elseif ($view === 'ai') {
     $pageTitle = 'AI Chat';
     $extraCssFiles[] = '/assets/css/_giveaways.css';
+} elseif ($view === 'arcenciel') {
+    $pageTitle = 'Arc en Ciel';
+    $extraCssFiles[] = '/assets/css/_giveaways.css';
+} elseif ($view === 'starboard') {
+    $pageTitle = 'Starboard';
+    $extraCssFiles[] = '/assets/css/_giveaways.css';
+    $extraCssFiles[] = '/assets/css/_invite_tracker.css';
+} elseif ($view === 'suggestion') {
+    $pageTitle = 'Suggestion';
+    $extraCssFiles[] = '/assets/css/_giveaways.css';
+    $extraCssFiles[] = '/assets/css/_invite_tracker.css';
 } elseif ($view === 'invite-tracker') {
     $pageTitle = 'Invite Tracker';
     $extraCssFiles[] = '/assets/css/_invite_tracker.css';
@@ -153,6 +184,7 @@ if ($view === 'settings') {
 } elseif ($view === 'tickets') {
     $pageTitle = 'Ticket System';
     $extraCssFiles[] = '/assets/css/_tickets.css';
+    $extraCssFiles[] = '/assets/css/_invite_tracker.css';
 } elseif ($view === 'temp-voice-channel') {
     $pageTitle = 'Temp Voice Channel';
     $extraCssFiles[] = '/assets/css/_temp_voice.css';
@@ -179,6 +211,7 @@ ob_start();
                 Willkommen <?= htmlspecialchars($displayName, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?> 👋
             </h1>
         </div>
+
 
         <?php if ($view === 'create-bot'): ?>
 
@@ -239,6 +272,10 @@ ob_start();
         <?php elseif ($view === 'status'): ?>
 
             <?php require __DIR__ . '/_status.php'; ?>
+
+        <?php elseif ($view === 'logs'): ?>
+
+            <?php require __DIR__ . '/_logs.php'; ?>
 
         <?php elseif ($view === 'economy-minigames'): ?>
 

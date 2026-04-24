@@ -1,0 +1,47 @@
+{
+    "loadout": {
+        "type": "action.mod.nickname",
+        "category": "action",
+        "title": "Change Member's Nickname",
+        "icon": "action",
+        "colors": {
+            "primary": "red",
+            "secondary": "dark"
+        },
+        "description": "Ändere den Nicknamen eines Mitglieds."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "user_id",
+            "type": "text",
+            "label": "User ID oder {option.user}",
+            "placeholder": "",
+            "required": true
+        },
+        {
+            "key": "nickname",
+            "type": "text",
+            "label": "Neuer Nickname (leer = zurücksetzen)",
+            "placeholder": "",
+            "required": false
+        }
+    ]
+}

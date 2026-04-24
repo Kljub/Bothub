@@ -1,0 +1,47 @@
+{
+    "loadout": {
+        "type": "action.vc.move_member",
+        "category": "action",
+        "title": "Move a VC Member",
+        "icon": "action",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Verschiebe ein Mitglied in einen anderen VC."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "user_id",
+            "type": "text",
+            "label": "User ID oder {option.user}",
+            "placeholder": "",
+            "required": true
+        },
+        {
+            "key": "channel_id",
+            "type": "text",
+            "label": "Ziel-Channel ID",
+            "placeholder": "",
+            "required": true
+        }
+    ]
+}

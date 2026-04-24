@@ -62,6 +62,9 @@ const SUBCOMMAND_PARENT_MAP = {
     'ai':                    'ai',
     'birthday-add':          'birthday',
     'birthday-delete':       'birthday',
+    'imagine':               'imagine',
+    'img2img':               'img2img',
+    'autotag':               'autotag',
 };
 
 function buildAllowedCommandMap(commandRegistry, enabledKeys) {

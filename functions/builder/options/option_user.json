@@ -1,0 +1,61 @@
+{
+    "loadout": {
+        "type": "option.user",
+        "category": "option",
+        "title": "User Option",
+        "icon": "U",
+        "colors": {
+            "primary": "purple",
+            "secondary": "dark"
+        },
+        "subtitle": "Select a member from the server",
+        "description": "Fuegt eine Option fuer den Slash Command hinzu.",
+        "ui": "next",
+        "sidebar_badge": "U"
+    },
+    "ports": {
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "option_name",
+            "type": "text",
+            "label": "Option Name",
+            "help": "A descriptive name of the option.",
+            "placeholder": "Name",
+            "render_if_empty": true,
+            "required": true,
+            "max_length": 32,
+            "pattern": "^[a-z0-9_-]{1,32}$"
+        },
+        {
+            "key": "description",
+            "type": "text",
+            "label": "Beschreibung",
+            "placeholder": "Was macht dieser Block?"
+        },
+        {
+            "key": "required",
+            "type": "select",
+            "label": "Pflichtfeld",
+            "options": [
+                {
+                    "value": "false",
+                    "label": "Optional"
+                },
+                {
+                    "value": "true",
+                    "label": "Pflichtfeld"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,54 @@
+{
+    "loadout": {
+        "type": "action.role.edit",
+        "category": "action",
+        "title": "Edit a Role",
+        "icon": "action",
+        "colors": {
+            "primary": "purple",
+            "secondary": "dark"
+        },
+        "description": "Bearbeite eine bestehende Rolle."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "role_id",
+            "type": "text",
+            "label": "Rollen-ID",
+            "placeholder": "",
+            "required": true
+        },
+        {
+            "key": "name",
+            "type": "text",
+            "label": "Neuer Name",
+            "placeholder": "",
+            "required": false
+        },
+        {
+            "key": "color",
+            "type": "text",
+            "label": "Neue Farbe",
+            "placeholder": "#5865F2",
+            "required": false
+        }
+    ]
+}

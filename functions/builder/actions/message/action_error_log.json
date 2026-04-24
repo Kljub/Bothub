@@ -1,0 +1,40 @@
+{
+    "loadout": {
+        "type": "action.utility.error_log",
+        "category": "action",
+        "title": "Send an Error Log Message",
+        "icon": "action",
+        "colors": {
+            "primary": "red",
+            "secondary": "dark"
+        },
+        "description": "Sende eine Fehlermeldung an den konfigurierten Log-Kanal."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "message",
+            "type": "textarea",
+            "label": "Log Message",
+            "placeholder": "Fehlerbeschreibung…",
+            "required": true
+        }
+    ]
+}

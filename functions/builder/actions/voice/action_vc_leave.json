@@ -1,0 +1,32 @@
+{
+    "loadout": {
+        "type": "action.vc.leave",
+        "category": "action",
+        "title": "Leave VC",
+        "icon": "action",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Verlasse den aktuellen Sprachkanal."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": []
+}

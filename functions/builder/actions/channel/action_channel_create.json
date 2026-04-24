@@ -1,0 +1,59 @@
+{
+    "loadout": {
+        "type": "action.channel.create",
+        "category": "action",
+        "title": "Create a Channel",
+        "icon": "action",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "description": "Erstelle einen neuen Kanal."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "name",
+            "type": "text",
+            "label": "Name",
+            "placeholder": "neuer-kanal",
+            "required": true
+        },
+        {
+            "key": "type",
+            "type": "select",
+            "label": "Typ",
+            "options": [
+                "text",
+                "voice",
+                "category",
+                "announcement"
+            ],
+            "required": true
+        },
+        {
+            "key": "result_var",
+            "type": "text",
+            "label": "Channel-ID als Variable speichern",
+            "placeholder": "new_channel_id",
+            "required": false
+        }
+    ]
+}

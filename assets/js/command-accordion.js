@@ -143,6 +143,8 @@ var BhPerm = (function () {
     function openPicker(anchorEl, botId, type, currentItems, onAdd) {
         closePicker();
 
+        var _pickerGuildId = ''; // tracks which guild channels were loaded from
+
         var popup = document.createElement('div');
         popup.className = 'bh-perm-picker';
         _picker       = popup;
@@ -236,7 +238,7 @@ var BhPerm = (function () {
                         e.stopPropagation();
                         onAdd(type === 'permissions'
                             ? { key: item.key, name: item.label }
-                            : { id: item.id, name: item.name });
+                            : { id: item.id, name: item.name, guild_id: _pickerGuildId });
                         closePicker();
                     });
                 }
@@ -300,6 +302,7 @@ var BhPerm = (function () {
                         }
                         fetch(subUrl).then(function (r) { return r.json(); }).then(function (d2) {
                             _cache[subUrl] = d2;
+                            if (d2.guild_id) _pickerGuildId = d2.guild_id;
                             var items2 = type === 'roles' ? (d2.roles || []) : (d2.channels || []);
                             renderList(items2);
                             searchInput.addEventListener('input', function () { renderList(items2); });
@@ -312,6 +315,7 @@ var BhPerm = (function () {
                 return;
             }
 
+            if (data.guild_id) _pickerGuildId = data.guild_id;
             var items = type === 'roles' ? (data.roles || []) : (data.channels || []);
             renderList(items);
             searchInput.addEventListener('input', function () { renderList(items); });
@@ -458,3 +462,55 @@ var BhPerm = (function () {
 
     return { closePicker: closePicker, openPicker: openPicker };
 }());
+
+/* ── bhSetupChannelPicker — reusable single-channel picker helper ── */
+function bhSetupChannelPicker(boxId, valId, btnId, botId, guildValId, onClear) {
+    var box      = document.getElementById(boxId);
+    var val      = document.getElementById(valId);
+    var btn      = document.getElementById(btnId);
+    var guildVal = guildValId ? document.getElementById(guildValId) : null;
+    if (!box || !val || !btn) return null;
+
+    function escHtml(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function renderTag(id, name) {
+        box.querySelectorAll('.it-ch-tag').forEach(function (t) { t.remove(); });
+        if (!id) return;
+        var tag = document.createElement('span');
+        tag.className = 'it-ch-tag';
+        tag.innerHTML = escHtml('#' + (name || id))
+            + '<button type="button" class="it-ch-tag-rm" title="Entfernen">×</button>';
+        tag.querySelector('.it-ch-tag-rm').addEventListener('click', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            val.value = '';
+            if (guildVal) guildVal.value = '';
+            tag.remove();
+            if (typeof onClear === 'function') onClear();
+        });
+        box.insertBefore(tag, btn);
+    }
+
+    if (val.value) renderTag(val.value, val.value);
+
+    btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        BhPerm.openPicker(this, botId, 'channels', [], function (item) {
+            val.value = item.id;
+            if (guildVal && item.guild_id) guildVal.value = item.guild_id;
+            renderTag(item.id, item.name || item.id);
+        });
+    });
+
+    return {
+        renderTag: renderTag,
+        getGuildId: function () { return guildVal ? guildVal.value : ''; },
+        clear: function () {
+            val.value = '';
+            if (guildVal) guildVal.value = '';
+            box.querySelectorAll('.it-ch-tag').forEach(function (t) { t.remove(); });
+        },
+    };
+}

@@ -1,0 +1,168 @@
+{
+    "loadout": {
+        "type": "action.select_menu",
+        "category": "component",
+        "title": "Select Menu",
+        "icon": "selector",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "subtitle": "Menu",
+        "description": "Fügt ein Auswahlmenü zu einer Nachricht hinzu."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "component",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {
+        "placeholder": "Select an option...",
+        "menu_type": "",
+        "options": [
+            {
+                "label": "Option 1",
+                "value": "option_1",
+                "description": ""
+            }
+        ],
+        "min_values": 1,
+        "max_values": 1,
+        "var_name": "",
+        "disabled": "false",
+        "show_replies": "show",
+        "component_order": false,
+        "custom_id": ""
+    },
+    "properties": [
+        {
+            "key": "placeholder",
+            "type": "text",
+            "label": "Platzhalter",
+            "placeholder": "Wähle eine Option…"
+        },
+        {
+            "key": "menu_type",
+            "type": "select",
+            "label": "Menü-Typ",
+            "options": [
+                {
+                    "value": "",
+                    "label": "String Select"
+                },
+                {
+                    "value": "user",
+                    "label": "User Select"
+                },
+                {
+                    "value": "role",
+                    "label": "Role Select"
+                },
+                {
+                    "value": "mentionable",
+                    "label": "Mentionable Select"
+                },
+                {
+                    "value": "channel",
+                    "label": "Channel Select"
+                }
+            ]
+        },
+        {
+            "key": "options",
+            "type": "options_list",
+            "label": "Optionen",
+            "max_items": 25,
+            "show_if": [
+                "menu_type",
+                [
+                    ""
+                ]
+            ]
+        },
+        {
+            "key": "max_values",
+            "type": "select",
+            "label": "Enable Multiselect",
+            "help": "Allow users to select more than one option.",
+            "options": [
+                {
+                    "value": "1",
+                    "label": "Single Select"
+                },
+                {
+                    "value": "25",
+                    "label": "Multi Select"
+                }
+            ]
+        },
+        {
+            "key": "var_name",
+            "type": "text",
+            "label": "Als Variable speichern",
+            "placeholder": "my_message",
+            "help": "Optionale Variable um später auf diese Nachricht zu verweisen.",
+            "var_usage": [
+                { "var": "values",  "label": "Selected values" },
+                { "var": "user.id", "label": "User ID" }
+            ]
+        },
+        {
+            "key": "disabled",
+            "type": "select",
+            "label": "Disable Select Menu by Default",
+            "help": "Set to 'true' to disable this select menu by default.",
+            "options": [
+                {
+                    "value": "false",
+                    "label": "false"
+                },
+                {
+                    "value": "true",
+                    "label": "true"
+                }
+            ]
+        },
+        {
+            "key": "show_replies",
+            "type": "select",
+            "label": "Show Select Menu Replies",
+            "help": "Choose whether to show or hide the select menu replies.",
+            "options": [
+                {
+                    "value": "show",
+                    "label": "Show Replies"
+                },
+                {
+                    "value": "hide",
+                    "label": "Hide Replies"
+                }
+            ]
+        },
+        {
+            "key": "component_order",
+            "type": "switch",
+            "label": "Component Ordering aktivieren",
+            "help": "Reihenfolge unter anderen Message-Komponenten festlegen."
+        },
+        {
+            "key": "custom_id",
+            "type": "text",
+            "label": "Custom ID",
+            "placeholder": "my_component_id",
+            "help": "Eindeutige ID für diesen Component."
+        }
+    ]
+}

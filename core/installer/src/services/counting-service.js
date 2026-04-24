@@ -8,6 +8,8 @@ const DEFAULT_ERROR_COOLDOWN = '❌ {user}, please wait a moment before counting
 // ── In-memory settings cache ──────────────────────────────────────────────────
 // key: `${botId}:${guildId}` → settings row or null
 const settingsCache = new Map();
+const cacheTime     = new Map();
+const CACHE_TTL     = 60_000;
 
 // ── Table init ────────────────────────────────────────────────────────────────
 async function ensureTables() {
@@ -41,7 +43,10 @@ async function ensureTables() {
 // ── Settings ──────────────────────────────────────────────────────────────────
 async function getSettings(botId, guildId) {
     const cacheKey = `${botId}:${guildId}`;
-    if (settingsCache.has(cacheKey)) return settingsCache.get(cacheKey);
+    const now = Date.now();
+    if (settingsCache.has(cacheKey) && now - (cacheTime.get(cacheKey) ?? 0) < CACHE_TTL) {
+        return settingsCache.get(cacheKey);
+    }
 
     try {
         const rows = await dbQuery(
@@ -50,6 +55,7 @@ async function getSettings(botId, guildId) {
         );
         const result = rows[0] || null;
         settingsCache.set(cacheKey, result);
+        cacheTime.set(cacheKey, now);
         return result;
     } catch (_) {
         return null;
@@ -111,19 +117,19 @@ async function handleMessage(message, botId) {
     // ── Error helpers ─────────────────────────────────────────────────────────
     const sendError = async (rawTemplate, defaultTemplate) => {
         if (!settings.return_errors) {
-            // Still delete in webhook mode to keep channel clean
-            if (settings.mode === 'webhook') {
-                message.delete().catch(() => {});
-            }
+            message.delete().catch(() => {});
             return;
         }
         const text = applyVars(rawTemplate || defaultTemplate, userMention, expected);
         try {
             const reply = await message.reply({ content: text });
-            // Auto-delete error reply after 6s
-            setTimeout(() => reply.delete().catch(() => {}), 6000);
-        } catch (_) {}
-        if (settings.mode === 'webhook') {
+            // Delete both the error reply and the wrong message after 6 s
+            setTimeout(() => {
+                reply.delete().catch(() => {});
+                message.delete().catch(() => {});
+            }, 6000);
+        } catch (_) {
+            // Reply failed (e.g. missing permissions) — still clean up the message
             message.delete().catch(() => {});
         }
     };

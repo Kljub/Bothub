@@ -1,0 +1,147 @@
+{
+    "loadout": {
+        "type": "action.message.send_or_edit",
+        "category": "action",
+        "title": "Send or Edit a Message",
+        "icon": "message",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "description": "Sendet oder bearbeitet eine Nachricht mit optionalen Embeds."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "button",
+                "type": "component",
+                "description": "Button",
+                "spawn_type": "action.button",
+                "max_connections": 5
+            },
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            },
+            {
+                "name": "menu",
+                "type": "component",
+                "description": "Select Menu",
+                "spawn_type": "action.select_menu",
+                "max_connections": 1
+            }
+        ]
+    },
+    "default": {
+        "response_type": "reply",
+        "target_message_node_id": "",
+        "target_message_id": "",
+        "target_channel_id": "",
+        "target_option_name": "",
+        "target_dm_option_name": "",
+        "target_user_id": "",
+        "var_name": "",
+        "message_content": "",
+        "embeds": [],
+        "ephemeral": false
+    },
+    "properties": [
+        {
+            "type": "message_builder_btn"
+        },
+        {
+            "key": "response_type",
+            "type": "select",
+            "label": "Response Type",
+            "options": [
+                { "value": "reply",          "label": "Reply — Reply to the command" },
+                { "value": "reply_message",  "label": "Reply — Reply to a specific message" },
+                { "value": "channel",        "label": "Reply — Send to the channel the command was used in" },
+                { "value": "specific_channel","label": "Specific — Send to a specific channel" },
+                { "value": "channel_option", "label": "Specific — Send to a channel option" },
+                { "value": "dm_user",        "label": "Direct Message — DM the user who used the command" },
+                { "value": "dm_user_option", "label": "Direct Message — DM a user option" },
+                { "value": "dm_specific_user","label": "Direct Message — DM a specific user" },
+                { "value": "edit_action",    "label": "Edit — Edit a message sent by another action" }
+            ]
+        },
+        {
+            "key": "target_message_node_id",
+            "type": "message_node_select",
+            "label": "Target Message",
+            "help": "Wähle eine Message-Aktion aus dem Builder (optional).",
+            "show_if": ["response_type", ["reply_message", "edit_action"]]
+        },
+        {
+            "key": "target_message_id",
+            "type": "text",
+            "label": "Message ID (optional)",
+            "placeholder": "{message.id}",
+            "help": "Alternativ: direkte Message-ID eingeben.",
+            "show_if": ["response_type", ["reply_message", "edit_action"]]
+        },
+        {
+            "key": "target_channel_id",
+            "type": "text",
+            "label": "Ziel Channel-ID",
+            "placeholder": "{channel.id}",
+            "show_if": ["response_type", ["specific_channel"]]
+        },
+        {
+            "key": "target_option_name",
+            "type": "text",
+            "label": "Channel Option Name",
+            "placeholder": "channel_option",
+            "show_if": ["response_type", ["channel_option"]]
+        },
+        {
+            "key": "target_dm_option_name",
+            "type": "text",
+            "label": "DM User Option Name",
+            "placeholder": "user_option",
+            "show_if": ["response_type", ["dm_user_option"]]
+        },
+        {
+            "key": "target_user_id",
+            "type": "text",
+            "label": "Ziel User-ID",
+            "placeholder": "{user.id}",
+            "show_if": ["response_type", ["dm_specific_user"]]
+        },
+        {
+            "key": "var_name",
+            "type": "text",
+            "label": "Als Variable speichern",
+            "placeholder": "my_message",
+            "help": "Optionale Variable um später auf diese Nachricht zu verweisen.",
+            "var_usage": [
+                { "var": "id",         "label": "Message ID" },
+                { "var": "channel_id", "label": "Channel ID" }
+            ]
+        },
+        {
+            "key": "ephemeral",
+            "type": "select",
+            "label": "Ephemeral",
+            "help": "Nur für den Ausführenden sichtbar.",
+            "options": [
+                {
+                    "value": "",
+                    "label": "Nein"
+                },
+                {
+                    "value": "1",
+                    "label": "Ja"
+                }
+            ]
+        }
+    ]
+}

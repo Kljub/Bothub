@@ -113,45 +113,15 @@ function bh_mod_render(bool $enabled, int $botId, string $key, string $title, st
     <div class="bh-mod-feature__right" style="display:flex;align-items:center;gap:10px">
       <span class="bh-mod-pill {$pillClass}" id="{$uid}_pill">{$pillDot} {$pillText}</span>
       <label class="bh-mod-toggle">
-        <input type="checkbox" id="{$uid}_chk"{$checkedAttr}>
+        <input type="checkbox" id="{$uid}_chk" class="bh-mod-chk"
+               data-bh-body="{$safeBodyId}"
+               data-bh-pill="{$uid}_pill"
+               data-bh-key="{$safeKey}"{$checkedAttr}>
         <span class="bh-mod-toggle__track"></span>
       </label>
     </div>
   </div>
 </div>
-<script>
-(function(){
-  var chk   = document.getElementById('{$uid}_chk');
-  var pill  = document.getElementById('{$uid}_pill');
-  var body  = document.getElementById('{$safeBodyId}');
-  function applyState(on) {
-    if (pill) {
-      pill.className = 'bh-mod-pill ' + (on ? 'bh-mod-pill--on' : 'bh-mod-pill--off');
-      pill.textContent = on ? '● Aktiv' : '● Deaktiviert';
-    }
-    if (body) {
-      body.classList.toggle('bh-mod-body--disabled', !on);
-    }
-  }
-  applyState(chk ? chk.checked : true);
-  if (!chk) return;
-  chk.addEventListener('change', function() {
-    var on = chk.checked;
-    var fd = new URLSearchParams();
-    fd.set('_bh_mod_action',  'toggle');
-    fd.set('_bh_mod_key',     '{$safeKey}');
-    fd.set('_bh_mod_enabled', on ? '1' : '0');
-    fetch(window.location.href, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: fd.toString()
-    }).then(function(r){ return r.json(); }).then(function(res){
-      if (!res.ok) { chk.checked = !on; applyState(!on); }
-      else         { applyState(on); }
-    }).catch(function(){ chk.checked = !on; applyState(!on); });
-  });
-})();
-</script>
 HTML;
 
     return $html;

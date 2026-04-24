@@ -1,0 +1,54 @@
+{
+    "loadout": {
+        "type": "action.mod.timeout",
+        "category": "action",
+        "title": "Timeout a Member",
+        "icon": "action",
+        "colors": {
+            "primary": "red",
+            "secondary": "dark"
+        },
+        "description": "Setze ein Mitglied in den Timeout."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "user_id",
+            "type": "text",
+            "label": "User ID oder {option.user}",
+            "placeholder": "",
+            "required": true
+        },
+        {
+            "key": "duration",
+            "type": "text",
+            "label": "Dauer (Sekunden)",
+            "placeholder": "300",
+            "required": true
+        },
+        {
+            "key": "reason",
+            "type": "textarea",
+            "label": "Grund",
+            "placeholder": "",
+            "required": false
+        }
+    ]
+}

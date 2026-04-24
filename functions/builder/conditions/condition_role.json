@@ -1,0 +1,45 @@
+{
+    "loadout": {
+        "type": "condition.role",
+        "category": "condition",
+        "title": "Role Condition",
+        "icon": "condition",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Prüfe ob der Nutzer eine bestimmte Rolle hat."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "true",
+                "type": "flow",
+                "description": "Erfüllt"
+            },
+            {
+                "name": "false",
+                "type": "flow",
+                "description": "Nicht erfüllt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "role_id",
+            "type": "text",
+            "label": "Rollen-ID",
+            "placeholder": "",
+            "required": true
+        }
+    ]
+}

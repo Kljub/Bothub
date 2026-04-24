@@ -1,0 +1,45 @@
+{
+    "loadout": {
+        "type": "condition.chance",
+        "category": "condition",
+        "title": "Chance Condition",
+        "icon": "condition",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Tritt mit einer bestimmten Wahrscheinlichkeit ein."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "true",
+                "type": "flow",
+                "description": "Erfüllt"
+            },
+            {
+                "name": "false",
+                "type": "flow",
+                "description": "Nicht erfüllt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "percent",
+            "type": "text",
+            "label": "Wahrscheinlichkeit (%)",
+            "placeholder": "50",
+            "required": true
+        }
+    ]
+}

@@ -7,6 +7,36 @@ declare(strict_types=1);
 require_once __DIR__ . '/../discord/discord_api.php';
 require_once __DIR__ . '/../functions/bot_token.php';
 
+if (!function_exists('bh_notify_status_apply')) {
+    function bh_notify_status_apply(int $botId): void
+    {
+        if ($botId <= 0) return;
+        try {
+            $secretPath = dirname(__DIR__) . '/db/config/secret.php';
+            if (!is_file($secretPath) || !is_readable($secretPath)) return;
+            $secret = require $secretPath;
+            $appKey = trim((string)($secret['APP_KEY'] ?? ''));
+            if ($appKey === '') return;
+            $pdo     = bh_get_pdo();
+            $stmt    = $pdo->query("SELECT endpoint FROM core_runners WHERE endpoint != '' ORDER BY id ASC");
+            $runners = $stmt ? $stmt->fetchAll() : [];
+            if (!is_array($runners) || count($runners) === 0) return;
+            foreach ($runners as $runner) {
+                $endpoint = rtrim(trim((string)($runner['endpoint'] ?? '')), '/');
+                if ($endpoint === '') continue;
+                $ch = curl_init($endpoint . '/status/bot/' . $botId . '/apply');
+                if ($ch === false) continue;
+                curl_setopt_array($ch, [
+                    CURLOPT_RETURNTRANSFER => true, CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => '', CURLOPT_TIMEOUT => 4, CURLOPT_CONNECTTIMEOUT => 2,
+                    CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $appKey, 'Content-Type: application/json'],
+                ]);
+                curl_exec($ch);
+            }
+        } catch (Throwable) {}
+    }
+}
+
 if (!isset($sidebarBots) || !is_array($sidebarBots)) {
     $sidebarBots = [];
 }
@@ -339,6 +369,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         }
 
         $newName = trim((string)($_POST['new_name'] ?? ''));
+        // Empty string = not changed; whitespace-only = clear description
+        $newDescriptionRaw = (string)($_POST['new_description'] ?? '');
+        $newDescription = $newDescriptionRaw !== '' ? trim($newDescriptionRaw) : null;
         $payload = [];
 
         if ($newName !== '') {
@@ -374,16 +407,33 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             }
         }
 
-        if ($payload === []) {
-            bh_settings_set_flash('err', 'Bitte Name, Avatar und/oder Banner angeben.');
+        $hasDescription = $newDescription !== null;
+        if ($payload === [] && !$hasDescription) {
+            bh_settings_set_flash('err', 'Bitte mindestens ein Feld ausfüllen.');
             bh_settings_redirect($botId, 'profile');
         }
 
-        $res = discord_api_request_bot((string)$tokenData['token'], 'PATCH', '/users/@me', $payload);
-        if (!$res['ok']) {
-            error_log("Discord Profile Update Error for Bot $botId: " . json_encode($res['error'] ?? 'unknown'));
-            bh_settings_set_flash('err', 'Discord konnte das Profil nicht aktualisieren. Bitte prüfe den Bot-Token.');
-            bh_settings_redirect($botId, 'profile');
+        if ($payload !== []) {
+            $res = discord_api_request_bot((string)$tokenData['token'], 'PATCH', '/users/@me', $payload);
+            if (!$res['ok']) {
+                error_log("Discord Profile Update Error for Bot $botId: " . json_encode($res['error'] ?? 'unknown'));
+                bh_settings_set_flash('err', 'Discord konnte das Profil nicht aktualisieren. Bitte prüfe den Bot-Token.');
+                bh_settings_redirect($botId, 'profile');
+            }
+        }
+
+        if ($hasDescription) {
+            $descLen = mb_strlen((string)$newDescription, 'UTF-8');
+            if ($descLen > 400) {
+                bh_settings_set_flash('err', 'Beschreibung darf maximal 400 Zeichen haben.');
+                bh_settings_redirect($botId, 'profile');
+            }
+            $descRes = discord_api_request_bot((string)$tokenData['token'], 'PATCH', '/applications/@me', ['description' => (string)$newDescription]);
+            if (!$descRes['ok']) {
+                error_log("Discord App Description Update Error for Bot $botId: " . json_encode($descRes['error'] ?? 'unknown'));
+                bh_settings_set_flash('err', 'Beschreibung konnte nicht gespeichert werden: ' . (string)($descRes['error'] ?? 'Unbekannter Fehler'));
+                bh_settings_redirect($botId, 'profile');
+            }
         }
 
         bh_settings_set_flash('ok', 'Discord Profil wurde aktualisiert.');
@@ -475,6 +525,62 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         bh_settings_redirect($botId, 'profile');
     }
 
+    if ($action === 'update_custom_status') {
+        if ($botId <= 0) {
+            bh_settings_set_flash('err', 'Ungültiger Bot.');
+            bh_settings_redirect(null, 'profile');
+        }
+
+        $row = bh_settings_fetch_bot_row($userId, $botId);
+        if ($row === null) {
+            bh_settings_set_flash('err', 'Bot nicht gefunden oder keine Berechtigung.');
+            bh_settings_redirect($botId, 'profile');
+        }
+
+        $statusText    = mb_substr(trim((string)($_POST['custom_status_text'] ?? '')), 0, 128);
+        $validPresence = ['online', 'idle', 'dnd', 'invisible'];
+        $presenceStatus = in_array($_POST['custom_status_presence'] ?? '', $validPresence, true)
+            ? $_POST['custom_status_presence']
+            : 'online';
+
+        try {
+            $pdo = bh_get_pdo();
+            $pdo->exec("CREATE TABLE IF NOT EXISTS bot_status_settings (
+                id               INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                bot_id           INT UNSIGNED NOT NULL,
+                mode             ENUM('fixed','rotating','command','disabled') NOT NULL DEFAULT 'disabled',
+                presence_status  ENUM('online','idle','dnd','invisible')        NOT NULL DEFAULT 'online',
+                status_type      ENUM('watching','playing','listening','streaming','competing','custom') NOT NULL DEFAULT 'playing',
+                status_text      VARCHAR(128) NOT NULL DEFAULT '',
+                stream_url       VARCHAR(255) NOT NULL DEFAULT '',
+                rotating_interval INT UNSIGNED NOT NULL DEFAULT 60,
+                cmd_change_status TINYINT(1)  NOT NULL DEFAULT 0,
+                event_restart    TINYINT(1)   NOT NULL DEFAULT 1,
+                event_update     TINYINT(1)   NOT NULL DEFAULT 1,
+                event_rotating   TINYINT(1)   NOT NULL DEFAULT 1,
+                UNIQUE KEY uq_bot_id (bot_id)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+            $pdo->prepare("
+                INSERT INTO bot_status_settings (bot_id, mode, presence_status, status_type, status_text)
+                VALUES (?, 'fixed', ?, 'custom', ?)
+                ON DUPLICATE KEY UPDATE
+                    mode            = IF(mode = 'disabled', 'fixed', mode),
+                    presence_status = VALUES(presence_status),
+                    status_type     = 'custom',
+                    status_text     = VALUES(status_text)
+            ")->execute([$botId, $presenceStatus, $statusText]);
+
+            bh_notify_status_apply($botId);
+        } catch (Throwable $e) {
+            bh_settings_set_flash('err', 'Status konnte nicht gespeichert werden: ' . $e->getMessage());
+            bh_settings_redirect($botId, 'profile');
+        }
+
+        bh_settings_set_flash('ok', 'Custom Status wurde aktualisiert.');
+        bh_settings_redirect($botId, 'profile');
+    }
+
     if ($action === 'delete_bot') {
         if ($botId <= 0) {
             bh_settings_set_flash('err', 'Ungültiger Bot.');
@@ -511,8 +617,11 @@ $discordAvatarHash = null;
 $discordAvatarUrl = null;
 $discordBannerHash = null;
 $discordBannerUrl = null;
+$discordDescription = null;
 $discordError = null;
 $tokenHint = null;
+$currentCustomStatus = '';
+$currentPresenceStatus = 'online';
 
 $desiredState = 'stopped';
 $runtimeStatus = 'offline';
@@ -555,6 +664,23 @@ if ($currentBotId !== null && $currentBotId > 0) {
                     $discordBannerHash = isset($data['banner']) && $data['banner'] !== null ? (string)$data['banner'] : null;
                     $discordBannerUrl  = bh_settings_discord_banner_url($discordUserId, $discordBannerHash);
                 }
+            }
+
+            // Load custom status from DB
+            try {
+                $ssStmt = bh_get_pdo()->prepare('SELECT status_text, presence_status FROM bot_status_settings WHERE bot_id = ? LIMIT 1');
+                $ssStmt->execute([$currentBotId]);
+                $ssRow = $ssStmt->fetch();
+                if (is_array($ssRow)) {
+                    $currentCustomStatus  = (string)($ssRow['status_text']     ?? '');
+                    $currentPresenceStatus = (string)($ssRow['presence_status'] ?? 'online');
+                }
+            } catch (Throwable) {}
+
+            // Load application description separately
+            $appRes = discord_api_get_application((string)$tokenData['token']);
+            if ($appRes['ok'] && is_array($appRes['data'])) {
+                $discordDescription = (string)($appRes['data']['description'] ?? '');
             }
         }
     }
@@ -656,6 +782,31 @@ if ($baseQuery !== []) {
             <section class="bh-card">
                 <div class="bh-card-hdr">
                     <div>
+                        <div class="bh-card-title">About Me <span class="bh-settings-info">ⓘ</span></div>
+                        <div class="bh-card-desc">Beschreibung im Discord-Profil des Bots (max. 400 Zeichen)</div>
+                    </div>
+                </div>
+
+                <div class="bh-card-body">
+                    <label class="bh-label" for="new_description">Beschreibung</label>
+                    <textarea
+                        id="new_description"
+                        name="new_description"
+                        class="bh-input"
+                        rows="4"
+                        maxlength="400"
+                        placeholder="<?= htmlspecialchars($discordDescription ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
+                        style="resize:vertical;"
+                    ><?= htmlspecialchars($discordDescription ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?></textarea>
+                    <div class="bh-settings-upload-help" style="margin-top:4px;">
+                        Leer lassen um die Beschreibung nicht zu ändern. Zum Löschen ein Leerzeichen eingeben.
+                    </div>
+                </div>
+            </section>
+
+            <section class="bh-card">
+                <div class="bh-card-hdr">
+                    <div>
                         <div class="bh-card-title">Bot Avatar <span class="bh-settings-info">ⓘ</span></div>
                         <div class="bh-card-desc">Your bot's profile picture</div>
                     </div>
@@ -721,6 +872,50 @@ if ($baseQuery !== []) {
 
             <div class="bh-settings-actions">
                 <button type="submit" class="bh-btn bh-btn--primary">Save Changes</button>
+            </div>
+        </form>
+
+        <form method="post" action="<?= htmlspecialchars($formAction, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" class="bh-settings-form">
+            <input type="hidden" name="action" value="update_custom_status">
+            <input type="hidden" name="bot_id" value="<?= (int)($currentBotId ?? 0) ?>">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES) ?>">
+
+            <section class="bh-card">
+                <div class="bh-card-hdr">
+                    <div>
+                        <div class="bh-card-title">Custom Status 💭</div>
+                        <div class="bh-card-desc">Gedankenbubble — erscheint als Custom Status unter dem Bot-Namen in Discord</div>
+                    </div>
+                </div>
+
+                <div class="bh-card-body">
+                    <label class="bh-label" for="custom_status_text">Status Text</label>
+                    <input
+                        id="custom_status_text"
+                        name="custom_status_text"
+                        type="text"
+                        class="bh-input"
+                        maxlength="128"
+                        value="<?= htmlspecialchars($currentCustomStatus, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
+                        placeholder="z.B. 🤖 Powered by BotHub"
+                        autocomplete="off"
+                    >
+                    <div class="bh-settings-upload-help" style="margin-top:6px;">Du kannst Emojis direkt eintippen (z.B. 🎮, 🔧). Leer lassen um den Status zu entfernen.</div>
+
+                    <label class="bh-label" for="custom_status_presence" style="margin-top:16px;">Presence</label>
+                    <select id="custom_status_presence" name="custom_status_presence" class="bh-input" style="cursor:pointer;">
+                        <?php foreach (['online' => '🟢 Online', 'idle' => '🌙 Idle', 'dnd' => '🔴 Do not Disturb', 'invisible' => '⚫ Invisible'] as $val => $label): ?>
+                        <option value="<?= $val ?>" <?= $currentPresenceStatus === $val ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div class="bh-settings-upload-help" style="margin-top:4px;">Für mehr Optionen (Rotating, Streaming, …) → <a href="<?= htmlspecialchars('/dashboard?view=status&bot_id=' . (int)($currentBotId ?? 0), ENT_QUOTES) ?>" style="color:#6366f1;">Status-Seite</a></div>
+                </div>
+            </section>
+
+            <div class="bh-settings-actions">
+                <button type="submit" class="bh-btn bh-btn--primary">Status speichern</button>
             </div>
         </form>
 

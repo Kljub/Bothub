@@ -1,0 +1,40 @@
+{
+    "loadout": {
+        "type": "variable.global.delete",
+        "category": "variable",
+        "title": "Delete Global Variable",
+        "icon": "variable",
+        "colors": {
+            "primary": "teal",
+            "secondary": "dark"
+        },
+        "description": "Löscht eine globale Variable aus der Datenbank."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {
+        "var_key": ""
+    },
+    "properties": [
+        {
+            "key": "var_key",
+            "type": "text",
+            "label": "Variable Key",
+            "placeholder": "my_variable"
+        }
+    ]
+}

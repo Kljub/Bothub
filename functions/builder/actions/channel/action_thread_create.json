@@ -1,0 +1,59 @@
+{
+    "loadout": {
+        "type": "action.thread.create",
+        "category": "action",
+        "title": "Create a Thread",
+        "icon": "action",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "description": "Erstelle einen neuen Thread."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "name",
+            "type": "text",
+            "label": "Thread-Name",
+            "placeholder": "Diskussion",
+            "required": true
+        },
+        {
+            "key": "auto_archive",
+            "type": "select",
+            "label": "Auto-Archive",
+            "options": [
+                "60",
+                "1440",
+                "4320",
+                "10080"
+            ],
+            "required": false
+        },
+        {
+            "key": "result_var",
+            "type": "text",
+            "label": "Thread-ID als Variable speichern",
+            "placeholder": "new_thread_id",
+            "required": false
+        }
+    ]
+}

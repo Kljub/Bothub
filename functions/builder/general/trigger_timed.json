@@ -1,0 +1,52 @@
+{
+    "loadout": {
+        "type": "trigger.timed",
+        "category": "trigger",
+        "title": "Timed Event Trigger",
+        "icon": "clock",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "subtitle": "Schedule / Interval",
+        "description": "Startet einen Flow nach einem Zeitplan oder in regelmäßigen Abständen."
+    },
+    "ports": {
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {
+        "event_name": "",
+        "event_type": "interval",
+        "interval_seconds": 0,
+        "interval_minutes": 0,
+        "interval_hours": 0,
+        "interval_days": 0,
+        "week_days": [
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+            "Sun"
+        ],
+        "schedule_time": "00:00",
+        "schedule_days": [
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+            "Sun"
+        ]
+    },
+    "properties": []
+}

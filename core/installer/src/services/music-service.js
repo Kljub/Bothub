@@ -475,12 +475,23 @@ async function loadMusicSettings(botId) {
 
 async function isMusicEnabled(botId) {
     const s = await loadMusicSettings(botId);
-    return s ? Number(s.enabled) === 1 : false;
+    if (!s) return true; // no row yet → treat as enabled (not explicitly disabled)
+    return Number(s.enabled) === 1;
 }
 
 async function isCommandEnabled(botId, cmdKey) {
     const s = await loadMusicSettings(botId);
-    if (!s) return false;
+    if (!s) {
+        // No settings row yet — fall back to commands table (default is enabled)
+        try {
+            const rows = await dbQuery(
+                'SELECT is_enabled FROM commands WHERE bot_id = ? AND command_key = ? LIMIT 1',
+                [Number(botId), `music-${cmdKey}`]
+            );
+            if (Array.isArray(rows) && rows.length > 0) return Number(rows[0].is_enabled) === 1;
+        } catch (_) {}
+        return true;
+    }
     if (Number(s.enabled) !== 1) return false;
     return Number(s[`cmd_${cmdKey}`]) === 1;
 }

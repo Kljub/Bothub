@@ -47,6 +47,8 @@ async function loadRotations(botId) {
  */
 function applyStatus(client, type, text, streamUrl = '', presenceStatus = 'online') {
     if (!client?.user) return;
+    // Guard: don't attempt setPresence if the WS isn't ready (shard not yet established)
+    if (!client.isReady()) return;
 
     const activityType = TYPE_MAP[String(type || '').toLowerCase()] ?? ActivityType.Playing;
     const statusText   = String(text || '').trim();
@@ -73,14 +75,20 @@ function applyStatus(client, type, text, streamUrl = '', presenceStatus = 'onlin
         }
     }
 
+    let presenceSet = false;
     try {
-        client.user.setPresence({
-            activities: [activity],
-            status: presence,
-        });
+        client.user.setPresence({ activities: [activity], status: presence });
+        presenceSet = true;
     } catch (e) {
         console.warn(`[status-service] setPresence failed (shard not ready?): ${e.message}`);
-        return;
+    }
+
+    // Retry once after 5 s if shard wasn't established yet
+    if (!presenceSet) {
+        setTimeout(() => {
+            if (!client?.user) return;
+            try { client.user.setPresence({ activities: [activity], status: presence }); } catch (_) {}
+        }, 5000);
     }
 
 }
@@ -137,7 +145,11 @@ async function initStatus(client, botId) {
 
     // 'command' mode: status set via /change-status — apply presence only
     if (settings.mode === 'command' && VALID_PRESENCE.has(presenceStatus)) {
-        client.user.setPresence({ status: presenceStatus });
+        try {
+            client.user.setPresence({ status: presenceStatus });
+        } catch (e) {
+            console.warn(`[status-service] setPresence (command mode) failed: ${e.message}`);
+        }
     }
 }
 

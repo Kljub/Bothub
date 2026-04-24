@@ -1,0 +1,50 @@
+{
+    "loadout": {
+        "type": "condition.status",
+        "category": "condition",
+        "title": "Status Condition",
+        "icon": "condition",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Prüfe den aktuellen Status eines Nutzers (falls verfügbar)."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "true",
+                "type": "flow",
+                "description": "Erfüllt"
+            },
+            {
+                "name": "false",
+                "type": "flow",
+                "description": "Nicht erfüllt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "status",
+            "type": "select",
+            "label": "Status",
+            "options": [
+                "online",
+                "idle",
+                "dnd",
+                "offline"
+            ],
+            "required": true
+        }
+    ]
+}

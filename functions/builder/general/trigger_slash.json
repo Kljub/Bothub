@@ -1,0 +1,119 @@
+{
+  "loadout": {
+    "type": "trigger.slash",
+    "category": "trigger",
+    "title": "Slash Command",
+    "subtitle": "/command",
+    "description": "Startet einen Custom Command über einen Slash Command.",
+    "icon": "exclamation-triangle",
+    "colors": {
+      "primary": "yellow",
+      "secondary": "dark"
+    }
+  },
+
+  "ports": {
+    "inputs": [
+      {
+        "name": "options",
+        "type": "object",
+        "description": "Slash Command Optionen"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "next",
+        "type": "flow",
+        "description": "Weiterer Ablauf"
+      }
+    ]
+  },
+
+  "default": {
+    "display_name": "Slash Command",
+    "name": "command",
+    "description": "Custom command"
+  },
+
+  "permissions": {
+    "allowed_roles": [
+      {
+        "id": "everyone",
+        "name": "@everyone"
+      }
+    ],
+    "banned_roles": [],
+    "required_permissions": [],
+    "banned_permissions": [],
+    "banned_channels": [],
+    "visible_to_everybody": true,
+    "cooldown_type": "none",
+    "cooldown_seconds": 10
+  },
+
+  "properties": [
+    {
+      "key": "display_name",
+      "type": "text",
+      "label": "Anzeigename",
+      "help": "Name des Commands im Dashboard"
+    },
+    {
+      "key": "name",
+      "type": "text",
+      "label": "Command Name",
+      "help": "Slash Command Name (ohne /)"
+    },
+    {
+      "key": "description",
+      "type": "text",
+      "label": "Beschreibung",
+      "help": "Beschreibung des Commands"
+    },
+    {
+      "key": "ephemeral",
+      "type": "select",
+      "label": "Antworten verbergen",
+      "help": "Verbirgt die Antwort vor anderen Nutzern.",
+      "options": [
+        {
+          "value": "0",
+          "label": "Für alle sichtbar"
+        },
+        {
+          "value": "1",
+          "label": "Nur für Ausführenden sichtbar"
+        }
+      ]
+    },
+    {
+      "key": "cooldown_type",
+      "type": "select",
+      "label": "Cooldown Typ",
+      "help": "Bestimmt den Cooldown-Typ.",
+      "options": [
+        {
+          "value": "none",
+          "label": "Kein Cooldown"
+        },
+        {
+          "value": "user",
+          "label": "Pro Nutzer"
+        },
+        {
+          "value": "server",
+          "label": "Serverweit"
+        }
+      ]
+    },
+    {
+      "key": "cooldown_seconds",
+      "type": "number",
+      "label": "Cooldown (Sekunden)",
+      "help": "Dauer des Cooldowns in Sekunden",
+      "min": 1,
+      "max": 86400,
+      "show_if": ["cooldown_type", ["user", "server"]]
+    }
+  ]
+}

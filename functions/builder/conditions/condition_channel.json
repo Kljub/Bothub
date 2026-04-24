@@ -1,0 +1,45 @@
+{
+    "loadout": {
+        "type": "condition.channel",
+        "category": "condition",
+        "title": "Channel Condition",
+        "icon": "condition",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Prüfe ob der Command in einem bestimmten Kanal genutzt wird."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "true",
+                "type": "flow",
+                "description": "Erfüllt"
+            },
+            {
+                "name": "false",
+                "type": "flow",
+                "description": "Nicht erfüllt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "channel_id",
+            "type": "text",
+            "label": "Channel-ID",
+            "placeholder": "",
+            "required": true
+        }
+    ]
+}

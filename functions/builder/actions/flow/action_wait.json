@@ -1,0 +1,41 @@
+{
+    "loadout": {
+        "type": "action.wait",
+        "category": "action",
+        "title": "Wait",
+        "icon": "clock",
+        "colors": {
+            "primary": "purple",
+            "secondary": "dark"
+        },
+        "description": "Wartet eine bestimmte Zeit bevor der Flow weiterlaeuft."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "input",
+                "type": "flow",
+                "description": "Input"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {
+        "duration_ms": 1000
+    },
+    "properties": [
+        {
+            "key": "duration_ms",
+            "type": "number",
+            "label": "Dauer (ms)",
+            "placeholder": "1000",
+            "min": 0
+        }
+    ]
+}

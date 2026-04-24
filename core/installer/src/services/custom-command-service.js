@@ -9,7 +9,7 @@ const {
     ActionRowBuilder,
     PermissionFlagsBits,
 } = require('discord.js');
-const { dbQuery } = require('../db');
+const { dbQuery, botLog } = require('../db');
 const { getQueue: getMusicQueue } = require('./music-service');
 
 async function loadCustomCommands(botId) {
@@ -1128,14 +1128,102 @@ async function executeFlowGraph(builderData, interaction, botId, slashName = '',
                     break;
                 }
 
-                default:
-                    console.warn(
-                        `[custom-command-service] Unknown node type "${currentNode.type}" — skipping.`
-                    );
+                case 'action.vc.join': {
+                    const vcChannelId = resolveVariables(String(cfg.channel_id || '').trim(), interaction, optionValues, localVars, globalVars);
+                    if (vcChannelId) {
+                        const vcChannel = await interaction.client.channels.fetch(vcChannelId).catch(() => null);
+                        if (vcChannel && vcChannel.isVoiceBased()) {
+                            const { joinVoiceChannel } = require('@discordjs/voice');
+                            joinVoiceChannel({
+                                channelId: vcChannel.id,
+                                guildId: vcChannel.guild.id,
+                                adapterCreator: vcChannel.guild.voiceAdapterCreator,
+                            });
+                        }
+                    }
                     currentNode = getNextNode(currentNode.id, 'next');
                     break;
+                }
+
+                case 'action.vc.leave': {
+                    const { getVoiceConnection } = require('@discordjs/voice');
+                    const conn = getVoiceConnection(interaction.guildId);
+                    if (conn) conn.destroy();
+                    currentNode = getNextNode(currentNode.id, 'next');
+                    break;
+                }
+
+                case 'action.vc.kick_member': {
+                    const vcKickUserId = resolveVariables(String(cfg.user_id || '').trim(), interaction, optionValues, localVars, globalVars);
+                    if (vcKickUserId) {
+                        const vcKickMember = await interaction.guild.members.fetch(vcKickUserId).catch(() => null);
+                        if (vcKickMember?.voice?.channel) {
+                            await vcKickMember.voice.disconnect().catch(() => {});
+                        }
+                    }
+                    currentNode = getNextNode(currentNode.id, 'next');
+                    break;
+                }
+
+                case 'action.vc.mute_member': {
+                    const vcMuteUserId = resolveVariables(String(cfg.user_id || '').trim(), interaction, optionValues, localVars, globalVars);
+                    const vcMuteVal = cfg.mute === true || cfg.mute === 'true';
+                    if (vcMuteUserId) {
+                        const vcMuteMember = await interaction.guild.members.fetch(vcMuteUserId).catch(() => null);
+                        if (vcMuteMember?.voice?.channel) {
+                            await vcMuteMember.voice.setMute(vcMuteVal).catch((e) => {
+                                botLog(botId, 'error', `setMute failed: ${e.message}`, { user_id: vcMuteUserId });
+                            });
+                        }
+                    }
+                    currentNode = getNextNode(currentNode.id, 'next');
+                    break;
+                }
+
+                case 'action.vc.deafen_member': {
+                    const vcDeafUserId = resolveVariables(String(cfg.user_id || '').trim(), interaction, optionValues, localVars, globalVars);
+                    const vcDeafVal = cfg.deafen === true || cfg.deafen === 'true';
+                    if (vcDeafUserId) {
+                        const vcDeafMember = await interaction.guild.members.fetch(vcDeafUserId).catch(() => null);
+                        if (vcDeafMember?.voice?.channel) {
+                            await vcDeafMember.voice.setDeaf(vcDeafVal).catch((e) => {
+                                botLog(botId, 'error', `setDeaf failed: ${e.message}`, { user_id: vcDeafUserId });
+                            });
+                        }
+                    }
+                    currentNode = getNextNode(currentNode.id, 'next');
+                    break;
+                }
+
+                case 'action.vc.move_member': {
+                    const vcMoveUserId  = resolveVariables(String(cfg.user_id    || '').trim(), interaction, optionValues, localVars, globalVars);
+                    const vcMoveChId    = resolveVariables(String(cfg.channel_id || '').trim(), interaction, optionValues, localVars, globalVars);
+                    if (vcMoveUserId && vcMoveChId) {
+                        const vcMoveMember = await interaction.guild.members.fetch(vcMoveUserId).catch(() => null);
+                        if (vcMoveMember) {
+                            await vcMoveMember.voice.setChannel(vcMoveChId).catch(() => {});
+                        }
+                    }
+                    currentNode = getNextNode(currentNode.id, 'next');
+                    break;
+                }
+
+                default: {
+                    const warnMsg = `Unknown node type "${currentNode.type}" — skipping.`;
+                    console.warn('[custom-command-service]', warnMsg);
+                    botLog(botId, 'warn', warnMsg, { node_id: currentNode.id, command: slashName });
+                    currentNode = getNextNode(currentNode.id, 'next');
+                    break;
+                }
             }
         } catch (error) {
+            const errMsg = error?.message || String(error);
+            console.error('[custom-command-service] Flow error:', errMsg);
+            botLog(botId, 'error', errMsg, {
+                node_id: currentNode?.id,
+                node_type: currentNode?.type,
+                command: slashName,
+            });
             const errorNode = getNextNode(currentNode.id, 'error');
             if (errorNode) {
                 currentNode = errorNode;

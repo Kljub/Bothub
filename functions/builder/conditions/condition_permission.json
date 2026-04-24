@@ -1,0 +1,54 @@
+{
+    "loadout": {
+        "type": "condition.permission",
+        "category": "condition",
+        "title": "Permission Condition",
+        "icon": "condition",
+        "colors": {
+            "primary": "green",
+            "secondary": "dark"
+        },
+        "description": "Prüfe ob der Nutzer bestimmte Berechtigungen hat."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "true",
+                "type": "flow",
+                "description": "Erfüllt"
+            },
+            {
+                "name": "false",
+                "type": "flow",
+                "description": "Nicht erfüllt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "permission",
+            "type": "select",
+            "label": "Berechtigung",
+            "options": [
+                "Administrator",
+                "ManageGuild",
+                "ManageMessages",
+                "KickMembers",
+                "BanMembers",
+                "MuteMembers",
+                "ManageRoles",
+                "ManageChannels"
+            ],
+            "required": true
+        }
+    ]
+}

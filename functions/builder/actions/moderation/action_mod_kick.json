@@ -1,0 +1,47 @@
+{
+    "loadout": {
+        "type": "action.mod.kick",
+        "category": "action",
+        "title": "Kick Member",
+        "icon": "action",
+        "colors": {
+            "primary": "red",
+            "secondary": "dark"
+        },
+        "description": "Kicke ein Mitglied vom Server."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "user_id",
+            "type": "text",
+            "label": "User ID oder {option.user}",
+            "placeholder": "",
+            "required": true
+        },
+        {
+            "key": "reason",
+            "type": "textarea",
+            "label": "Grund",
+            "placeholder": "",
+            "required": false
+        }
+    ]
+}

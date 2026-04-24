@@ -1,0 +1,82 @@
+{
+    "loadout": {
+        "type": "action.button",
+        "category": "component",
+        "title": "Button",
+        "icon": "cursor-click",
+        "colors": {
+            "primary": "blue",
+            "secondary": "dark"
+        },
+        "subtitle": "Button",
+        "description": "Fügt einen klickbaren Button zu einer Nachricht hinzu."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "component",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "label",
+            "type": "text",
+            "label": "Button Label",
+            "placeholder": "Click me",
+            "required": true
+        },
+        {
+            "key": "style",
+            "type": "select",
+            "label": "Button Style",
+            "help": "The style and color of this button.",
+            "options": [
+                {
+                    "value": "primary",
+                    "label": "Blue"
+                },
+                {
+                    "value": "secondary",
+                    "label": "Gray"
+                },
+                {
+                    "value": "success",
+                    "label": "Green"
+                },
+                {
+                    "value": "danger",
+                    "label": "Red"
+                },
+                {
+                    "value": "link",
+                    "label": "Link"
+                }
+            ]
+        },
+        {
+            "key": "emoji",
+            "type": "text",
+            "label": "Emoji",
+            "placeholder": "😀 oder <:name:id>"
+        },
+        {
+            "key": "custom_id",
+            "type": "text",
+            "label": "Custom ID",
+            "placeholder": "my_component_id",
+            "help": "Eindeutige ID für diesen Component."
+        }
+    ]
+}

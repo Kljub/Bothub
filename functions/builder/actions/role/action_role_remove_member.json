@@ -1,0 +1,47 @@
+{
+    "loadout": {
+        "type": "action.role.remove_from_member",
+        "category": "action",
+        "title": "Remove Roles from a Member",
+        "icon": "action",
+        "colors": {
+            "primary": "purple",
+            "secondary": "dark"
+        },
+        "description": "Entferne Rollen von einem Mitglied."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {},
+    "properties": [
+        {
+            "key": "user_id",
+            "type": "text",
+            "label": "User ID oder {option.user}",
+            "placeholder": "",
+            "required": true
+        },
+        {
+            "key": "role_ids",
+            "type": "text",
+            "label": "Rollen-IDs (kommagetrennt)",
+            "placeholder": "123,456",
+            "required": true
+        }
+    ]
+}
