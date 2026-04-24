@@ -35,6 +35,8 @@ The system provides a modular architecture with features such as:
 - 💬 Suggestion Module  
 - ⭐ Starboard system  
 - Log System
+- Added ArcEnCiel API Support (Image Generation)
+- Added AI Chat
 ---
 
 ### 🚧 In Progress
