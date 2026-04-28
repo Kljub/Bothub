@@ -27,6 +27,15 @@
             }
         ]
     },
-    "default": {},
-    "properties": []
+    "default": {
+        "confirm": false
+    },
+    "properties": [
+        {
+            "key": "confirm",
+            "type": "switch",
+            "label": "Nur ausführen wenn bestätigt",
+            "help": "Aktiviere diese Option als Sicherheitsschutz — der Node führt die Aktion nur aus, wenn er bewusst gesetzt ist."
+        }
+    ]
 }

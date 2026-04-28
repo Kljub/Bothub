@@ -2,7 +2,7 @@
     "loadout": {
         "type": "action.vc.leave",
         "category": "action",
-        "title": "Leave VC",
+        "title": "Leave Voice Channel",
         "icon": "action",
         "colors": {
             "primary": "green",
@@ -27,6 +27,15 @@
             }
         ]
     },
-    "default": {},
-    "properties": []
+    "default": {
+        "force": false
+    },
+    "properties": [
+        {
+            "key": "force",
+            "type": "switch",
+            "label": "Erzwingen",
+            "help": "Auch verlassen wenn der Bot gerade Musik abspielt (unterbricht Wiedergabe)."
+        }
+    ]
 }

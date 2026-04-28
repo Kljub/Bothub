@@ -2,13 +2,14 @@
     "loadout": {
         "type": "action.message.edit_component",
         "category": "action",
-        "title": "Edit a Button or Select Menu",
+        "title": "Edit Button / Select Menu",
         "icon": "action",
         "colors": {
             "primary": "blue",
             "secondary": "dark"
         },
-        "description": "Bearbeite einen Button oder ein Select-Menü einer Nachricht."
+        "subtitle": "Edit Component",
+        "description": "Bearbeite einen Button oder ein Select-Menü einer gesendeten Nachricht."
     },
     "ports": {
         "inputs": [
@@ -26,6 +27,71 @@
             }
         ]
     },
-    "default": {},
-    "properties": []
+    "default": {
+        "edit_mode": "by_var",
+        "target_message_node_id": "",
+        "message_id": "",
+        "channel_id": "",
+        "component_custom_id": "",
+        "component_action": "disable",
+        "new_label": ""
+    },
+    "properties": [
+        {
+            "key": "edit_mode",
+            "type": "select",
+            "label": "Nachricht auswählen",
+            "help": "Wähle wie die Nachricht mit dem zu bearbeitenden Komponenten identifiziert wird.",
+            "options": [
+                { "value": "by_var", "label": "By Variable (gesendete Nachricht)" },
+                { "value": "by_id",  "label": "By Message ID" }
+            ]
+        },
+        {
+            "key": "target_message_node_id",
+            "type": "message_node_select",
+            "label": "Ziel-Nachricht",
+            "help": "Wähle die Send-Message-Aktion aus dem Builder.",
+            "show_if": ["edit_mode", ["by_var"]]
+        },
+        {
+            "key": "message_id",
+            "type": "text",
+            "label": "Message-ID",
+            "placeholder": "{message.id}",
+            "show_if": ["edit_mode", ["by_id"]]
+        },
+        {
+            "key": "channel_id",
+            "type": "text",
+            "label": "Channel-ID",
+            "placeholder": "{channel.id}",
+            "show_if": ["edit_mode", ["by_id"]]
+        },
+        {
+            "key": "component_custom_id",
+            "type": "text",
+            "label": "Custom ID des Buttons / Menüs",
+            "placeholder": "my_button",
+            "help": "Die Custom ID wie im Button- oder Select-Menü-Node definiert.",
+            "required": true
+        },
+        {
+            "key": "component_action",
+            "type": "select",
+            "label": "Aktion",
+            "options": [
+                { "value": "disable",   "label": "Deaktivieren" },
+                { "value": "enable",    "label": "Aktivieren" },
+                { "value": "set_label", "label": "Label ändern" }
+            ]
+        },
+        {
+            "key": "new_label",
+            "type": "text",
+            "label": "Neues Label",
+            "placeholder": "Neuer Button-Text",
+            "show_if": ["component_action", ["set_label"]]
+        }
+    ]
 }

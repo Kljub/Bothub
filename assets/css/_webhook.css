@@ -217,3 +217,13 @@
     color: #67e8f9;
 }
 .bh-wh-table-actions { text-align: right; }
+
+/* ── Mobile: make table horizontally scrollable ── */
+@media (max-width: 767px) {
+    .bh-wh-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+    }
+}

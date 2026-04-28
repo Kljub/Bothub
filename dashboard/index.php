@@ -406,15 +406,29 @@ ob_start();
                 </div>
 
                 <div class="col-span-full xl:col-span-8 bg-white dark:bg-gray-800 shadow-xs rounded-xl">
-                    <div class="p-5 border-b border-gray-100 dark:border-gray-700/60">
-                        <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Bot Aktivität</h2>
-                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            Erreichbarkeit / Commands / Errors (5-Minuten Buckets)
+                    <!-- Card header -->
+                    <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60 flex items-center justify-between gap-3 flex-wrap">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Bot Aktivität</h2>
+                                <!-- Live indicator -->
+                                <span class="inline-flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500">
+                                    <span id="bh-chart-live-dot" class="inline-block w-2 h-2 rounded-full bg-gray-400"></span>
+                                    <span id="bh-chart-live-lbl">…</span>
+                                </span>
+                            </div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Commands / Errors / Online-Pings · 5-min Buckets · alle 30s aktualisiert</div>
+                        </div>
+                        <!-- Command count badge -->
+                        <div style="background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.25);border-radius:10px;padding:6px 14px;display:flex;flex-direction:column;align-items:center;min-width:80px;">
+                            <span style="font-size:20px;font-weight:800;color:#818cf8;line-height:1;" id="bh-cmd-total">—</span>
+                            <span style="font-size:10px;color:#6b7280;margin-top:2px;text-transform:uppercase;letter-spacing:.06em;">Commands</span>
                         </div>
                     </div>
+                    <!-- Chart -->
                     <div class="p-5">
                         <div class="h-64">
-                            <canvas id="dashboard-card-01"></canvas>
+                            <canvas id="bh-bot-metrics-chart"></canvas>
                         </div>
                     </div>
                 </div>

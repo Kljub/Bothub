@@ -259,10 +259,12 @@ var BhPerm = (function () {
         }
 
         var endpoint = type === 'roles'
-            ? '/api/v1/bot_guild_roles.php?bot_id='    + botId
+            ? '/api/v1/bot_guild_roles.php?bot_id='              + botId
             : type === 'guilds'
-            ? '/api/v1/bot_guild_list.php?bot_id='     + botId
-            : '/api/v1/bot_guild_channels.php?bot_id=' + botId;
+            ? '/api/v1/bot_guild_list.php?bot_id='               + botId
+            : type === 'categories'
+            ? '/api/v1/bot_guild_channels.php?bot_id=' + botId + '&types=4'
+            : '/api/v1/bot_guild_channels.php?bot_id='           + botId;
 
         function applyData(data) {
             if (!data.ok) {
@@ -464,7 +466,8 @@ var BhPerm = (function () {
 }());
 
 /* ── bhSetupChannelPicker — reusable single-channel picker helper ── */
-function bhSetupChannelPicker(boxId, valId, btnId, botId, guildValId, onClear) {
+/* pickerType: 'channels' (default) | 'categories' | 'roles' */
+function bhSetupChannelPicker(boxId, valId, btnId, botId, guildValId, onClear, pickerType) {
     var box      = document.getElementById(boxId);
     var val      = document.getElementById(valId);
     var btn      = document.getElementById(btnId);
@@ -497,7 +500,7 @@ function bhSetupChannelPicker(boxId, valId, btnId, botId, guildValId, onClear) {
 
     btn.addEventListener('click', function (e) {
         e.stopPropagation();
-        BhPerm.openPicker(this, botId, 'channels', [], function (item) {
+        BhPerm.openPicker(this, botId, pickerType || 'channels', [], function (item) {
             val.value = item.id;
             if (guildVal && item.guild_id) guildVal.value = item.guild_id;
             renderTag(item.id, item.name || item.id);

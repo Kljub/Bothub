@@ -159,7 +159,7 @@ $defaultIcon = '<path d="M3 3h10v2H3V3Zm0 4h10v2H3V7Zm0 4h10v2H3v-2Z"/>';
                 </button>
 
                 <div
-                    class="hidden lg:sidebar-expanded:block 2xl:block"
+                    class="lg:hidden lg:sidebar-expanded:block 2xl:block"
                     x-show="botOpen"
                     x-cloak
                     @click.outside="botOpen = false"

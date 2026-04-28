@@ -26,27 +26,68 @@
         "event_type": "interval",
         "interval_seconds": 0,
         "interval_minutes": 0,
-        "interval_hours": 0,
+        "interval_hours": 1,
         "interval_days": 0,
-        "week_days": [
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat",
-            "Sun"
-        ],
-        "schedule_time": "00:00",
-        "schedule_days": [
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat",
-            "Sun"
-        ]
+        "schedule_time": "08:00",
+        "schedule_days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
     },
-    "properties": []
+    "properties": [
+        {
+            "key": "event_name",
+            "type": "text",
+            "label": "Event-Name",
+            "placeholder": "mein_timer",
+            "help": "Eindeutiger Bezeichner für diesen Timer (Kleinbuchstaben, kein Leerzeichen).",
+            "required": true
+        },
+        {
+            "key": "event_type",
+            "type": "select",
+            "label": "Typ",
+            "options": [
+                { "value": "interval", "label": "Interval — alle X Zeit" },
+                { "value": "schedule", "label": "Schedule — täglich zu fester Uhrzeit" }
+            ]
+        },
+        {
+            "key": "interval_days",
+            "type": "number",
+            "label": "Tage",
+            "placeholder": "0",
+            "min": 0,
+            "show_if": ["event_type", ["interval"]]
+        },
+        {
+            "key": "interval_hours",
+            "type": "number",
+            "label": "Stunden",
+            "placeholder": "0",
+            "min": 0,
+            "show_if": ["event_type", ["interval"]]
+        },
+        {
+            "key": "interval_minutes",
+            "type": "number",
+            "label": "Minuten",
+            "placeholder": "0",
+            "min": 0,
+            "show_if": ["event_type", ["interval"]]
+        },
+        {
+            "key": "interval_seconds",
+            "type": "number",
+            "label": "Sekunden",
+            "placeholder": "0",
+            "min": 0,
+            "show_if": ["event_type", ["interval"]]
+        },
+        {
+            "key": "schedule_time",
+            "type": "text",
+            "label": "Uhrzeit (HH:MM, UTC)",
+            "placeholder": "08:00",
+            "help": "Zeit im 24h-Format (UTC).",
+            "show_if": ["event_type", ["schedule"]]
+        }
+    ]
 }

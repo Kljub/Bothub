@@ -8,7 +8,8 @@
             "primary": "blue",
             "secondary": "dark"
         },
-        "description": "Veröffentliche eine Nachricht in einem Ankündigungskanal."
+        "subtitle": "Publish",
+        "description": "Veröffentliche eine Nachricht in einem Ankündigungskanal (cross-post)."
     },
     "ports": {
         "inputs": [
@@ -27,6 +28,44 @@
             }
         ]
     },
-    "default": {},
-    "properties": []
+    "default": {
+        "publish_mode": "by_var",
+        "target_message_node_id": "",
+        "message_id": "",
+        "channel_id": ""
+    },
+    "properties": [
+        {
+            "key": "publish_mode",
+            "type": "select",
+            "label": "Nachricht auswählen",
+            "help": "Wähle wie die zu veröffentlichende Nachricht identifiziert wird.",
+            "options": [
+                { "value": "by_var", "label": "By Variable (gesendete Nachricht)" },
+                { "value": "by_id",  "label": "By Message ID" }
+            ]
+        },
+        {
+            "key": "target_message_node_id",
+            "type": "message_node_select",
+            "label": "Ziel-Nachricht",
+            "help": "Wähle die Send-Message-Aktion aus dem Builder.",
+            "show_if": ["publish_mode", ["by_var"]]
+        },
+        {
+            "key": "message_id",
+            "type": "text",
+            "label": "Message-ID",
+            "placeholder": "{message.id}",
+            "show_if": ["publish_mode", ["by_id"]]
+        },
+        {
+            "key": "channel_id",
+            "type": "text",
+            "label": "Channel-ID (Ankündigungskanal)",
+            "placeholder": "{channel.id}",
+            "help": "Muss ein News/Announcement-Kanal sein.",
+            "show_if": ["publish_mode", ["by_id"]]
+        }
+    ]
 }

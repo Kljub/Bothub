@@ -222,9 +222,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $secret     = is_file($secretPath) ? require $secretPath : [];
             $appKey     = trim((string)($secret['APP_KEY'] ?? ''));
 
-            $stmt    = $pdo->query("SELECT endpoint FROM core_runners WHERE endpoint != '' ORDER BY id ASC LIMIT 1");
-            $runner  = $stmt ? $stmt->fetch() : null;
-            $endpoint = rtrim(trim((string)($runner['endpoint'] ?? '')), '/');
+            $stmt     = $pdo->query("SELECT endpoint FROM core_runners WHERE endpoint != '' ORDER BY id ASC LIMIT 1");
+            $runner   = ($stmt !== false) ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+            $endpoint = (is_array($runner) && isset($runner['endpoint']))
+                ? rtrim(trim((string)$runner['endpoint']), '/')
+                : '';
 
             if ($endpoint === '' || $appKey === '') {
                 echo json_encode(['ok' => false, 'error' => 'Runner nicht erreichbar.']);
@@ -232,6 +234,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             }
 
             $ch = curl_init($endpoint . '/ai/clear-memory/bot/' . $botId);
+            if ($ch === false) {
+                echo json_encode(['ok' => false, 'error' => 'curl_init fehlgeschlagen.']);
+                exit;
+            }
             curl_setopt_array($ch, [
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_POST           => true,
@@ -244,7 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 ],
             ]);
             $raw      = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
 
             if ($httpCode === 200) {

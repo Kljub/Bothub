@@ -1,0 +1,194 @@
+/* PFAD: /assets/css/_mobile.css
+ * BotHub – Mobile/responsive fixes (320 px minimum)
+ * Scope: dashboard only — builder pages, admin panel and installer are excluded.
+ */
+
+/* ── Missing Tailwind utilities (not compiled into mosaic.css) ───────────────── */
+/* Add polyfills here rather than recompiling the vendor CSS */
+
+.gap-1\.5 { gap: 0.375rem; }
+.gap-3    { gap: 0.75rem; }
+
+/* ── Foundation ─────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+/* Prevent any single element from widening the viewport */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* ── Tables — horizontal scroll (CSS-only, no HTML wrapper needed) ─────────── */
+
+/* Module-specific named tables */
+.it-lb-table,
+.bh-wh-table,
+.bday-table,
+.bh-log-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+}
+
+/* Generic safety net for any table that might overflow */
+@media (max-width: 640px) {
+    table {
+        max-width: 100%;
+    }
+}
+
+/* ── Layout shell ───────────────────────────────────────────────────────────── */
+
+/* Main content column should never exceed viewport */
+@media (max-width: 640px) {
+    .relative.flex.flex-col.flex-1 {
+        min-width: 0;
+    }
+}
+
+/* ── Header responsive show/hide helpers ────────────────────────────────────── */
+/* sm:inline-flex / sm:hidden are not compiled into mosaic.css — use these instead */
+
+/* Visible on sm+ (≥640 px), hidden on mobile */
+.bh-desktop-only { display: none !important; }
+@media (min-width: 640px) {
+    .bh-desktop-only { display: inline-flex !important; }
+}
+
+/* Hidden on sm+ (≥640 px), visible on mobile */
+.bh-mobile-only { display: inline-flex !important; }
+@media (min-width: 640px) {
+    .bh-mobile-only { display: none !important; }
+}
+
+/* Text-only variant (span/label) — same breakpoint, display: inline */
+.bh-desktop-only-text { display: none !important; }
+@media (min-width: 640px) {
+    .bh-desktop-only-text { display: inline !important; }
+}
+
+/* ── Page-level paddings at very narrow widths ──────────────────────────────── */
+
+@media (max-width: 360px) {
+    /* Reduce horizontal padding on extreme narrow screens */
+    .px-4 { padding-inline: 0.625rem; } /* 10px instead of 16px */
+    .sm\:px-6,
+    .lg\:px-8 { padding-inline: 0.625rem; }
+}
+
+/* ── Cards: allow header to wrap ────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+    .bh-card-hdr {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+/* ── Command/module toggle rows ─────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+    /* allow justify-between rows to wrap if content is too wide */
+    .command-header,
+    .bh-list-card {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}
+
+/* ── Picker rows (channel / role / category picker) ─────────────────────────── */
+
+@media (max-width: 640px) {
+    .it-picker-row,
+    .bh-picker-row {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+}
+
+/* ── Modal / overlay dialogs ────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    /* Inner dialog box: constrain width to viewport with safe margin */
+    .fixed.inset-0 > div {
+        max-width: calc(100vw - 24px);
+        margin-inline: 12px;
+    }
+}
+
+/* ── Stat / metric grid cards (dashboard overview) ──────────────────────────── */
+
+@media (max-width: 480px) {
+    /* Force single-column on very small screens if grid-cols-2 is used bare */
+    .grid.grid-cols-2:not([class*="sm:grid-cols"]):not([class*="md:grid-cols"]):not([class*="lg:grid-cols"]) {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Variable chips panel ───────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .bh-vars { padding: 8px 10px; }
+    .bh-var-chip { font-size: 10px; padding: 2px 6px; }
+}
+
+/* ── bh-btn full-width on xs ────────────────────────────────────────────────── */
+
+@media (max-width: 360px) {
+    /* Allow buttons to not overflow their containers */
+    .bh-btn { max-width: 100%; white-space: normal; text-align: center; }
+}
+
+/* ── Section header rows with title + action button ─────────────────────────── */
+
+@media (max-width: 640px) {
+    .flex.items-center.justify-between.mb-8,
+    .flex.items-center.justify-between.mb-6,
+    .flex.items-center.justify-between.mb-4 {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+/* ── Page title h1 ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    h1.text-2xl { font-size: 1.25rem; }
+    h1.text-3xl,
+    h1.md\:text-3xl { font-size: 1.25rem; }
+}
+
+/* ── Embed / message builder preview ───────────────────────────────────────────*/
+
+@media (max-width: 640px) {
+    .bh-embed-input,
+    .bh-embed-textarea { font-size: 12px; }
+}
+
+/* ── Flatpickr calendar ──────────────────────────────────────────────────────── */
+
+@media (max-width: 360px) {
+    .flatpickr-calendar {
+        max-width: calc(100vw - 16px) !important;
+        left: 8px !important;
+        right: 8px !important;
+    }
+}
+
+/* ── Soundboard grid ────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .sb-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* ── App store grid ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    /* app grid is sm:grid-cols-2 xl:grid-cols-3 — already good, just ensure 1-col at 320 */
+    #app-grid { grid-template-columns: 1fr !important; }
+}

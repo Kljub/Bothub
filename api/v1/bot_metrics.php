@@ -56,12 +56,9 @@ if ($botId <= 0) {
     api_fail(400, 'missing bot_id');
 }
 
-$range = trim((string)($_GET['range'] ?? '24h'));
-$hours = 24;
-if ($range === '6h')  { $hours = 6; }
-if ($range === '12h') { $hours = 12; }
-if ($range === '24h') { $hours = 24; }
-if ($range === '7d')  { $hours = 24 * 7; }
+$range = trim((string)($_GET['range'] ?? '6h'));
+$allowedRanges = ['1h' => 1, '6h' => 6, '12h' => 12, '24h' => 24, '7d' => 168];
+$hours = $allowedRanges[$range] ?? 6;
 
 try {
     $pdo = api_pdo();
@@ -85,27 +82,31 @@ try {
     $stmt->bindValue(':hrs', $hours, PDO::PARAM_INT);
     $stmt->execute();
 
-    $labels = [];
-    $uptime = [];
-    $calls = [];
-    $errs = [];
+    $labels   = [];
+    $uptime   = [];
+    $calls    = [];
+    $errs     = [];
+    $totalCmd = 0;
 
     while ($row = $stmt->fetch()) {
         $labels[] = (string)$row['bucket_at'];
         $uptime[] = (int)$row['uptime_ok'];
-        $calls[] = (int)$row['cmd_calls'];
-        $errs[] = (int)$row['errors'];
+        $n = (int)$row['cmd_calls'];
+        $calls[]  = $n;
+        $totalCmd += $n;
+        $errs[]   = (int)$row['errors'];
     }
 
     echo json_encode([
-        'ok' => true,
-        'bot_id' => $botId,
-        'range' => $range,
-        'labels' => $labels,
-        'datasets' => [
-            ['key' => 'uptime_ok', 'label' => 'Erreichbar', 'data' => $uptime],
-            ['key' => 'cmd_calls', 'label' => 'Commands', 'data' => $calls],
-            ['key' => 'errors', 'label' => 'Errors', 'data' => $errs],
+        'ok'        => true,
+        'bot_id'    => $botId,
+        'range'     => $range,
+        'total_cmds' => $totalCmd,
+        'labels'    => $labels,
+        'datasets'  => [
+            ['key' => 'uptime_ok', 'label' => 'Online-Pings', 'data' => $uptime],
+            ['key' => 'cmd_calls', 'label' => 'Commands',     'data' => $calls],
+            ['key' => 'errors',    'label' => 'Errors',       'data' => $errs],
         ],
     ], JSON_UNESCAPED_SLASHES);
 } catch (Throwable $e) {

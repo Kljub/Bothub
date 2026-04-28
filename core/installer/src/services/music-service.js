@@ -493,7 +493,10 @@ async function isCommandEnabled(botId, cmdKey) {
         return true;
     }
     if (Number(s.enabled) !== 1) return false;
-    return Number(s[`cmd_${cmdKey}`]) === 1;
+    // If the column doesn't exist (old schema), treat as enabled
+    const colValue = s[`cmd_${cmdKey}`];
+    if (colValue === undefined || colValue === null) return true;
+    return Number(colValue) === 1;
 }
 
 /* ── Spotify: get access token ── */

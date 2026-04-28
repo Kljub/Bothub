@@ -14,8 +14,23 @@ const {
     NoSubscriberBehavior,
 } = require('@discordjs/voice');
 
-// Per-guild soundboard state: Map<guildId, { connection, player, botId }>
+// Per-guild soundboard state: Map<guildId, { connection, player, botId, leaveTimer? }>
 const guildStates = new Map();
+
+const LEAVE_AFTER_IDLE_MS = 5_000; // leave VC 5 s after playback ends
+
+function _scheduleLeave(guildId) {
+    const state = guildStates.get(guildId);
+    if (!state) return;
+    if (state.leaveTimer) clearTimeout(state.leaveTimer);
+    state.leaveTimer = setTimeout(() => {
+        const s = guildStates.get(guildId);
+        if (!s) return;
+        if (s.player.state.status === AudioPlayerStatus.Idle) {
+            leaveVc(guildId);
+        }
+    }, LEAVE_AFTER_IDLE_MS);
+}
 
 /**
  * Resolve the ffmpeg binary path.
@@ -159,6 +174,12 @@ async function playSound(client, guildId, channelId, audioBuffer, volume, soundN
 
     await entersState(state.player, AudioPlayerStatus.Playing, 5_000);
 
+    // Cancel any pending leave timer (new sound started)
+    if (state.leaveTimer) { clearTimeout(state.leaveTimer); state.leaveTimer = null; }
+
+    // Schedule disconnect once this sound finishes
+    state.player.once(AudioPlayerStatus.Idle, () => _scheduleLeave(guildId));
+
     console.log(`[soundboard] Playing "${soundName}" in guild ${guildId} (vol: ${volume}%)`);
     return { ok: true, message: 'Wird abgespielt: ' + soundName };
 }
@@ -170,6 +191,7 @@ function stopSound(guildId) {
     const state = guildStates.get(guildId);
     if (!state) return { ok: false, message: 'Bot ist in keinem Voice Channel.' };
     state.player.stop(true);
+    _scheduleLeave(guildId);
     return { ok: true, message: 'Wiedergabe gestoppt.' };
 }
 
@@ -178,6 +200,7 @@ function stopSound(guildId) {
  */
 function leaveVc(guildId) {
     const state = guildStates.get(guildId);
+    if (state?.leaveTimer) { clearTimeout(state.leaveTimer); state.leaveTimer = null; }
     const conn  = getVoiceConnection(guildId);
     if (conn) conn.destroy();
     if (state) guildStates.delete(guildId);

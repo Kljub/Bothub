@@ -181,7 +181,7 @@ function attachInviteTrackerEvents(client, botId) {
     });
 
     // Cache invites when bot is ready
-    client.once('ready', async () => {
+    client.once('clientReady', async () => {
         for (const guild of client.guilds.cache.values()) {
             await cacheGuildInvites(guild, numericBotId);
         }

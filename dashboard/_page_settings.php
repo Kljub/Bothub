@@ -420,6 +420,18 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
                 bh_settings_set_flash('err', 'Discord konnte das Profil nicht aktualisieren. Bitte prüfe den Bot-Token.');
                 bh_settings_redirect($botId, 'profile');
             }
+
+            // Sync display_name in bot_instances so the sidebar dropdown shows the new name
+            if ($newName !== '') {
+                $savedName = trim((string)($res['data']['username'] ?? $newName));
+                if ($savedName === '') $savedName = $newName;
+                try {
+                    $pdo = bh_get_pdo();
+                    $pdo->prepare(
+                        'UPDATE bot_instances SET display_name = ? WHERE id = ? AND owner_user_id = ? LIMIT 1'
+                    )->execute([$savedName, $botId, $userId]);
+                } catch (Throwable) {}
+            }
         }
 
         if ($hasDescription) {

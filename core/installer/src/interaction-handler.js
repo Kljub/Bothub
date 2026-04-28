@@ -1,5 +1,6 @@
 // PFAD: /core/installer/src/interaction-handler.js
 const { PermissionFlagsBits } = require('discord.js');
+const { bumpMetric } = require('./db');
 
 async function handleButtonInteraction(interaction, botManager, botId) {
     const id = interaction.customId || '';
@@ -57,6 +58,16 @@ async function handleButtonInteraction(interaction, botManager, botId) {
         await handleSuggestionButton(interaction, botId);
         return;
     }
+
+    if (Array.isArray(botManager.communityServices)) {
+        for (const svc of botManager.communityServices) {
+            try {
+                if (await svc.onInteraction(interaction, botId) === true) return;
+            } catch (err) {
+                console.warn(`[Community] ${svc.id} onInteraction Fehler:`, err.message);
+            }
+        }
+    }
 }
 
 async function handleModalInteraction(interaction, botManager, botId) {
@@ -66,6 +77,16 @@ async function handleModalInteraction(interaction, botManager, botId) {
         const { handleHangmanModal } = require('./services/economy-button-handler');
         await handleHangmanModal(interaction, botId);
         return;
+    }
+
+    if (Array.isArray(botManager.communityServices)) {
+        for (const svc of botManager.communityServices) {
+            try {
+                if (await svc.onInteraction(interaction, botId) === true) return;
+            } catch (err) {
+                console.warn(`[Community] ${svc.id} onInteraction Fehler:`, err.message);
+            }
+        }
     }
 }
 
@@ -167,9 +188,11 @@ async function handleInteraction(interaction, botManager, botId) {
 
     try {
         await command.execute(interaction, botId, botManager);
+        bumpMetric(botId, 'cmd_calls');
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`[BotHub Core] Command ${commandName} failed for bot ${botId}:`, message);
+        bumpMetric(botId, 'errors');
 
         if (interaction.replied || interaction.deferred) {
             await interaction.followUp({

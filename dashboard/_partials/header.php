@@ -86,7 +86,7 @@ $hdr_coreDotClass = 'bg-yellow-500'; // unknown until first ping
             </div>
 
             <!-- Right: Actions -->
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2">
 
                 <?php if ($hdr_hasBotId): ?>
                 <!-- Core status indicator -->
@@ -105,10 +105,11 @@ $hdr_coreDotClass = 'bg-yellow-500'; // unknown until first ping
                 >
                     <!-- dot for runtime_status -->
                     <span id="bh-bot-runtime-dot" class="inline-block w-2 h-2 rounded-full <?= $hdr_dotClass ?>"></span>
-                    <span id="bh-bot-toggle-label"><?= $hdr_botDesiredState === 'running' ? 'Stop Bot' : 'Start Bot' ?></span>
+                    <span id="bh-bot-toggle-label" class="bh-desktop-only-text"><?= $hdr_botDesiredState === 'running' ? 'Stop' : 'Start' ?></span>
                 </button>
                 <?php endif; ?>
 
+                <!-- Dark mode toggle — always visible -->
                 <button
                     id="darkModeToggle"
                     type="button"
@@ -119,27 +120,43 @@ $hdr_coreDotClass = 'bg-yellow-500'; // unknown until first ping
                     <img src="/assets/img/header/lightmode.png"  alt="Light Mode" class="hidden dark:block w-4 h-4 object-contain">
                 </button>
 
+                <!-- Landing — hidden on mobile (accessible via URL) -->
                 <a
                     href="/"
-                    class="btn-sm bg-gray-900 text-gray-100 hover:bg-gray-800"
+                    class="bh-desktop-only btn-sm bg-gray-900 text-gray-100 hover:bg-gray-800"
                 >
                     Landing
                 </a>
 
                 <?php if ($isAdmin): ?>
-                    <a
-                        href="/admin/"
-                        class="btn-sm bg-violet-500 hover:bg-violet-600 text-white"
-                    >
-                        Admin
-                    </a>
+                <!-- Admin — hidden on mobile -->
+                <a
+                    href="/admin/"
+                    class="bh-desktop-only btn-sm bg-violet-500 hover:bg-violet-600 text-white"
+                >
+                    Admin
+                </a>
                 <?php endif; ?>
 
+                <!-- Logout — hidden on mobile (available in sidebar) -->
                 <a
                     href="/auth/logout"
-                    class="btn-sm bg-rose-600 hover:bg-rose-700 text-white"
+                    class="bh-desktop-only btn-sm bg-rose-600 hover:bg-rose-700 text-white"
                 >
                     Logout
+                </a>
+
+                <!-- Mobile-only: logout icon button -->
+                <a
+                    href="/auth/logout"
+                    class="bh-mobile-only btn-sm bg-rose-600 hover:bg-rose-700 text-white p-1.5"
+                    title="Logout"
+                    aria-label="Logout"
+                >
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16">
+                        <path d="M6 2a2 2 0 0 0-2 2v2h2V4h7v8H6v-2H4v2a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H6Z"/>
+                        <path d="M1 8l3-3v2h5v2H4v2L1 8Z"/>
+                    </svg>
                 </a>
             </div>
         </div>

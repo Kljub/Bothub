@@ -1,0 +1,80 @@
+{
+    "loadout": {
+        "type": "action.converter",
+        "category": "action",
+        "title": "Converter",
+        "icon": "converter",
+        "badge": "B64",
+        "colors": {
+            "primary": "teal",
+            "secondary": "dark"
+        },
+        "subtitle": "Base64",
+        "description": "Kodiert oder dekodiert Text und Bilder als Base64."
+    },
+    "ports": {
+        "inputs": [
+            {
+                "name": "in",
+                "type": "flow",
+                "description": "Input",
+                "max_connections": 1
+            }
+        ],
+        "outputs": [
+            {
+                "name": "next",
+                "type": "flow",
+                "description": "Nächster Schritt"
+            }
+        ]
+    },
+    "default": {
+        "operation": "encode_text",
+        "input": "",
+        "var_name": "",
+        "filename": "image.png"
+    },
+    "properties": [
+        {
+            "key": "operation",
+            "type": "select",
+            "label": "Operation",
+            "options": [
+                { "value": "encode_text",  "label": "Text → Base64 (Kodieren)" },
+                { "value": "decode_text",  "label": "Base64 → Text (Dekodieren)" },
+                { "value": "encode_image", "label": "Bild-URL → Base64" },
+                { "value": "decode_image", "label": "Base64 → Bild (Anhang)" }
+            ]
+        },
+        {
+            "key": "input",
+            "type": "text",
+            "label": "Eingabe",
+            "placeholder": "{my_variable}",
+            "help": "Wert oder Variable, die konvertiert werden soll."
+        },
+        {
+            "key": "filename",
+            "type": "text",
+            "label": "Dateiname (nur decode_image)",
+            "placeholder": "image.png",
+            "help": "Dateiname des erzeugten Anhangs (z.B. result.jpg).",
+            "show_if": ["operation", ["decode_image"]]
+        },
+        {
+            "key": "var_name",
+            "type": "text",
+            "label": "Ergebnis in Variable",
+            "placeholder": "result",
+            "help": "encode_image: setzt {var}, {var}.data_uri, {var}.mime · decode_image: erzeugt Anhang, setzt {var}.filename, {var}.mime",
+            "required": true,
+            "var_usage": [
+                { "var": "",          "label": "Base64-String / dekodierter Text / Anhang-Objekt" },
+                { "var": "data_uri",  "label": "Data-URI (encode_image)" },
+                { "var": "mime",      "label": "MIME-Typ (encode_image / decode_image)" },
+                { "var": "filename",  "label": "Dateiname (decode_image)" }
+            ]
+        }
+    ]
+}

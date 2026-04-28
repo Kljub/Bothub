@@ -81,3 +81,13 @@
     gap: 12px;
 }
 
+/* ── Mobile: make table horizontally scrollable ── */
+@media (max-width: 767px) {
+    .bday-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+    }
+}
+

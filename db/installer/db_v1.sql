@@ -654,6 +654,17 @@ CREATE TABLE IF NOT EXISTS `bot_music_settings` (
   `src_plex`             TINYINT(1)       NOT NULL DEFAULT 0,
   `spotify_client_id`    VARCHAR(128)     NULL DEFAULT NULL,
   `spotify_client_secret` VARCHAR(128)    NULL DEFAULT NULL,
+  `cmd_play`             TINYINT(1)       NOT NULL DEFAULT 1,
+  `cmd_skip`             TINYINT(1)       NOT NULL DEFAULT 1,
+  `cmd_stop`             TINYINT(1)       NOT NULL DEFAULT 1,
+  `cmd_queue`            TINYINT(1)       NOT NULL DEFAULT 1,
+  `cmd_nowplaying`       TINYINT(1)       NOT NULL DEFAULT 1,
+  `cmd_pause`            TINYINT(1)       NOT NULL DEFAULT 1,
+  `cmd_resume`           TINYINT(1)       NOT NULL DEFAULT 1,
+  `cmd_volume`           TINYINT(1)       NOT NULL DEFAULT 1,
+  `cmd_shuffle`          TINYINT(1)       NOT NULL DEFAULT 1,
+  `cmd_loop`             TINYINT(1)       NOT NULL DEFAULT 1,
+  `cmd_lyrics`           TINYINT(1)       NOT NULL DEFAULT 0,
   `updated_at`           TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`bot_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -133,9 +133,11 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
                         placeholder="Role ID" value="<?= tk_h($s['support_role_id']) ?>">
                 </div>
                 <div class="bh-field">
-                    <label class="bh-label" for="tk-category">Ticket Category ID</label>
-                    <input type="text" id="tk-category" class="bh-input" maxlength="32"
-                        placeholder="Category ID" value="<?= tk_h($s['category_id']) ?>">
+                    <label class="bh-label">Ticket Kategorie</label>
+                    <input type="hidden" id="tk-category-val" value="<?= tk_h($s['category_id']) ?>">
+                    <div class="it-picker-row" id="tk-category-box">
+                        <button type="button" class="it-picker-add" id="tk-category-btn">+</button>
+                    </div>
                 </div>
                 <div class="bh-field">
                     <label class="bh-label">Log Channel</label>
@@ -297,6 +299,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
     var BOT_ID = <?= (int)$botId ?>;
 
     bhSetupChannelPicker('tk-log-channel-box', 'tk-log-channel-val', 'tk-log-channel-btn', BOT_ID);
+    bhSetupChannelPicker('tk-category-box',    'tk-category-val',    'tk-category-btn',    BOT_ID, null, null, 'categories');
 
     function showBanner(msg, isErr) {
         var b = document.getElementById('tk-banner');
@@ -315,7 +318,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
         var payload = {
             action:          'save',
             support_role_id: document.getElementById('tk-support-role').value.trim(),
-            category_id:     document.getElementById('tk-category').value.trim(),
+            category_id:     document.getElementById('tk-category-val').value.trim(),
             log_channel_id:  document.getElementById('tk-log-channel-val').value.trim(),
             open_message:    document.getElementById('tk-open-msg').value,
             dm_message:      document.getElementById('tk-dm-msg').value,

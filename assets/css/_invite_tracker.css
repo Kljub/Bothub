@@ -106,3 +106,13 @@
 }
 .it-textarea:focus { border-color: #4338ca; }
 .it-textarea::placeholder { color: #3d4f6e; }
+
+/* ── Mobile: make table horizontally scrollable ── */
+@media (max-width: 767px) {
+    .it-lb-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+    }
+}

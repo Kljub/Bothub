@@ -24,6 +24,7 @@ const { BotManager } = require('./bot-manager');
 const { clearSettingsCache } = require('./services/temp-voice-service');
 const { JobPoller } = require('./job-poller');
 const { loadCommands } = require('./command-loader');
+const { loadCommunityServices } = require('./community-apps/services/community-service-loader');
 const { syncSlashCommands } = require('./slash-sync');
 
 // ── Core version ──────────────────────────────────────────────────────────────
@@ -137,6 +138,8 @@ function sendUnauthorized(res) {
 async function handleReloadAll(res, botManager) {
     try {
         clearSettingsCache();
+        loadCommands(botManager);
+        botManager.communityServices = loadCommunityServices();
         const result = await botManager.reloadAllBots();
 
         sendJson(res, 200, {
@@ -252,6 +255,7 @@ function createHttpServer(botManager) {
             try {
                 // Refresh command registry so newly added command files are picked up
                 loadCommands(botManager);
+                botManager.communityServices = loadCommunityServices();
                 const customReg = botManager.customCommandRegistries.get(syncBotId) || new Map();
                 const result = await syncSlashCommands(syncClient, syncBotId, botManager.commandRegistry, null, customReg);
                 sendJson(res, 200, { ok: true, ...result });
@@ -595,6 +599,7 @@ async function main() {
     const botManager = new BotManager();
     botManager.commandRegistry = new Map();
     loadCommands(botManager, invalidCommandFiles);
+    botManager.communityServices = loadCommunityServices();
 
     await botManager.claimUnassignedBots();
     await botManager.syncAllBots();

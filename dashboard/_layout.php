@@ -38,12 +38,13 @@ try {
     <meta charset="utf-8">
     <title><?= h('BotHub – ' . $pageTitle) ?></title>
     <meta name="csrf-token" content="<?= h($_SESSION['csrf_token'] ?? '') ?>">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
     <link href="/assets/css/vendors/flatpickr.min.css" rel="stylesheet">
     <link href="/assets/css/mosaic.css" rel="stylesheet">
     <link href="/assets/css/command-switches.css" rel="stylesheet">
     <link href="/assets/css/command-accordion.css" rel="stylesheet">
     <link href="/assets/css/_components.css" rel="stylesheet">
+    <link href="/assets/css/_mobile.css" rel="stylesheet">
 <?php foreach ($extraCssFiles as $extraCssFile): ?>
     <?php if (is_string($extraCssFile) && $extraCssFile !== ''): ?>
     <link href="<?= h($extraCssFile) ?>" rel="stylesheet">

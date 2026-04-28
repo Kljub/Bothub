@@ -31,17 +31,21 @@ The system provides a modular architecture with features such as:
 - Discord bot integration  
 - Modular system (economy, tickets, moderation, etc.)  
 - Web installer (step-by-step setup)  
-- Basic database integration  
+- Basic database integration 
+- 💬 Suggestion Module  
+- ⭐ Starboard system  
+- Advanced logic (conditions, triggers, actions)   
+- Mobile view Support up to 320px exlude only install, Admin - Dashboard and the Custom Builders
 
 ---
 
 ### 🚧 In Progress
-- 💬 Suggestion Module  
-- ⭐ Starboard system  
 
 - 🎛️ Custom Command Builder improvements  
-  - Advanced logic (conditions, triggers, actions)  
   - Better usability  
+  - Easy Use on Global Variables
+  - Custom Error Logging
+  - Custom Analytics (How many Commands Triggerd by Day)
 
 - 🎨 UI/UX Improvements  
   - Cleaner dashboard layout  
@@ -51,21 +55,26 @@ The system provides a modular architecture with features such as:
 - ⚙️ Improved JavaScript Logic  
   - Refactoring frontend code  
   - Performance optimizations  
+  
+- Other DB Support like Postgress
 
 ---
 
 ### 🐞 Known Bugs
 - Ticket system creates channels in the wrong collection  
 - Welcomer sometimes fails to send a welcome message  ✅
-- Soundboard command: bot gets stuck in voice channel and does not leave  
+- Soundboard command: bot gets stuck in voice channel and does not leave  ✅
 
 ---
 
 ### 🔜 Planned
 - 🤖 Discord bot improvements  ✅
+- 🤖 Discord bot improvements (Core Sided) ✅
 - 🔐 Improved bot security  
 - 🔁 Secret reroll system  
-- 🧭 Routing improvements  
+- 🧭 Routing improvements  ✅
+- Apache Support
+- Game API Support
 
 ---
 

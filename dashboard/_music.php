@@ -54,6 +54,29 @@ try {
     return;
 }
 
+/* ── Migrate: add cmd_* columns if the table was created by the old installer ── */
+try {
+    $cmdCols = [
+        'cmd_play'       => 'TINYINT(1) NOT NULL DEFAULT 1',
+        'cmd_skip'       => 'TINYINT(1) NOT NULL DEFAULT 1',
+        'cmd_stop'       => 'TINYINT(1) NOT NULL DEFAULT 1',
+        'cmd_queue'      => 'TINYINT(1) NOT NULL DEFAULT 1',
+        'cmd_nowplaying' => 'TINYINT(1) NOT NULL DEFAULT 1',
+        'cmd_pause'      => 'TINYINT(1) NOT NULL DEFAULT 1',
+        'cmd_resume'     => 'TINYINT(1) NOT NULL DEFAULT 1',
+        'cmd_volume'     => 'TINYINT(1) NOT NULL DEFAULT 1',
+        'cmd_shuffle'    => 'TINYINT(1) NOT NULL DEFAULT 1',
+        'cmd_loop'       => 'TINYINT(1) NOT NULL DEFAULT 1',
+        'cmd_lyrics'     => 'TINYINT(1) NOT NULL DEFAULT 0',
+    ];
+    $existingCols = $pdo->query("SHOW COLUMNS FROM bot_music_settings")->fetchAll(PDO::FETCH_COLUMN);
+    foreach ($cmdCols as $col => $def) {
+        if (!in_array($col, $existingCols, true)) {
+            $pdo->exec("ALTER TABLE bot_music_settings ADD COLUMN {$col} {$def}");
+        }
+    }
+} catch (Throwable) {}
+
 /* ── Load or create settings row ── */
 $stmt = $pdo->prepare('SELECT * FROM bot_music_settings WHERE bot_id = ? LIMIT 1');
 $stmt->execute([$botId]);

@@ -3,7 +3,7 @@
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { createHash, createDecipheriv } = require('crypto');
 const { appKey, runnerName } = require('./config');
-const { dbQuery, botLog } = require('./db');
+const { dbQuery, botLog, bumpMetric } = require('./db');
 const { syncSlashCommands } = require('./slash-sync');
 const { handleInteraction } = require('./interaction-handler');
 const { loadCustomCommandRegistry } = require('./services/custom-command-service');
@@ -33,6 +33,7 @@ const { attachTempVoiceEvents } = require('./services/temp-voice-service');
 const { ensureTables: ensureArcTables, attachArcEnCielEvents, stopPolling: stopArcPolling } = require('./services/arcenciel-service');
 const { attachStarboardEvents } = require('./services/starboard-service');
 const { attachSuggestionButton } = require('./services/suggestion-service');
+const { loadCommunityServices } = require('./community-apps/services/community-service-loader');
 
 /**
  * Decrypts a bot token stored as 'enc:<base64(iv16+ciphertext)>'.
@@ -67,6 +68,8 @@ class BotManager {
         this.botMeta = new Map();
         this.commandRegistry = new Map();
         this.customCommandRegistries = new Map();
+        this.communityServices = [];
+        this.uptimePingIntervals = new Map(); // botId → intervalId
         this.lastDesiredStats = {
             totalKnown: 0,
             running: 0,
@@ -265,7 +268,7 @@ class BotManager {
             partials: [Partials.Message, Partials.Channel, Partials.Reaction],
         });
 
-        client.once('ready', async () => {
+        client.once('clientReady', async () => {
             const tag      = client.user ? client.user.tag : 'unknown';
             const isReload = Boolean(botRow._isReload);
 
@@ -385,6 +388,16 @@ class BotManager {
         attachStarboardEvents(client, botId);
         attachSuggestionButton(client, botId);
 
+        for (const svc of this.communityServices) {
+            try { svc.onReady(client, botId); }
+            catch (err) { console.warn(`[Community] ${svc.id} onReady Fehler:`, err.message); }
+        }
+
+        // Write uptime_ok metric every 5 minutes while bot is online
+        bumpMetric(botId, 'uptime_ok');
+        const uptimeInterval = setInterval(() => bumpMetric(botId, 'uptime_ok'), 5 * 60 * 1000);
+        this.uptimePingIntervals.set(Number(botId), uptimeInterval);
+
         client.on('error', async (err) => {
             const message = err instanceof Error ? err.message : String(err);
             console.error(`[BotHub Core] Bot ${botId} client error:`, message);
@@ -483,6 +496,18 @@ class BotManager {
         stopGiveawayService(numericBotId);
         stopArcPolling(numericBotId);
         stopVerificationTimer(numericBotId);
+
+        const uptimePingId = this.uptimePingIntervals.get(numericBotId);
+        if (uptimePingId !== undefined) {
+            clearInterval(uptimePingId);
+            this.uptimePingIntervals.delete(numericBotId);
+        }
+
+        for (const svc of this.communityServices) {
+            try { svc.onStop(numericBotId); }
+            catch (err) { console.warn(`[Community] ${svc.id} onStop Fehler:`, err.message); }
+        }
+
         await this.setBotStopped(numericBotId, reason);
     }
 

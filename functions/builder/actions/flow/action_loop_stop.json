@@ -20,6 +20,17 @@
         ],
         "outputs": []
     },
-    "default": {},
-    "properties": []
+    "default": {
+        "break_depth": 1
+    },
+    "properties": [
+        {
+            "key": "break_depth",
+            "type": "number",
+            "label": "Verschachtelungstiefe",
+            "placeholder": "1",
+            "min": 1,
+            "help": "Wie viele verschachtelte Schleifen abgebrochen werden sollen (Standard: 1)."
+        }
+    ]
 }
