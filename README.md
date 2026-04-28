@@ -1,5 +1,5 @@
 # BotHub
-
+Version 1.0.5
 BotHub is a web-based dashboard for managing and configuring Discord bots.  
 It combines a PHP-powered web interface with a Node.js Discord bot core.
 
