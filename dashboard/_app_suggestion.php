@@ -247,7 +247,7 @@ $sugHasChannel  = $sugChannel !== '';
             </div>
 
             <div class="lv-btn-row">
-                <button class="bh-btn bh-btn--primary" id="sug-save">Speichern</button>
+                <button class="bh-btn bh-btn--primary" id="sug-save" data-save-btn>Speichern</button>
                 <span class="lv-save-msg" id="sug-msg"></span>
             </div>
         </div>
@@ -346,7 +346,11 @@ try {
             channel_id:   document.getElementById('sug-channel-val').value,
             guild_id:     document.getElementById('sug-guild-val').value || GUILD_ID,
             button_style: getButtonStyle(),
-        }).then(r => showMsg(document.getElementById('sug-msg'), r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler')));
+        }).then(r => {
+            showMsg(document.getElementById('sug-msg'), r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler'));
+            if (r.ok) { if (window.BhSaveBanner) window.BhSaveBanner.markSaved(); }
+            else { if (window.BhSaveBanner) window.BhSaveBanner.setError(r.error || 'Fehler beim Speichern.'); }
+        });
     });
 
     updateBadge();

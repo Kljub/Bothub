@@ -651,7 +651,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
         }).then(r => {
             showMsg(msg, r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler'));
             if (r.ok) {
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
                 updateProviderVisibility(document.getElementById('ai-active-provider').value);
+            } else {
+                if (window.BhSaveBanner) window.BhSaveBanner.setError(r.error || 'Fehler beim Speichern.');
             }
         });
     });
@@ -667,7 +670,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
                 api_key:        document.getElementById('ai-key-' + prov)?.value ?? '',
                 base_url:       document.getElementById('ai-url-' + prov)?.value ?? '',
                 selected_model: document.getElementById('ai-model-' + prov)?.value ?? '',
-            }).then(r => showMsg(msgEl, r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler')));
+            }).then(r => {
+                showMsg(msgEl, r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler'));
+                if (r.ok && window.BhSaveBanner) window.BhSaveBanner.markSaved();
+            });
         });
     });
 
@@ -722,7 +728,10 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:ai');
             mention_enabled:          document.getElementById('ai-mention-enabled').checked ? 1 : 0,
             mention_context_messages: document.getElementById('ai-mention-context').value,
             allowed_channels:         document.getElementById('ai-allowed-channels').value,
-        }).then(r => showMsg(msg, r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler')));
+        }).then(r => {
+            showMsg(msg, r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler'));
+            if (r.ok && window.BhSaveBanner) window.BhSaveBanner.markSaved();
+        });
     });
 
     // Command toggles

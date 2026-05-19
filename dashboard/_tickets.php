@@ -115,7 +115,6 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
         <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Configure the ticket system for your Discord server. Use <code>/ticket panel</code> to send the ticket panel to a channel.</p>
     </div>
 
-    <div id="tk-banner" class="tk-banner"></div>
 
     <!-- ── Configuration ────────────────────────────────────────── -->
     <div class="bh-card">
@@ -175,7 +174,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
     </div>
 
     <!-- Save -->
-    <button type="button" id="tk-save-btn" class="tk-save-btn">Save Settings</button>
+    <button type="button" id="tk-save-btn" class="tk-save-btn" data-save-btn>Save Settings</button>
 
     <!-- ── Commands ─────────────────────────────────────────────── -->
     <div style="margin-top:32px">
@@ -301,15 +300,6 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
     bhSetupChannelPicker('tk-log-channel-box', 'tk-log-channel-val', 'tk-log-channel-btn', BOT_ID);
     bhSetupChannelPicker('tk-category-box',    'tk-category-val',    'tk-category-btn',    BOT_ID, null, null, 'categories');
 
-    function showBanner(msg, isErr) {
-        var b = document.getElementById('tk-banner');
-        b.textContent = msg;
-        b.className = 'tk-banner ' + (isErr ? 'err' : 'ok');
-        b.style.display = 'block';
-        clearTimeout(b._t);
-        b._t = setTimeout(function () { b.style.display = 'none'; }, 3500);
-    }
-
     // ── Settings save ──────────────────────────────────────────────
     document.getElementById('tk-save-btn').addEventListener('click', function () {
         var btn = this;
@@ -331,9 +321,15 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
         })
         .then(function (r) { return r.json(); })
         .then(function (d) {
-            showBanner(d.ok ? 'Settings saved.' : ('Error: ' + (d.error || 'unknown')), !d.ok);
+            if (d.ok) {
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
+            } else {
+                if (window.BhSaveBanner) window.BhSaveBanner.setError('Error: ' + (d.error || 'unknown'));
+            }
         })
-        .catch(function () { showBanner('Network error.', true); })
+        .catch(function () {
+            if (window.BhSaveBanner) window.BhSaveBanner.setError('Network error.');
+        })
         .finally(function () { btn.disabled = false; });
     });
 
@@ -355,9 +351,9 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:tickets');
             })
             .then(function (r) { return r.json(); })
             .then(function (d) {
-                if (!d.ok) showBanner('Error: ' + (d.error || 'unknown'), true);
+                if (!d.ok && window.BhSaveBanner) window.BhSaveBanner.setError('Error: ' + (d.error || 'unknown'));
             })
-            .catch(function () { showBanner('Network error.', true); });
+            .catch(function () { if (window.BhSaveBanner) window.BhSaveBanner.setError('Network error.'); });
         });
     });
 }());

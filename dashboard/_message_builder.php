@@ -198,7 +198,7 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
 
         <!-- Save -->
         <div class="mb-btn-row">
-            <button class="bh-btn bh-btn--primary" id="mb-save-btn" onclick="mbSave()">Template speichern</button>
+            <button class="bh-btn bh-btn--primary" id="mb-save-btn" onclick="mbSave()" data-save-btn>Template speichern</button>
         </div>
     </div>
 
@@ -469,6 +469,7 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
             mbResetCreateForm();
             mbAddRow(json.template);
             tplMap[json.template.id] = json.template;
+            if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
         } catch (e) {
             flash('❌ ' + e.message, false);
         } finally {
@@ -610,6 +611,7 @@ try { $templates = bhmb_list($mbPdo, $botId); } catch (Throwable) {}
             mbAddRow(json.template);
             mbCloseModal();
             flash('✅ Template aktualisiert.', true);
+            if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
         } catch (e) {
             flash('❌ ' + e.message, false);
         } finally {

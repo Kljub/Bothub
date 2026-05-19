@@ -57,7 +57,7 @@ try {
     <div class="flex h-[100dvh] overflow-hidden">
         <div class="min-w-fit"><?php require __DIR__ . '/_partials/sidebar.php'; ?></div>
         <script>!function(){var s=document.getElementById('sidebar');if(s){var v=sessionStorage.getItem('bh_sidebar_scroll');if(v)s.scrollTop=parseInt(v,10)||0;}}();</script>
-        <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden" id="bh-page-content">
             <?php require __DIR__ . '/_partials/header.php'; ?>
             <?= $contentHtml ?>
         </div>
@@ -76,6 +76,7 @@ try {
     <script src="/assets/js/command-accordion.js"></script>
     <script src="/assets/js/module-toggle.js"></script>
     <script src="/assets/js/channel-picker.js"></script>
+    <script src="/assets/js/bh-save-banner.js"></script>
 <?php foreach ($extraJsFiles as $extraJsFile): ?>
     <?php if (is_string($extraJsFile) && $extraJsFile !== ''): ?>
     <script src="<?= h($extraJsFile) ?>"></script>
@@ -164,5 +165,10 @@ try {
     }
 }());
 </script>
+
+    <div id="bh-save-banner" class="bh-save-banner" role="status" aria-live="polite">
+        <span class="bh-save-banner__text" id="bh-save-banner-text">Please save your changes!</span>
+        <button type="button" id="bh-save-banner-btn" class="bh-save-banner__btn">Save Changes</button>
+    </div>
 </body>
 </html>

@@ -280,7 +280,7 @@ $sbHasChannel = $sbChannel !== '';
             </div>
 
             <div class="lv-btn-row">
-                <button class="bh-btn bh-btn--primary" id="sb-save">Speichern</button>
+                <button class="bh-btn bh-btn--primary" id="sb-save" data-save-btn>Speichern</button>
                 <span class="lv-save-msg" id="sb-msg"></span>
             </div>
         </div>
@@ -352,7 +352,11 @@ $sbHasChannel = $sbChannel !== '';
             threshold:       document.getElementById('sb-threshold').value,
             allow_self_star: document.getElementById('sb-self-star').checked   ? '1' : '0',
             ignore_bots:     document.getElementById('sb-ignore-bots').checked ? '1' : '0',
-        }).then(r => showMsg(document.getElementById('sb-msg'), r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler')));
+        }).then(r => {
+            showMsg(document.getElementById('sb-msg'), r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler'));
+            if (r.ok) { if (window.BhSaveBanner) window.BhSaveBanner.markSaved(); }
+            else { if (window.BhSaveBanner) window.BhSaveBanner.setError(r.error || 'Fehler beim Speichern.'); }
+        });
     });
 
     updateBadge();

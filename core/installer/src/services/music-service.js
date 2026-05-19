@@ -675,8 +675,8 @@ async function resolveQuery(query, botId) {
             }));
         }
 
-        // SoundCloud
-        if (urlType === 'so_track' && settings && Number(settings.src_soundcloud) === 1) {
+        // SoundCloud — treat NULL/undefined as enabled
+        if (urlType === 'so_track' && settings && (settings.src_soundcloud == null || Number(settings.src_soundcloud) === 1)) {
             const info = await playdl.soundcloud(query);
             return [{
                 title:       info.name || 'Unknown',
@@ -689,7 +689,7 @@ async function resolveQuery(query, botId) {
 
         // Deezer track
         if ((urlType === 'dz_track' || urlType === 'dz_playlist' || urlType === 'dz_album') &&
-            settings && Number(settings.src_deezer) === 1) {
+            settings && (settings.src_deezer == null || Number(settings.src_deezer) === 1)) {
             const dz = await playdl.deezer(query);
             let tracks = [];
 
@@ -767,8 +767,9 @@ async function resolveQuery(query, botId) {
         }
     }
 
-    // 3. YouTube fallback
-    if (!settings || Number(settings.src_youtube) === 1) {
+    // 3. YouTube fallback — treat NULL/undefined as enabled (default-on)
+    const ytEnabled = !settings || settings.src_youtube == null || Number(settings.src_youtube) === 1;
+    if (ytEnabled) {
         const results = await playdl.search(query, { source: { youtube: 'video' }, limit: 5 });
         if (!results || results.length === 0) return [];
 

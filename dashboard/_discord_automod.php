@@ -71,8 +71,6 @@ function am_h(string $v): string {
         <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Automatically moderate messages in your server.</p>
     </div>
 
-    <div id="am-banner" class="am-banner"></div>
-
     <!-- ── Anti-Invite ─────────────────────────────────────────── -->
     <div class="bh-card">
         <div class="bh-card-hdr">
@@ -199,7 +197,7 @@ function am_h(string $v): string {
     </div>
 
     <!-- Save -->
-    <button type="button" id="bh-btn bh-btn--primary" class="bh-btn bh-btn--primary">Save Settings</button>
+    <button type="button" id="am-save-btn" class="bh-btn bh-btn--primary" data-save-btn>Save Settings</button>
 
 </div>
 
@@ -243,11 +241,13 @@ function am_h(string $v): string {
         span.querySelector('.bh-tag-rm').addEventListener('click', handleRemove);
 
         document.getElementById(containerId).appendChild(span);
+        if (window.BhSaveBanner) window.BhSaveBanner.show(doSave);
         return true;
     }
 
     function handleRemove(e) {
         e.currentTarget.closest('.bh-tag').remove();
+        if (window.BhSaveBanner) window.BhSaveBanner.show(doSave);
     }
 
     // Attach remove to existing tags
@@ -273,20 +273,10 @@ function am_h(string $v): string {
         if (e.key === 'Enter') { e.preventDefault(); document.getElementById('am-bl-add').click(); }
     });
 
-    // ── Banner ────────────────────────────────────────────────────
-    function showBanner(msg, isErr) {
-        var b = document.getElementById('am-banner');
-        b.textContent = msg;
-        b.className = 'am-banner ' + (isErr ? 'err' : 'ok');
-        b.style.display = 'block';
-        clearTimeout(b._t);
-        b._t = setTimeout(function () { b.style.display = 'none'; }, 3500);
-    }
-
     // ── Save ──────────────────────────────────────────────────────
-    document.getElementById('bh-btn bh-btn--primary').addEventListener('click', function () {
-        var btn = this;
-        btn.disabled = true;
+    function doSave() {
+        var btn = document.getElementById('am-save-btn');
+        if (btn) btn.disabled = true;
 
         var payload = {
             action:         'save',
@@ -308,11 +298,19 @@ function am_h(string $v): string {
         })
         .then(function (r) { return r.json(); })
         .then(function (d) {
-            showBanner(d.ok ? 'Settings saved.' : ('Error: ' + (d.error || 'unknown')), !d.ok);
+            if (d.ok) {
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
+            } else {
+                if (window.BhSaveBanner) window.BhSaveBanner.setError('Error: ' + (d.error || 'unknown'));
+            }
         })
-        .catch(function () { showBanner('Network error.', true); })
-        .finally(function () { btn.disabled = false; });
-    });
+        .catch(function () {
+            if (window.BhSaveBanner) window.BhSaveBanner.setError('Network error.');
+        })
+        .finally(function () { if (btn) btn.disabled = false; });
+    }
+
+    document.getElementById('am-save-btn').addEventListener('click', doSave);
 
     function esc(s) {
         return String(s)

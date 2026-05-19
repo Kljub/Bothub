@@ -1,0 +1,38 @@
+# BotHub – Apache Security Rules
+# For nginx see docs: block /db/config/, /storage/, /install/ at server level.
+
+Options -Indexes
+
+# Block direct access to sensitive config and storage directories
+<IfModule mod_authz_core.c>
+    <DirectoryMatch "^.+/(db/config|storage|install)(/|$)">
+        Require all denied
+    </DirectoryMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    <FilesMatch "\.(php|php\d|phtml|lock)$">
+        <Limit GET POST PUT DELETE HEAD OPTIONS>
+            Order allow,deny
+            Deny from all
+        </Limit>
+    </FilesMatch>
+</IfModule>
+
+# Deny access to hidden files (e.g. .git, .env)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Route everything through the front controller
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>

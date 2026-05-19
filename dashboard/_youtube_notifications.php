@@ -452,6 +452,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:youtube');
                 updateCount(1);
                 const empty = document.getElementById('yn-empty');
                 if (empty) empty.remove();
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
             } else {
                 flash(json.error || 'Fehler beim Speichern.', false);
             }
@@ -513,6 +514,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:youtube');
                 if (row) row.remove();
                 updateCount(-1);
                 flash('Gelöscht.', true);
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
                 if (document.getElementById('yn-list').children.length === 0) {
                     document.getElementById('yn-list').innerHTML =
                         '<div id="yn-empty" class="text-sm text-gray-400 dark:text-gray-500 text-center py-6">Noch kein YouTube-Kanal konfiguriert. Füge einen oben hinzu.</div>';

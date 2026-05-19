@@ -401,7 +401,7 @@ $currentPresence = (string)($g('presence_status', 'online'));
                 </div>
 
                 <div class="pt-2">
-                    <button type="button" onclick="saveSettings()" class="btn bg-violet-500 hover:bg-violet-600 text-white px-5 py-2 rounded-lg text-sm font-medium">Speichern</button>
+                    <button type="button" onclick="saveSettings()" class="btn bg-violet-500 hover:bg-violet-600 text-white px-5 py-2 rounded-lg text-sm font-medium" data-save-btn>Speichern</button>
                 </div>
             </div>
         </div>
@@ -664,6 +664,8 @@ $currentPresence = (string)($g('presence_status', 'online'));
             : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300');
         clearTimeout(toast._t);
         toast._t = setTimeout(function () { toast.className = 'hidden'; }, 3000);
+        if (data.ok) { if (window.BhSaveBanner) window.BhSaveBanner.markSaved(); }
+        else { if (window.BhSaveBanner) window.BhSaveBanner.setError(data.error || 'Fehler.'); }
     };
 
     window.deleteRotation = async function (id, el) {

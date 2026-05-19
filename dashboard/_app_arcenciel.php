@@ -580,13 +580,22 @@ $enabledCmds  = count(array_filter($cmdMap));
     }
 
     document.getElementById('ace-save-api').addEventListener('click', () => {
-        post(collectSettings()).then(r => showMsg(document.getElementById('ace-api-msg'), r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler')));
+        post(collectSettings()).then(r => {
+            showMsg(document.getElementById('ace-api-msg'), r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler'));
+            if (r.ok && window.BhSaveBanner) window.BhSaveBanner.markSaved();
+        });
     });
     document.getElementById('ace-save-gen').addEventListener('click', () => {
-        post(collectSettings()).then(r => showMsg(document.getElementById('ace-gen-msg'), r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler')));
+        post(collectSettings()).then(r => {
+            showMsg(document.getElementById('ace-gen-msg'), r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler'));
+            if (r.ok && window.BhSaveBanner) window.BhSaveBanner.markSaved();
+        });
     });
     document.getElementById('ace-save-limits').addEventListener('click', () => {
-        post(collectSettings()).then(r => showMsg(document.getElementById('ace-limits-msg'), r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler')));
+        post(collectSettings()).then(r => {
+            showMsg(document.getElementById('ace-limits-msg'), r.ok, r.ok ? '✓ Gespeichert' : '✗ ' + (r.error || 'Fehler'));
+            if (r.ok && window.BhSaveBanner) window.BhSaveBanner.markSaved();
+        });
     });
 
     document.querySelectorAll('.ace-cmd-toggle').forEach(chk => {

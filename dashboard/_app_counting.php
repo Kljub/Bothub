@@ -311,7 +311,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
             </div>
 
             <div class="lv-btn-row">
-                <button class="bh-btn bh-btn--primary" id="cnt-save-btn" onclick="cntSaveSettings()">Speichern</button>
+                <button class="bh-btn bh-btn--primary" id="cnt-save-btn" onclick="cntSaveSettings()" data-save-btn>Speichern</button>
                 <span id="cnt-save-msg" class="lv-save-msg" style="display:none"></span>
             </div>
         </div>
@@ -504,6 +504,8 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:counting');
         const msg  = res.ok ? '✓ Gespeichert' : ('Fehler: ' + (res.error || 'Unbekannt'));
         showMsg('cnt-save-msg',     res.ok, msg);
         showMsg('cnt-save-err-msg', res.ok, msg);
+        if (res.ok) { if (window.BhSaveBanner) window.BhSaveBanner.markSaved(); }
+        else { if (window.BhSaveBanner) window.BhSaveBanner.setError(res.error || 'Fehler beim Speichern.'); }
 
         if (saveBtn)    saveBtn.disabled    = false;
         if (saveErrBtn) saveErrBtn.disabled = false;

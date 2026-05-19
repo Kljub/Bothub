@@ -332,7 +332,7 @@ $modEnabled      = bh_mod_is_enabled($pdo, $botId, 'module:temp-voice');
                 </div>
 
                 <div class="lv-btn-row">
-                    <button type="button" class="bh-btn bh-btn--primary tv-save-btn" data-guild-id="<?= tv_h($gid) ?>" onclick="tvSave('<?= tv_h($gid) ?>')">
+                    <button type="button" class="bh-btn bh-btn--primary tv-save-btn" data-guild-id="<?= tv_h($gid) ?>" onclick="tvSave('<?= tv_h($gid) ?>')" data-save-btn>
                         Speichern
                     </button>
                     <span class="lv-save-msg tv-save-msg" data-guild-id="<?= tv_h($gid) ?>" style="display:none"></span>
@@ -647,11 +647,14 @@ $modEnabled      = bh_mod_is_enabled($pdo, $botId, 'module:temp-voice');
                 // Invalidate channel cache so next open re-fetches
                 channelCache.delete(`trigger:${guildId}`);
                 channelCache.delete(`category:${guildId}`);
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
             } else {
                 showSaveMsg(guildId, json.error || 'Fehler beim Speichern', false);
+                if (window.BhSaveBanner) window.BhSaveBanner.setError(json.error || 'Fehler beim Speichern.');
             }
         } catch (_) {
             showSaveMsg(guildId, 'Netzwerkfehler', false);
+            if (window.BhSaveBanner) window.BhSaveBanner.setError('Netzwerkfehler.');
         } finally {
             if (btn) btn.disabled = false;
         }

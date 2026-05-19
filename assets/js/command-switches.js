@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             updateState();
+            input.dispatchEvent(new Event("change", { bubbles: true }));
         });
 
         updateState();

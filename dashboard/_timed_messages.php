@@ -280,7 +280,7 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
         </label>
     </div>
 
-    <button class="bh-btn bh-btn--primary" id="bh-btn bh-btn--primary" onclick="tmAdd()">Add</button>
+    <button class="bh-btn bh-btn--primary" id="tm-add-btn" onclick="tmAdd()">Add</button>
 </div>
 
 <!-- ── Existing messages ────────────────────────────────────────────────── -->
@@ -410,7 +410,7 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
 
     // ── Add timed message ─────────────────────────────────────────────────
     window.tmAdd = async function () {
-        const btn = document.getElementById('bh-btn bh-btn--primary');
+        const btn = document.getElementById('tm-add-btn');
         btn.disabled = true;
 
         const payload = {
@@ -446,6 +446,7 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
                 document.getElementById('tm-name').value    = '';
                 document.getElementById('tm-channel-val').value = '';
                 tmChannelPicker?.clear();
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
             } else {
                 flash(json.error || 'Error saving.', false);
             }
@@ -500,6 +501,7 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
                 const row = document.getElementById('tm-row-' + id);
                 if (row) row.remove();
                 flash('Deleted.', true);
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
             } else {
                 flash(json.error || 'Error.', false);
             }

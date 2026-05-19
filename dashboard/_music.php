@@ -446,7 +446,7 @@ foreach ($_musicCmdKeyMap as $fieldKey => $cmdKey) {
 
             </div>
             <div class="bh-music-save-bar">
-                <button type="submit" class="bh-btn bh-btn--primary">Speichern</button>
+                <button type="submit" class="bh-btn bh-btn--primary" data-save-btn>Speichern</button>
             </div>
         </form>
     </div>

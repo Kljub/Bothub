@@ -243,7 +243,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
 
     <!-- Save -->
     <div class="bday-save-bar">
-        <button type="button" class="bh-btn bh-btn--primary" id="bh-btn bh-btn--primary">Save</button>
+        <button type="button" class="bh-btn bh-btn--primary" id="bday-save-btn" data-save-btn>Save</button>
     </div>
 
 </div>
@@ -324,7 +324,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
     });
 
     // ── Save ──────────────────────────────────────────────────────────────────
-    document.getElementById('bh-btn bh-btn--primary').addEventListener('click', async function () {
+    document.getElementById('bday-save-btn').addEventListener('click', async function () {
         var btn = this;
         btn.disabled = true;
         btn.textContent = '…';
@@ -346,9 +346,13 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:birthday');
                 body: JSON.stringify(payload),
             });
             var data = await res.json();
-            showFlash(data.ok ? 'ok' : 'err', data.ok ? 'Einstellungen gespeichert.' : (data.error || 'Fehler beim Speichern.'));
+            if (data.ok) {
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
+            } else {
+                if (window.BhSaveBanner) window.BhSaveBanner.setError(data.error || 'Fehler beim Speichern.');
+            }
         } catch (_) {
-            showFlash('err', 'Netzwerkfehler.');
+            if (window.BhSaveBanner) window.BhSaveBanner.setError('Netzwerkfehler.');
         }
 
         btn.disabled = false;

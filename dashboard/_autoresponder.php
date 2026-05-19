@@ -275,7 +275,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
         </div>
     </div>
 
-    <button class="bh-btn bh-btn--primary" id="bh-btn bh-btn--primary" onclick="arSubmit()">Add</button>
+    <button class="bh-btn bh-btn--primary" id="ar-submit-btn" onclick="arSubmit()">Add</button>
 </div>
 
 <!-- ── Existing autoresponders ────────────────────────────────────────── -->
@@ -465,7 +465,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
 
     // ── Submit ────────────────────────────────────────────────────────────
     window.arSubmit = async function () {
-        const btn = document.getElementById('bh-btn bh-btn--primary');
+        const btn = document.getElementById('ar-submit-btn');
         btn.disabled = true;
 
         const payload = {
@@ -506,6 +506,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
                 renderTags('ar-role-box', roleItems, 'ar-role-add-btn', () => {}, '');
                 document.getElementById('ar-embed-title').value = 'Autoresponder Message';
                 document.getElementById('ar-embed-body').value  = '';
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
             } else {
                 flash(json.error || 'Error saving.', false);
             }
@@ -555,6 +556,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:autoresponder');
                 const row = document.getElementById('ar-row-' + id);
                 if (row) row.remove();
                 flash('Deleted.', true);
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
             } else {
                 flash(json.error || 'Error.', false);
             }

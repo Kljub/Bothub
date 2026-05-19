@@ -380,6 +380,7 @@ $SCOPE_LABELS = [
                     editBtn.dataset.scope   = scope;
                 }
                 showBanner('Variable aktualisiert.', false);
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
             } else {
                 // Append new row
                 var newId = d.id;
@@ -396,6 +397,7 @@ $SCOPE_LABELS = [
                 var cnt = list.querySelectorAll('.ds-var-row').length;
                 varCount.textContent = cnt;
                 showBanner('Variable erstellt.', false);
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
             }
             resetForm();
         })
@@ -474,6 +476,7 @@ $SCOPE_LABELS = [
             varCount.textContent = list.querySelectorAll('.ds-var-row').length;
             if (editId === id) resetForm();
             showBanner('Variable gelöscht.', false);
+            if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
         })
         .catch(function () { showBanner('Netzwerkfehler.', true); });
     }

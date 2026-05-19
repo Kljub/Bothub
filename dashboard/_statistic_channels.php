@@ -357,6 +357,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:statistic-channels');
                 // Reset inputs
                 document.getElementById('sc-channel-select').innerHTML = '<option value="">— Channels laden —</option>';
                 document.getElementById('sc-channel-id').value = '';
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
             } else {
                 flash(json.error || 'Error.', false);
             }

@@ -483,6 +483,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
             randomize_boosts: document.getElementById('lv_randomize_boosts').checked ? '1' : '0',
         });
         showMsg(msg, res.ok, res.ok ? '✓ Gespeichert' : '✕ ' + (res.error||'Fehler'));
+        if (res.ok && window.BhSaveBanner) window.BhSaveBanner.markSaved();
     });
 
     // ── Save Messages XP ──
@@ -504,6 +505,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
             randomize_boosts: document.getElementById('lv_randomize_boosts').checked ? '1' : '0',
         });
         showMsg(msg, res.ok, res.ok ? '✓ Gespeichert' : '✕ ' + (res.error||'Fehler'));
+        if (res.ok && window.BhSaveBanner) window.BhSaveBanner.markSaved();
     });
 
     // ── Save Voice XP ──
@@ -525,6 +527,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
             randomize_boosts: document.getElementById('lv_randomize_boosts').checked ? '1' : '0',
         });
         showMsg(msg, res.ok, res.ok ? '✓ Gespeichert' : '✕ ' + (res.error||'Fehler'));
+        if (res.ok && window.BhSaveBanner) window.BhSaveBanner.markSaved();
     });
 
     // ── Save Booster Options ──
@@ -546,6 +549,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:leveling');
             randomize_boosts: document.getElementById('lv_randomize_boosts').checked ? '1' : '0',
         });
         showMsg(msg, res.ok, res.ok ? '✓ Gespeichert' : '✕ ' + (res.error||'Fehler'));
+        if (res.ok && window.BhSaveBanner) window.BhSaveBanner.markSaved();
     });
 
     // ── Booster type label ──

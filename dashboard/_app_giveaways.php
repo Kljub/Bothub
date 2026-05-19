@@ -214,7 +214,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:giveaways');
             </div>
 
             <div class="lv-btn-row">
-                <button class="bh-btn bh-btn--primary" id="gw-save-settings-btn" onclick="gwSaveSettings()">Speichern</button>
+                <button class="bh-btn bh-btn--primary" id="gw-save-settings-btn" onclick="gwSaveSettings()" data-save-btn>Speichern</button>
                 <span id="gw-save-msg" class="lv-save-msg" style="display:none"></span>
             </div>
         </div>
@@ -343,7 +343,12 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:giveaways');
         msg.className    = 'lv-save-msg ' + (res.ok ? 'lv-save-msg--ok' : 'lv-save-msg--err');
         msg.style.display = '';
         btn.disabled = false;
-        if (res.ok) setTimeout(() => { msg.style.display = 'none'; }, 3000);
+        if (res.ok) {
+            if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
+            setTimeout(() => { msg.style.display = 'none'; }, 3000);
+        } else {
+            if (window.BhSaveBanner) window.BhSaveBanner.setError(res.error || 'Fehler beim Speichern.');
+        }
     };
 
     // ── Einzelne Command-Toggles ─────────────────────────────────��────────

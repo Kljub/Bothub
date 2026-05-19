@@ -260,7 +260,7 @@ $plexCommandDefinitions = [
                 </details>
 
                 <div class="plex-library-form__actions">
-                    <button type="submit" class="plex-btn plex-btn--primary">Libraries speichern</button>
+                    <button type="submit" class="plex-btn plex-btn--primary" data-save-btn>Libraries speichern</button>
                 </div>
             </form>
         <?php endif; ?>

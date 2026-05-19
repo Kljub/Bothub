@@ -430,6 +430,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:twitch');
                 // Remove empty state placeholder
                 const empty = document.getElementById('tn-empty');
                 if (empty) empty.remove();
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
             } else {
                 flash(json.error || 'Error saving.', false);
             }
@@ -486,6 +487,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:twitch');
                 const row = document.getElementById('tn-row-' + id);
                 if (row) row.remove();
                 flash('Deleted.', true);
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
                 if (document.getElementById('tn-list').children.length === 0) {
                     document.getElementById('tn-list').innerHTML =
                         '<div id="tn-empty" class="text-sm text-gray-400 dark:text-gray-500 text-center py-6">Noch keine Streamer konfiguriert. Füge oben einen hinzu.</div>';

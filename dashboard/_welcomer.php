@@ -584,7 +584,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:welcomer');
                 </div>
 
                 <div class="bh-wlcm-cfg-save-row">
-                    <button type="button" class="bh-wlcm-btn" onclick="bhWlcmSaveCard()">Speichern</button>
+                    <button type="button" class="bh-wlcm-btn" onclick="bhWlcmSaveCard()" data-save-btn>Speichern</button>
                 </div>
             </form>
         </div>
@@ -884,6 +884,8 @@ function bhWlcmSaveCard() {
             flashEl.style.display = 'block';
             clearTimeout(flashEl._t);
             flashEl._t = setTimeout(function () { flashEl.style.display = 'none'; }, 4000);
+            if (d.ok) { if (window.BhSaveBanner) window.BhSaveBanner.markSaved(); }
+            else { if (window.BhSaveBanner) window.BhSaveBanner.setError(d.error || 'Fehler beim Speichern.'); }
         })
         .catch(function () {
             if (flashEl) {

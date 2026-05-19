@@ -150,7 +150,7 @@ $evtHandler   = (int)($s['evt_handler'] ?? 1);
 </div>
 
 <div class="arc-save-bar">
-    <button class="bh-btn bh-btn--primary" id="bh-btn bh-btn--primary" onclick="arcSave()">Save Changes</button>
+    <button class="bh-btn bh-btn--primary" id="arc-save-btn" onclick="arcSave()" data-save-btn>Save Changes</button>
 </div>
 
 <!-- Commands -->
@@ -277,7 +277,7 @@ $evtHandler   = (int)($s['evt_handler'] ?? 1);
     }
 
     window.arcSave = async function () {
-        const btn = document.getElementById('bh-btn bh-btn--primary');
+        const btn = document.getElementById('arc-save-btn');
         btn.disabled = true;
         try {
             const res = await fetch(location.href, {
@@ -294,8 +294,14 @@ $evtHandler   = (int)($s['evt_handler'] ?? 1);
                 }),
             });
             const json = await res.json();
-            flash(json.ok ? 'Saved!' : (json.error || 'Error'), json.ok);
-        } catch (e) { flash('Network error.', false); }
+            if (json.ok) {
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
+            } else {
+                if (window.BhSaveBanner) window.BhSaveBanner.setError(json.error || 'Error');
+            }
+        } catch (e) {
+            if (window.BhSaveBanner) window.BhSaveBanner.setError('Network error.');
+        }
         btn.disabled = false;
     };
 

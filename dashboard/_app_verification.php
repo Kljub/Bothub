@@ -417,7 +417,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
     <!-- ── Speichern ────────────────────────────────────────────────────── -->
     <div style="padding: 4px 0 20px">
         <div class="lv-btn-row" style="padding-left:0">
-            <button class="bh-btn bh-btn--primary" id="vfy-save-btn" onclick="vfySaveSettings()">Einstellungen speichern</button>
+            <button class="bh-btn bh-btn--primary" id="vfy-save-btn" onclick="vfySaveSettings()" data-save-btn>Einstellungen speichern</button>
             <span id="vfy-save-msg" class="lv-save-msg" style="display:none"></span>
         </div>
     </div>
@@ -506,7 +506,12 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:verification');
         msg.className     = 'lv-save-msg ' + (res.ok ? 'lv-save-msg--ok' : 'lv-save-msg--err');
         msg.style.display = '';
         btn.disabled = false;
-        if (res.ok) setTimeout(() => { msg.style.display = 'none'; }, 3000);
+        if (res.ok) {
+            if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
+            setTimeout(() => { msg.style.display = 'none'; }, 3000);
+        } else {
+            if (window.BhSaveBanner) window.BhSaveBanner.setError(res.error || 'Fehler beim Speichern.');
+        }
     };
 
     // ── Auto-Kick Toggle ──────────────────────────────────────────────────

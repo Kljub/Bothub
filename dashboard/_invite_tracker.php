@@ -254,7 +254,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:invite-tracker');
                       placeholder="👋 {user_name} joined using invite {invite_code} by {inviter_name} (total uses: {invite_uses})"></textarea>
         </div>
 
-        <button type="button" class="it-save-btn" onclick="itSaveSettings()">
+        <button type="button" class="it-save-btn" onclick="itSaveSettings()" data-save-btn>
             Speichern
         </button>
     </div>
@@ -400,14 +400,16 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:invite-tracker');
         .then(function (r) { return r.json(); })
         .then(function (d) {
             if (d.ok) {
-                flash('Einstellungen gespeichert!', true);
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
                 // Reload after short delay so overview table refreshes
                 setTimeout(function () { window.location.reload(); }, 1200);
             } else {
-                flash('Fehler: ' + (d.error || 'Unbekannt'), false);
+                if (window.BhSaveBanner) window.BhSaveBanner.setError('Fehler: ' + (d.error || 'Unbekannt'));
             }
         })
-        .catch(function () { flash('Netzwerkfehler.', false); });
+        .catch(function () {
+            if (window.BhSaveBanner) window.BhSaveBanner.setError('Netzwerkfehler.');
+        });
     };
 
     // ── Leaderboard ───────────────────────────────────────────────────────────

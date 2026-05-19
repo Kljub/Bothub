@@ -883,53 +883,11 @@ if ($baseQuery !== []) {
             </section>
 
             <div class="bh-settings-actions">
-                <button type="submit" class="bh-btn bh-btn--primary">Save Changes</button>
+                <button type="submit" class="bh-btn bh-btn--primary" data-save-btn>Save Changes</button>
             </div>
         </form>
 
-        <form method="post" action="<?= htmlspecialchars($formAction, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" class="bh-settings-form">
-            <input type="hidden" name="action" value="update_custom_status">
-            <input type="hidden" name="bot_id" value="<?= (int)($currentBotId ?? 0) ?>">
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES) ?>">
-
-            <section class="bh-card">
-                <div class="bh-card-hdr">
-                    <div>
-                        <div class="bh-card-title">Custom Status 💭</div>
-                        <div class="bh-card-desc">Gedankenbubble — erscheint als Custom Status unter dem Bot-Namen in Discord</div>
-                    </div>
-                </div>
-
-                <div class="bh-card-body">
-                    <label class="bh-label" for="custom_status_text">Status Text</label>
-                    <input
-                        id="custom_status_text"
-                        name="custom_status_text"
-                        type="text"
-                        class="bh-input"
-                        maxlength="128"
-                        value="<?= htmlspecialchars($currentCustomStatus, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
-                        placeholder="z.B. 🤖 Powered by BotHub"
-                        autocomplete="off"
-                    >
-                    <div class="bh-settings-upload-help" style="margin-top:6px;">Du kannst Emojis direkt eintippen (z.B. 🎮, 🔧). Leer lassen um den Status zu entfernen.</div>
-
-                    <label class="bh-label" for="custom_status_presence" style="margin-top:16px;">Presence</label>
-                    <select id="custom_status_presence" name="custom_status_presence" class="bh-input" style="cursor:pointer;">
-                        <?php foreach (['online' => '🟢 Online', 'idle' => '🌙 Idle', 'dnd' => '🔴 Do not Disturb', 'invisible' => '⚫ Invisible'] as $val => $label): ?>
-                        <option value="<?= $val ?>" <?= $currentPresenceStatus === $val ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
-                        </option>
-                        <?php endforeach; ?>
-                    </select>
-                    <div class="bh-settings-upload-help" style="margin-top:4px;">Für mehr Optionen (Rotating, Streaming, …) → <a href="<?= htmlspecialchars('/dashboard?view=status&bot_id=' . (int)($currentBotId ?? 0), ENT_QUOTES) ?>" style="color:#6366f1;">Status-Seite</a></div>
-                </div>
-            </section>
-
-            <div class="bh-settings-actions">
-                <button type="submit" class="bh-btn bh-btn--primary">Status speichern</button>
-            </div>
-        </form>
+        
 
         <form method="post" action="<?= htmlspecialchars($formAction, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" class="bh-settings-form">
             <input type="hidden" name="action" value="update_token">

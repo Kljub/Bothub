@@ -258,7 +258,7 @@ $cmdEnabled      = bhcmd_is_enabled($pdo, $botId, 'weather');
 
     <!-- Save -->
     <div class="wx-save-bar">
-        <button type="button" class="wx-save-btn" id="wx-save-btn">Speichern</button>
+        <button type="button" class="wx-save-btn" id="wx-save-btn" data-save-btn>Speichern</button>
     </div>
 
 </div><!-- /wx-wrap -->
@@ -334,8 +334,11 @@ $cmdEnabled      = bhcmd_is_enabled($pdo, $botId, 'weather');
             var data = await res.json();
             showFlash(data.ok ? 'ok' : 'err',
                 data.ok ? 'Einstellungen gespeichert.' : (data.error || 'Fehler beim Speichern.'));
+            if (data.ok) { if (window.BhSaveBanner) window.BhSaveBanner.markSaved(); }
+            else { if (window.BhSaveBanner) window.BhSaveBanner.setError(data.error || 'Fehler beim Speichern.'); }
         } catch (_) {
             showFlash('err', 'Netzwerkfehler.');
+            if (window.BhSaveBanner) window.BhSaveBanner.setError('Netzwerkfehler.');
         }
 
         btn.disabled = false;

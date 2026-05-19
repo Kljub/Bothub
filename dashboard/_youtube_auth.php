@@ -298,7 +298,7 @@ unset($_SESSION['yt_oauth_success'], $_SESSION['yt_oauth_error']);
                     class="w-full form-input bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-800 dark:text-gray-100 px-3 py-2 focus:ring-2 focus:ring-violet-500 focus:border-violet-500">
             </div>
             <div class="pt-1">
-                <button type="button" id="yt-save-creds-btn"
+                <button type="button" id="yt-save-creds-btn" data-save-btn
                     class="btn bg-violet-500 hover:bg-violet-600 text-white px-5 py-2 rounded-lg text-sm font-medium">
                     Speichern
                 </button>
@@ -345,6 +345,8 @@ unset($_SESSION['yt_oauth_success'], $_SESSION['yt_oauth_error']);
                 : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300');
             clearTimeout(toast._t);
             toast._t = setTimeout(function () { toast.className = 'hidden'; }, 3000);
+            if (data.ok) { if (window.BhSaveBanner) window.BhSaveBanner.markSaved(); }
+            else { if (window.BhSaveBanner) window.BhSaveBanner.setError(data.error || 'Fehler.'); }
         });
     }
 

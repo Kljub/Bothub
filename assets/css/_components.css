@@ -517,3 +517,46 @@
 
 .bh-var-chip:hover { border-color: #6366f1; color: #818cf8; background: #1e2740; }
 .bh-var-chip.is-copied { border-color: #10b981; color: #6ee7b7; background: rgba(16,185,129,.1); }
+
+/* ── Global Save Banner ─────────────────────────────────────────────────── */
+
+.bh-save-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: linear-gradient(90deg, #6d28d9, #7c3aed);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    z-index: 9000;
+    gap: 16px;
+    transform: translateY(100%);
+    transition: transform 0.28s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 -4px 24px rgba(109, 40, 217, .35);
+}
+
+.bh-save-banner.is-visible { transform: translateY(0); }
+
+.bh-save-banner__text { flex: 1; }
+
+.bh-save-banner__btn {
+    background: #fff;
+    color: #6d28d9;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.bh-save-banner__btn:hover  { opacity: 0.9; transform: translateY(-1px); }
+.bh-save-banner__btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }

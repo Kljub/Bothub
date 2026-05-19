@@ -576,7 +576,7 @@ foreach ($ecoCommandGroups as $cmds) {
                 </div>
             </div>
             <div class="bh-eco-save-row">
-                <button type="submit" class="bh-eco-btn">Speichern</button>
+                <button type="submit" class="bh-eco-btn" data-save-btn>Speichern</button>
             </div>
         </form>
     </div>

@@ -496,7 +496,37 @@ function bhSetupChannelPicker(boxId, valId, btnId, botId, guildValId, onClear, p
         box.insertBefore(tag, btn);
     }
 
-    if (val.value) renderTag(val.value, val.value);
+    if (val.value) {
+        renderTag(val.value, val.value); // show ID immediately; resolve name below
+        if (botId > 0 && pickerType !== 'permissions') {
+            var _initId  = val.value;
+            var _initEp  = pickerType === 'roles'
+                ? '/api/v1/bot_guild_roles.php?bot_id='    + botId
+                : pickerType === 'categories'
+                ? '/api/v1/bot_guild_channels.php?bot_id=' + botId + '&types=4'
+                : '/api/v1/bot_guild_channels.php?bot_id=' + botId;
+            fetch(_initEp)
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (!d.ok) return;
+                    var list = pickerType === 'roles' ? (d.roles || []) : (d.channels || []);
+                    // multi-guild: if needs_guild + exactly one guild, auto-drill
+                    if (!list.length && d.needs_guild && Array.isArray(d.guilds) && d.guilds.length === 1) {
+                        fetch(_initEp + '&guild_id=' + encodeURIComponent(d.guilds[0].id))
+                            .then(function (r2) { return r2.json(); })
+                            .then(function (d2) {
+                                if (!d2.ok) return;
+                                var list2 = pickerType === 'roles' ? (d2.roles || []) : (d2.channels || []);
+                                var found = list2.find(function (i) { return i.id === _initId; });
+                                if (found && val.value === _initId) renderTag(found.id, found.name || found.id);
+                            }).catch(function () {});
+                        return;
+                    }
+                    var found = list.find(function (i) { return i.id === _initId; });
+                    if (found && val.value === _initId) renderTag(found.id, found.name || found.id);
+                }).catch(function () {});
+        }
+    }
 
     btn.addEventListener('click', function (e) {
         e.stopPropagation();

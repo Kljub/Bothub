@@ -3,7 +3,7 @@ const type = 'action.vc.leave';
 async function execute(ctx) {
     const { cfg, node, getNextNode, interaction, botId } = ctx;
     const { getVoiceConnection } = require('@discordjs/voice');
-    const { getQueue: getMusicQueue } = require('../../services/music-service');
+    const { getQueue: getMusicQueue } = require('../../../services/music-service');
 
     const force = cfg.force === true || cfg.force === 'true';
     const conn  = getVoiceConnection(interaction.guildId);

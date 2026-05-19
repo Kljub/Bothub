@@ -224,7 +224,7 @@ $esc = fn(string $s): string => htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE
                 </div>
                 <?php endforeach; ?>
                 <div class="bh-eco-save-row">
-                    <button type="submit" class="bh-eco-btn">Speichern</button>
+                    <button type="submit" class="bh-eco-btn" data-save-btn>Speichern</button>
                 </div>
             </form>
         </div>

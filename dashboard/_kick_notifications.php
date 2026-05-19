@@ -397,6 +397,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:kick');
             chanSel.value = '';
             document.getElementById('kn-role-select').value = '';
             document.getElementById('kn-empty')?.remove();
+            if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
         } catch (e) {
             flash('Netzwerkfehler.', false);
         } finally {

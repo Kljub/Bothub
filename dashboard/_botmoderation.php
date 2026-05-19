@@ -161,7 +161,7 @@ $modEnabled = bh_mod_is_enabled($pdo, $botId, 'module:moderation');
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <button type="submit" class="btn bg-violet-500 hover:bg-violet-600 text-white">
+                    <button type="submit" class="btn bg-violet-500 hover:bg-violet-600 text-white" data-save-btn>
                         Save All
                     </button>
                 </div>

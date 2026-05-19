@@ -267,7 +267,7 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
 </div>
 
 <div style="display:flex;justify-content:flex-end;margin-top:24px;margin-bottom:32px">
-    <button class="sm-save-btn" id="sm-save-btn" onclick="smSave()">Save Changes</button>
+    <button class="sm-save-btn" id="sm-save-btn" onclick="smSave()" data-save-btn>Save Changes</button>
 </div>
 
 <script>
@@ -343,7 +343,12 @@ $esc = fn(string $v) => htmlspecialchars($v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
             });
             const json = await res.json();
             flash(json.ok ? 'Saved!' : (json.error || 'Error'), json.ok);
-        } catch (e) { flash('Network error.', false); }
+            if (json.ok) { if (window.BhSaveBanner) window.BhSaveBanner.markSaved(); }
+            else { if (window.BhSaveBanner) window.BhSaveBanner.setError(json.error || 'Error.'); }
+        } catch (e) {
+            flash('Network error.', false);
+            if (window.BhSaveBanner) window.BhSaveBanner.setError('Network error.');
+        }
         btn.disabled = false;
     };
 

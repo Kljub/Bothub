@@ -384,7 +384,7 @@ $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');
 
         <hr class="border-gray-100 dark:border-gray-700/60">
 
-        <button type="button" id="fg-save-btn"
+        <button type="button" id="fg-save-btn" data-save-btn
                 class="inline-flex items-center justify-center rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold px-4 py-2 transition-colors" style="width:100%">
             Einstellungen speichern
         </button>
@@ -558,10 +558,13 @@ $cmdEnabled = bhcmd_is_enabled($pdo, $botId, 'free-games');
                 schedule_time:    schedTimeVal,
                 schedule_days:    state.schedDays,
             });
-            if (d.ok) flash('Einstellungen gespeichert.', true);
-            else flash(d.error || 'Fehler.', false);
+            if (d.ok) {
+                if (window.BhSaveBanner) window.BhSaveBanner.markSaved();
+            } else {
+                if (window.BhSaveBanner) window.BhSaveBanner.setError(d.error || 'Fehler.');
+            }
         } catch (_) {
-            flash('Netzwerkfehler.', false);
+            if (window.BhSaveBanner) window.BhSaveBanner.setError('Netzwerkfehler.');
         } finally {
             this.disabled = false;
             this.textContent = 'Einstellungen speichern';
