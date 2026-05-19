@@ -37,6 +37,8 @@ The system provides a modular architecture with features such as:
 - ⭐ Starboard system  
 - Advanced logic (conditions, triggers, actions)   
 - Mobile view Support up to 320px exlude only install, Admin - Dashboard and the Custom Builders
+- Support for Apache
+- Generall Impovements
 
 ---
 
