@@ -76,7 +76,7 @@ The system provides a modular architecture with features such as:
 - 🔐 Improved bot security  
 - 🔁 Secret reroll system  
 - 🧭 Routing improvements  ✅
-- Apache Support
+- Apache Support ✅
 - Game API Support
 
 ---
