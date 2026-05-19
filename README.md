@@ -22,7 +22,7 @@ The system provides a modular architecture with features such as:
 ### Requirements
 - PHP >= 8.2 (8.5 recommended)  
 - MySQL / MariaDB  
-- Nginx  
+- Nginx / Apache
 - Node.js 22 LTS
 
 ## 🗺️ Roadmap
